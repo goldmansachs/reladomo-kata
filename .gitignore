@@ -1,0 +1,5 @@
+main-kata/target/**
+.idea/workspace.xml
+.idea/misc.xml
+.idea/codeStyleSettings.xml
+.idea/libraries/**
