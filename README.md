@@ -35,3 +35,8 @@ We haven't come up with an instruction for Eclipse yet.
 
 ### NetBeans users
 We haven't come up with an instruction for NetBeans yet.
+
+Kata Presentation
+-----------------
+Run the Maven task "site" to generate slides for the kata. 
+Navigate to main-kata/target/presentation/reladomokata and open the ReladomoKata.xhtml in your favorite browser.
