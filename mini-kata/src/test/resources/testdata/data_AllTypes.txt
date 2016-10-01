@@ -1,0 +1,5 @@
+class kata.domain.Person
+
+class kata.domain.Pet
+
+class kata.domain.PetType
