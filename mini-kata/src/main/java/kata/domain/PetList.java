@@ -41,4 +41,12 @@ public class PetList extends PetListAbstract
     {
         super(operation);
     }
+
+    /**
+     * For each element in the list, print out petName() + " plays".
+     */
+    public void play()
+    {
+        throw new UnsupportedOperationException("Implement this as a part of kata.testExercise4Test.makePetsPlay");
+    }
 }
