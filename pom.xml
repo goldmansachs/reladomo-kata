@@ -30,6 +30,7 @@ under the License.
 
     <modules>
         <module>main-kata</module>
+        <module>mini-kata</module>
     </modules>
 
     <properties>
