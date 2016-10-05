@@ -2,8 +2,8 @@ class kata.domain.Customer
 customerId , name            , country
 1          , "John Smith"    , "USA"
 2          , "Yusuke Sato"   , "JPN"
-3          , "Ken Lay"       , "USA"
-4          , "Bernie Madoff" , "USA"
+3          , "Claire Bennet" , "USA"
+4          , "Diana Prince" , "USA"
 
 
 class kata.domain.CustomerAccount
