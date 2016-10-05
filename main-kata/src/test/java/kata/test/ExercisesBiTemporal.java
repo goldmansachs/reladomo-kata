@@ -331,12 +331,12 @@ public class ExercisesBiTemporal
     {
         Timestamp mid2008 = Timestamp.valueOf("2008-06-01 00:00:00.0");
         MutableList<Customer> inDebt2008 = getCustomersWithNegativeNetBalanceInMemory(mid2008);
-        Verify.assertListsEqual(FastList.newListWith("Bernie Madoff"),
+        Verify.assertListsEqual(FastList.newListWith("Diana Prince"),
                 inDebt2008.collect(CustomerFinder.name()));
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
         MutableList<Customer> inDebtNow = getCustomersWithNegativeNetBalanceInMemory(now);
-        Verify.assertSetsEqual(UnifiedSet.newSetWith("Bernie Madoff", "Ken Lay", "Yusuke Sato"),
+        Verify.assertSetsEqual(UnifiedSet.newSetWith("Diana Prince", "Claire Bennet", "Yusuke Sato"),
                 inDebtNow.collect(CustomerFinder.name()).toSet());
     }
 
@@ -354,12 +354,12 @@ public class ExercisesBiTemporal
     {
         Timestamp mid2008 = Timestamp.valueOf("2008-06-01 00:00:00.0");
         final CustomerList inDebt2008 = getCustomersWithNegativeNetBalanceUsingAggregate(mid2008);
-        Verify.assertListsEqual(FastList.newListWith("Bernie Madoff"),
+        Verify.assertListsEqual(FastList.newListWith("Diana Prince"),
                 inDebt2008.asGscList().collect(CustomerFinder.name()));
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
         final CustomerList inDebtNow = getCustomersWithNegativeNetBalanceUsingAggregate(now);
-        Verify.assertSetsEqual(UnifiedSet.newSetWith("Bernie Madoff", "Ken Lay", "Yusuke Sato"),
+        Verify.assertSetsEqual(UnifiedSet.newSetWith("Diana Prince", "Claire Bennet", "Yusuke Sato"),
                 inDebtNow.asGscList().collect(CustomerFinder.name()).toSet());
     }
 
