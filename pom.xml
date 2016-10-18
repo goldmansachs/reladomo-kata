@@ -44,6 +44,7 @@ under the License.
         <maven.compiler.maxmem>2048m</maven.compiler.maxmem>
         <reladomo.version>16.0.0</reladomo.version>
         <gs-collections.version>7.0.3</gs-collections.version>
+        <logback.version>1.0.13</logback.version>
 
     </properties>
 
@@ -84,6 +85,12 @@ under the License.
                 <groupId>com.goldmansachs.reladomo</groupId>
                 <artifactId>reladomo-test-util</artifactId>
                 <version>${reladomo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
