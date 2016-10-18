@@ -186,5 +186,10 @@
             <groupId>com.goldmansachs.reladomo</groupId>
             <artifactId>reladomo-test-util</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
     </dependencies>
 </project>
