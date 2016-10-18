@@ -10,7 +10,7 @@ Pre-requisites
 --------------
 1) [Java 8](http://www.oracle.com/technetwork/java/javase/overview/java8-2100321.html)
 
-2) [IntelliJ IDEA](https://www.jetbrains.com/idea/download/)
+2) [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) or [Eclipse](https://www.eclipse.org/downloads/)
 
 3) [Apache Maven](https://maven.apache.org/) 
 
@@ -37,6 +37,9 @@ You can open the project from "File" => "Open Projects from File System..." => c
 The project should automatically be imported as a Maven project. In case it is not imported as a Maven project, you can import it by right click on reladomo-kata => "Maven" => "Configure..."
 
 ##### Setup the project JDK: 
+Maven will automatically select Java 8 for you, make sure you have your JDK 8 installed and properly configured in Eclipse "Preferences" => "Installed JREs".
+If not follow the below steps:
+ 
 1) Navigate to "Window" => "Preferences" => "Installed JREs" => "Add" => "Standard VM". 
 
 2) For "JRE home:" click on "Directory..." find your Java 8 JDK directory and click "OK", all other fields should auto-populate. 
@@ -46,7 +49,7 @@ The project should automatically be imported as a Maven project. In case it is n
 4) Make sure the JDK you just setup, is checked off under the "Installed JREs".
 
 ##### Run the Maven build 
-1) Right click on "reladomo-kata".
+1) Right click on "reladomo-kata-parent".
  
 2) Navigate to "Run As" => "Maven build". 
 
@@ -69,7 +72,7 @@ It should generate the presentation.
 Navigate to main-kata/target/presentation/reladomokata and open the ReladomoKata.xhtml in your favorite browser.
 
 ### Eclipse users
-1) Right click on "reladomo-kata".
+1) Right click on "reladomo-kata-parent".
 
 2) Navigate to "Run As" => "Maven build".
 
