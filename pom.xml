@@ -42,7 +42,7 @@ under the License.
         <maven.compiler.verbose>true</maven.compiler.verbose>
         <maven.compiler.meminitial>2048m</maven.compiler.meminitial>
         <maven.compiler.maxmem>2048m</maven.compiler.maxmem>
-        <reladomo.version>16.0.0</reladomo.version>
+        <reladomo.version>16.1.0</reladomo.version>
         <gs-collections.version>7.0.3</gs-collections.version>
         <logback.version>1.0.13</logback.version>
 
