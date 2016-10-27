@@ -1200,7 +1200,7 @@ superman.delete();]]></programlisting>
                     </para>
                 </listitem>
                 <listitem>
-                    <para>Will add a convenience method to the Finder for you
+                    <para>For a unique index Reladomo will add a convenience method to the Finder for you
                     </para>
                 </listitem>
                 <listitem>
@@ -1212,7 +1212,7 @@ superman.delete();]]></programlisting>
                     </para>
                 </listitem>
                 <listitem>
-                    <para>And correctness, if it is a "unique" constrain
+                    <para>And correctness, if it is a "unique" constraint
                     </para>
                 </listitem>
                 <listitem>
