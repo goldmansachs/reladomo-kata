@@ -1,5 +1,7 @@
 main-kata/target/**
 mini-kata/target/**
+main-kata/.idea/**
+mini-kata/.idea/**
 .idea/workspace.xml
 .idea/misc.xml
 .idea/codeStyleSettings.xml
