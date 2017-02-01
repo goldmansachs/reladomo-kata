@@ -1,0 +1,1651 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml"><head><title/><meta name="copyright" content=""/><link type="text/css" href="user.css" rel="stylesheet"/><script type="text/javascript" charset="utf-8" src="files/slidy/scripts/slidy.js"/></head><body><div class="background"/><div class="slide cover title"><h1 class="title">Reladomo Kata</h1></div><a name="N10013"/><div class="slide"><h1 class="title">Intro
+        </h1></div><a name="N10018"/><div class="slide">
+            <h1 class="title">10 Second Intro</h1>
+            <ul class=""><li class="listitem"><p>What is Reladomo?
+                        </p><p>
+                            <span class="strong"><strong>
+                                <span class="emphasis"><em>A Java Object Relational Mapping Framework.</em></span>
+                            </strong></span>
+                        </p><p>
+                    </p></li><li class="listitem"><p>What is a Code Kata?
+                        </p><p>
+                            <span class="strong"><strong>
+                                <span class="emphasis"><em>A programming exercise which helps hone your skills through practice.</em></span>
+                            </strong></span>
+                        </p><p>
+                    </p></li></ul>
+        </div><a name="N1003A"/><div class="slide">
+            <h1 class="title">What is Reladomo?</h1>
+            <p>Reladomo, not your typical ORM:
+            </p>
+            <ul class=""><li class="listitem"><p>Chaining logic
+                    </p></li><li class="listitem"><p>Object oriented, compiled, type-checked, query language
+                    </p></li><li class="listitem"><p>Transparent multi-schema support
+                    </p></li><li class="listitem"><p>Object oriented batch operations
+                    </p></li><li class="listitem"><p>Unit testable code
+                    </p></li><li class="listitem"><p>Flexible object relationship inflation
+                    </p></li></ul>
+        </div><a name="N10057"/><div class="slide">
+            <h1 class="title">What is a Code Kata?</h1>
+            <ul class=""><li class="listitem"><p>A programming exercise which helps hone your skills through practice.
+                    </p></li><li class="listitem"><p>This one is set up as a series of unit tests which fail.
+                    </p></li><li class="listitem"><p>Your task is to make them pass, using Reladomo –
+                    </p><ul class=""><li class="listitem"><p>
+                                <span class="emphasis"><em>I hear and I forget.</em></span>
+                            </p><p>
+                                <span class="emphasis"><em>I see and I remember.</em></span>
+                            </p><p>
+                                <span class="emphasis"><em>I do and I understand.</em></span>
+                            </p><p>- Confucius</p></li></ul></li><li class="listitem"><p>New concepts are introduced in the slides.
+                    </p></li><li class="listitem"><p>Coding exercises are at the end of each section.
+                    </p><ul class=""><li class="listitem"><p>Work in pairs.
+                            </p></li><li class="listitem"><p>Switch off who is in the driver's seat frequently.</p></li></ul></li></ul>
+        </div><a name="N10089"/><div class="slide"><h1 class="title">A Simple Reladomo Example</h1></div><a name="N1008E"/><div class="slide">
+            <h1 class="title">A first object: Person
+            </h1>
+            <ul class=""><li class="listitem"><p>Consider a simple object representing a person:
+                    </p></li><li class="listitem"><p>First thing to do, is create the Reladomo XML that describes this object.
+                    </p></li></ul>
+            <p>Diagram</p>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="PersonUML.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N100A7"/><div class="slide">
+            <h1 class="title">A first object: Person
+            </h1>
+            <ul class=""><li class="listitem"><p>First thing to do, is create the Reladomo XML that describes this object.
+                    </p></li><li class="listitem"><p>For the Kata, we have created this object for you.
+                    </p></li><li class="listitem"><p>You can see this definition in the Person.xml file.</p></li></ul>
+            <p>Person.xml</p>
+            <img src="PersonXML.png" align="middle"/>
+        </div><a name="N100C1"/><div class="slide">
+            <h1 class="title">A first object: Person</h1>
+
+            <ul class=""><li class="listitem"><p>Your IDE can help you determine what elements, attributes, and values
+                        the Reladomo XML can accept, for example, in IntelliJ:
+                    </p><p>
+                        &lt;ctrl&gt;&lt;space&gt; will show you options
+                    </p><p>
+                        &lt;ctrl&gt;Q will show you documentation
+                    </p></li></ul>
+
+            <p>Reladomo XML</p>
+            <img src="MithraXMLAutoComplete.png" align="middle"/>
+            <p/>
+            <img src="MithraXMLDocumentation.png" align="middle"/>
+        </div><a name="N100E1"/><div class="slide">
+            <h1 class="title">Reladomo Class List
+            </h1>
+            <ul class=""><li class="listitem"><p>Reladomo needs to know the list of objects you want to work with.
+                    </p></li><li class="listitem"><p>Use a Reladomo "class list" XML file to declare this
+                    </p></li><li class="listitem"><p>For the kata, it's defined in: MithraTestAppClassList.xml</p><p>Example Reladomo "class list" XML</p><pre class="programlisting"><tag xmlns="xslthl">&lt;Mithra</tag> <attribute xmlns="xslthl">xmlns:xsi</attribute>=<value xmlns="xslthl">"http://www.w3.org/2001/XMLSchema-instance"</value>
+    <attribute xmlns="xslthl">xsi:noNamespaceSchemaLocation</attribute>=<value xmlns="xslthl">"mithraobject.xsd"</value><tag xmlns="xslthl">&gt;</tag>
+        <tag xmlns="xslthl">&lt;MithraObjectResource</tag> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"Person"</value><tag xmlns="xslthl"> /&gt;</tag>
+<tag xmlns="xslthl">&lt;/Mithra&gt;</tag></pre></li></ul>
+        </div><a name="N100F7"/><div class="slide">
+            <h1 class="title">Reladomo Generation</h1>
+            <ul class=""><li class="listitem"><p>The next step is to convert these definitions into objects we can use
+                    </p></li><li class="listitem"><p>We call this step Reladomo Generation, and it results in Java source files</p></li></ul>
+            <p>Reladomo Generation Diagram</p>
+            <img src="MithraGenerationDiagram.png" align="middle"/>
+        </div><a name="N1010E"/><div class="slide">
+            <h1 class="title">Reladomo Generation</h1>
+            <ul class=""><li class="listitem"><p>Items above the dashed line are always generated by Reladomo, and are never checked in to VCS (i.e. never committed to CVS or Subversion
+                        or
+                        Git)
+                    </p></li><li class="listitem"><p>Items below the dashed line are generated
+                        <span class="emphasis"><em>only once</em></span>
+                    </p><p>You add your business specific code here, and check them in</p></li></ul>
+            <img src="MithraClassGeneration.png" align="middle"/>
+        </div><a name="N10127"/><div class="slide">
+            <h1 class="title">Reladomo Generation</h1>
+            <ul class=""><li class="listitem"><p>Ant: clean-compile-all
+                    </p></li><li class="listitem"><p>Maven: clean compile</p></li><li class="listitem"><p>Example Reladomo Generation Targets</p></li></ul>
+            <p>
+                </p><table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="MithraBuildTargets.png" align="middle" height="252"/></td></tr></table><p>
+            </p>
+        </div><a name="N10143"/><div class="slide">
+            <h1 class="title">Reladomo Runtime Class List</h1>
+            <ul class=""><li class="listitem"><p>Reladomo needs to know the list of objects you want to use at runtime.</p></li><li class="listitem"><p>Typically this is the same as those listed in the Reladomo "class list", however, they can be different, like a subset, for example.
+                    </p></li><ul class=""><li class="listitem"><p>For the kata, it's defined in:
+                            <span class="emphasis"><em>TestMithraRuntimeConfig.xml</em></span>
+                        </p><p>Example Reladomo "class list" XML</p><pre class="programlisting"><tag xmlns="xslthl">&lt;MithraRuntime</tag>
+    <attribute xmlns="xslthl">xmlns:xsi</attribute>=<value xmlns="xslthl">"http://www.w3.org/2001/XMLSchema-instance"</value>
+    <attribute xmlns="xslthl">xsi:noNamespaceSchemaLocation</attribute>=<value xmlns="xslthl">"../../mithra/mithraruntime.xsd"</value><tag xmlns="xslthl">&gt;</tag>
+        <tag xmlns="xslthl">&lt;ConnectionManager</tag>
+            <attribute xmlns="xslthl">className</attribute>=<value xmlns="xslthl">"com.gs.fw.common.mithra.test.ConnectionManagerForTests"</value><tag xmlns="xslthl">&gt;</tag>
+                <tag xmlns="xslthl">&lt;MithraObjectConfiguration</tag>
+                    <attribute xmlns="xslthl">cacheType</attribute>=<value xmlns="xslthl">"partial"</value>
+                    <attribute xmlns="xslthl">className</attribute>=<value xmlns="xslthl">"kata.domain.Person"</value><tag xmlns="xslthl">
+                /&gt;</tag>
+        <tag xmlns="xslthl">&lt;/ConnectionManager&gt;</tag>
+<tag xmlns="xslthl">&lt;/MithraRuntime&gt;</tag></pre></li></ul></ul>
+        </div><a name="N1015D"/><div class="slide">
+            <h1 class="title">Other generated files</h1>
+            <ul class=""><li class="listitem"><p>Reladomo can also generate DDL for you</p></li><li class="listitem"><p>Call the
+                        <span class="emphasis"><em>MithraDbDefinitionGenerator</em></span>
+                        build task
+                    </p><table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="MithraDDLGeneration.png" align="middle" height="252"/></td></tr></table></li></ul>
+        </div><a name="N10176"/><div class="slide"><h1 class="title">Basic Finder Patterns</h1></div><a name="N1017B"/><div class="slide">
+            <h1 class="title">Setting up test data</h1>
+            <ul class=""><li class="listitem"><p>In the Reladomo Kata, we are using MithraTestResource to help us set up a test database to run our tests and examples against.
+                    </p></li><li class="listitem"><p>Test data is defined as a simple text file, with comma-delimited values which represent the DB data</p><p>Example Test Data for the Person object</p><pre class="programlisting">class kata.domain.Person
+personId, name           , country, age
+0       , "Hiro Tanaka"  , "JPN"  , 24
+1       , "John Smith"   , "USA"  , 36
+2       , "Yusuke Sato"  , "JPN"  , 11
+3       , "Yuki Suzuki"  , "JPN"  , 100
+4       , "Yuri Clark"   , "JPN"  , 37
+5       , "Clark Kent"   , "USA"  , 38
+6       , "Kent Beck"    , "USA"  , 52
+7       , "Bob Martin"   , "USA"  , 55
+8       , "Ada Lovelace" , "UK"   , 24
+                    </pre></li></ul>
+        </div><a name="N1018E"/><div class="slide">
+            <h1 class="title">Basic fetch all</h1>
+            <ul class=""><li class="listitem"><p>Let's fetch all the rows for Person from the DB, and get them as Person objects</p></li><li class="listitem"><p>We use a List to hold many objects</p></li><li class="listitem"><p>Reladomo generates a typed-list for us, called
+                        <span class="emphasis"><em>PersonList</em></span>
+                    </p></li><li class="listitem"><p>How do we tell Reladomo which rows to fetch?</p><ul class=""><li class="listitem"><pre class="programlisting">PersonList people = new PersonList( ??? );</pre></li></ul></li></ul>
+        </div><a name="N101AA"/><div class="slide">
+            <h1 class="title">Basic fetch all</h1>
+            <ul class=""><li class="listitem"><p>"Finder" is your friend.</p></li><li class="listitem"><p>Reladomo generated a
+                        <span class="emphasis"><em>PersonFinder</em></span>
+                        class for us.
+                    </p></li><li class="listitem"><p>PersonFinder is how we describe the criteria of what we want.
+                    </p></li><li class="listitem"><p>PersonFinder.all() is like a SQL SELECT with no WHERE clause</p><ul class=""><li class="listitem"><pre class="programlisting">PersonList people = new PersonList(PersonFinder.all());
+// Reladomo executes: SELECT * FROM Person
+Verify.assertSize(9, people);
+List&lt;Person&gt;jdkListInterface = people;</pre></li></ul></li></ul>
+        </div><a name="N101C6"/><div class="slide">
+            <h1 class="title">Basic fetch one</h1>
+            <ul class=""><li class="listitem"><p>Let's try to find a specific row, and fetch just that one row as an object.</p></li><li class="listitem"><p>How can we specify we want the row with personId = 5 ?</p></li><li class="listitem"><p>In SQL, this would be:</p><pre class="programlisting">SELECT * FROM PERSON WHERE PERSON_ID = 5</pre><pre class="programlisting">Person person5 = ??? ;</pre></li></ul>
+        </div><a name="N101DD"/><div class="slide">
+            <h1 class="title">Basic fetch one</h1>
+            <ul class=""><li class="listitem"><p>How can we specify we want the row with personId = 5 ?</p></li><li class="listitem"><p>"Finder" is your friend.</p></li><li class="listitem"><p>PersonFinder is how we describe the criteria of what we want.</p></li><li class="listitem"><p>A finder has a method for every attribute on your object:</p><ul class=""><li class="listitem"><p>PersonFinder.personId()</p></li><li class="listitem"><p>PersonFinder.name()</p></li><li class="listitem"><p>etc.</p></li></ul><pre class="programlisting">Person person5 = ??? ;
+PersonFinder.personId() ???;</pre></li></ul>
+        </div><a name="N101FE"/><div class="slide">
+            <h1 class="title">Basic fetch one</h1>
+            <ul class=""><li class="listitem"><p>How can we specify we want the row with personId = 5 ?</p></li><li class="listitem"><p>Every Reladomo attribute has methods on it to define common operations:</p><ul class=""><li class="listitem"><p>eq()</p></li><li class="listitem"><p>greaterThan()</p></li><li class="listitem"><p>etc.</p></li></ul><pre class="programlisting">Person person5 = ??? ;
+PersonFinder.personId().eq(5);</pre></li></ul>
+        </div><a name="N10219"/><div class="slide">
+            <h1 class="title">Basic fetch one</h1>
+            <ul class=""><li class="listitem"><p>How can we specify we are expecting one object?</p></li><li class="listitem"><p>Previously, we fetched a list.</p></li><li class="listitem"><p>Finder is your friend.</p></li><li class="listitem"><p>Finder defines the
+                        <span class="emphasis"><em>findOne()</em></span>
+                        method.
+                    </p><pre class="programlisting">Person person5 = PersonFinder.findOne(PersonFinder.personId().eq(5));
+Verify.assertNotNull(person5);
+Verify.assertEquals(5, person5.getPersonId());
+Verify.assertEquals("Clark Kent", person5.getName());
+System.out.println(person5);
+// Person:name=Clark Kent; country=USA; age=38</pre></li></ul>
+        </div><a name="N10233"/><div class="slide">
+            <h1 class="title">Attributes, Operations, Lists</h1>
+            <ul class=""><li class="listitem"><p>We can break down what we wrote into more component parts.</p></li><li class="listitem"><p>Finders have Attributes representing columns in the DB</p></li><li class="listitem"><p>If you call an operator method on the Attribute, you get an Operation back</p></li><li class="listitem"><p>An Operation can be used with both new PersonList(operation) and PersonFinder.findOne(operation)</p><pre class="programlisting">IntegerAttribute personIdAttribute = PersonFinder.personId();
+Operation operation = personIdAttribute.eq(5);
+Person person5 = PersonFinder.findOne(operation);
+PersonList people = new PersonList(operation);
+PersonList people = PersonFinder.findMany(operation); //synonym for above
+Verify.assertSize(1, people);</pre></li></ul>
+        </div><a name="N1024A"/><div class="slide">
+            <h1 class="title">Attribute features</h1>
+            <ul class=""><li class="listitem"><p>Different types of attributes have different features</p></li><li class="listitem"><p>Numeric attributes have mathematical functions available</p><pre class="programlisting">IntegerAttribute ageAttribute = PersonFinder.age();
+IntegerAttribute ageIn10Years = ageAttribute.plus(10);</pre></li></ul>
+        </div><a name="N1025B"/><div class="slide">
+            <h1 class="title">Attribute features</h1>
+            <ul class=""><li class="listitem"><p>Different types of attributes have different features</p></li><li class="listitem"><p>Numeric attributes have mathematical functions available</p></li><li class="listitem"><p>StringAttributes have String functions</p><pre class="programlisting">Person clarkNormalNormal = PersonFinder.findOne(
+    PersonFinder.name().eq("Clark Kent"));
+Verify.assertEquals("Clark Kent", clarkNormalNormal.getName());
+
+Person clarkNormalLower = PersonFinder.findOne(
+    PersonFinder.name().eq("clark kent"));
+Verify.assertNull(clarkNormalLower);
+
+StringAttribute lowercaseName = PersonFinder.name().toLowerCase();
+Person clarkLowerLower = PersonFinder.findOne(
+    lowercaseName.eq("clark kent"));
+Verify.assertEquals("Clark Kent", clarkLowerLower);
+
+Person clarkLowerNormal = PersonFinder.findOne(
+    lowercaseName.eq("Clark Kent"));
+Verify.assertNull(clarkLowerNormal);</pre></li></ul>
+        </div><a name="N1026F"/><div class="slide">
+            <h1 class="title">Attribute features</h1>
+            <ul class=""><li class="listitem"><p>Different types of attributes have different features</p></li><li class="listitem"><p>Numeric attributes have mathematical functions available</p></li><li class="listitem"><p>StringAttributes have String functions</p><pre class="programlisting">Person personContains = PersonFinder.findOne(
+    PersonFinder.name().contains("k Ken"));
+// SQL: WHERE name LIKE '%k Ken%'
+Verify.assertEquals("Clark Kent", personContains.getName());
+
+Person personWildcard = PersonFinder.findOne(
+    PersonFinder.name().wildcardEq("*l?r*ent"));
+// SQL: WHERE name LIKE '%l?r%ent'
+Verify.assertEquals("Clark Kent", personWildcard.getName());</pre></li></ul>
+        </div><a name="N10283"/><div class="slide">
+            <h1 class="title">Attribute features</h1>
+            <ul class=""><li class="listitem"><p>Different types of attributes have different features</p></li><li class="listitem"><p>Numeric attributes have mathematical functions available</p></li><li class="listitem"><p>StringAttributes have String functions</p></li><li class="listitem"><p>Operations can be combined</p><pre class="programlisting">Operation thisOperation = PersonFinder.name().eq("Kent Beck");
+Operation thatOperation = PersonFinder.country().eq("USA");
+Operation thisOrThatOperation = thisOperation.or(thatOperation);
+Verify.assertSize(4, new PersonList(thisOrThatOperation));
+
+Operation thisAndThatOperation = thisOperation.and(thatOperation);
+Verify.assertSize(1, new PersonList(thisAndThatOperation));</pre></li></ul>
+        </div><a name="N1029A"/><div class="slide">
+            <h1 class="title">Attribute features</h1>
+            <ul class=""><li class="listitem"><p>Different types of attributes have different features</p></li><li class="listitem"><p>Numeric attributes have mathematical functions available</p></li><li class="listitem"><p>StringAttributes have String functions</p></li><li class="listitem"><p>Operations can be combined</p></li><li class="listitem"><p>Other operations:</p><ul class=""><li class="listitem"><p>filterEq() – two columns of an object are the same value</p></li></ul></li></ul>
+            <pre class="programlisting"> PersonList parentsSameAge = PersonFinder.findMany(
+    PersonFinder.mothersAge().filterEq(PersonFinder.fathersAge()));</pre>
+        </div><a name="N102B9"/><div class="slide">
+            <h1 class="title">IntSet</h1>
+            <ul class=""><li class="listitem"><p>Reladomo uses an efficient type of set to deal with primitives.</p><p>GS Collections' Primitive Sets:</p><ul class=""><li class="listitem"><p>Integers: IntSet</p></li><li class="listitem"><p>Double: DoubleSet</p></li><li class="listitem"><p>Float: FloatSet</p></li><li class="listitem"><p>Long: LongSet</p></li><li class="listitem"><p>Short: ShortSet</p></li></ul></li><li class="listitem"><p>Use a regular Set for String, BigDecimal, Date, Timestamp.</p></li></ul>
+
+            <pre class="programlisting">IntSet intSet = IntSets.mutable.of(1, 2);
+
+DoubleSet doubleSet = DoubleSets.mutable.of(1.0, 2.0);
+
+FloatSet floatSet = FloatSets.mutable.of(1.0f, 2.0f);
+
+LongSet longSet = LongSets.mutable.of(1L, 2L);
+
+ShortSet shortSet = ShortSets.mutable.of((short)1, (short)2);
+
+Set&lt;String&gt;stringSet = Sets.mutable.of("1", "2");</pre>
+        </div><a name="N102DD"/><div class="slide">
+            <h1 class="title">Basic Finder Patterns</h1>
+            <ul class=""><li class="listitem"><p>Reladomo uses an efficient type of set to deal with primitives.</p><p>GS Collections' Primitive Sets:</p><ul class=""><li class="listitem"><p>Integers: IntSet</p></li><li class="listitem"><p>Double: DoubleSet</p></li><li class="listitem"><p>Float: FloatSet</p></li><li class="listitem"><p>Long: LongSet</p></li><li class="listitem"><p>Short: ShortSet</p></li></ul></li><li class="listitem"><p>Use a regular Set for String, BigDecimal, Date, Timestamp.</p></li></ul>
+
+            <pre class="programlisting">PersonList people = PersonFinder.findMany(
+    PersonFinder.personId().in(IntHashSet.newSetWith(1, 2, 3)));
+
+PersonList people = PersonFinder.findMany(
+    PersonFinder.name().in(Sets.mutable.with("John Doe", "Jane Doe")));</pre>
+        </div><a name="N10302"/><div class="slide"><h1 class="title">Kata Exercise 1</h1></div><a name="N10307"/><div class="slide">
+            <h1 class="title">Kata Exercise 1</h1>
+            <p>Basic Finder Patterns</p>
+            <ul class=""><li class="listitem"><p>Find ExercisesBasicFinder.java; it has assertion failures if you run it as a test.</p></li><li class="listitem"><p>Figure out how to get the tests to pass using what you have seen so far.</p></li><li class="listitem"><p>Should take about 15 minutes.</p></li></ul>
+            <p>Example:</p>
+            <pre class="programlisting">// Question 1
+// Get all people.
+public PersonList getAllPeople()
+{
+    Verify.fail("Implement this functionality to make the test pass");
+    return null;
+}
+
+public void testQ1()
+{
+    Verify.assertSize(16, this.getAllPeople());
+}</pre>
+        </div><a name="N10323"/><div class="slide"><h1 class="title">CREATE, UPDATE, DELETE Patterns</h1></div><a name="N10328"/><div class="slide">
+            <h1 class="title">Creating an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Java keyword
+                        <span class="emphasis"><em>new</em></span>
+                    </p><pre class="programlisting">Person snoopy = new Person();</pre></li></ul>
+        </div><a name="N10339"/><div class="slide">
+            <h1 class="title">Creating an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Java keyword new</p></li><li class="listitem"><p>Call setters to assign values to the object attributes</p><pre class="programlisting">Person snoopy = new Person();
+snoopy.setName("Snoopy");
+snoopy.setCountry("USA");
+snoopy.setAge(12);
+Verify.assertEquals("Snoopy", snoopy.getName());
+Verify.assertEquals(12, snoopy.getAge());</pre></li></ul>
+        </div><a name="N1034A"/><div class="slide">
+            <h1 class="title">Creating an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Java keyword new</p></li><li class="listitem"><p>Call setters to assign values to the object attributes</p></li><li class="listitem"><p>Creating a custom constructor may help correctness, and aid refactoring
+                    </p><pre class="programlisting">Person snoopy = new Person("Snoopy", "USA", 12);
+Verify.assertEquals("Snoopy", snoopy.getName());
+Verify.assertEquals(12, snoopy.getAge());</pre></li></ul>
+        </div><a name="N1035E"/><div class="slide">
+            <h1 class="title">Creating an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Java keyword new
+                    </p></li><li class="listitem"><p>Call setters to assign values to the object attributes
+                    </p></li><li class="listitem"><p>Creating a custom constructor may help correctness, and aid refactoring
+                    </p></li><li class="listitem"><p>
+                        <span class="emphasis"><em>Never change the no-arg constructor – Reladomo needs that!</em></span>
+                    </p><pre class="programlisting">public class Person extends PersonAbstract
+{
+    public Person()
+    {
+        super();
+        // You must not modify this constructor.
+        // Reladomo calls this internally.
+        // You can call this constructor.
+        // You can also add new constructors.
+    }
+}</pre></li></ul>
+        </div><a name="N10378"/><div class="slide">
+            <h1 class="title">Creating an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Java keyword new
+                    </p></li><li class="listitem"><p>Call setters to assign values to the object attributes
+                    </p></li><li class="listitem"><p>Creating a custom constructor may help correctness, and aid refactoring
+                    </p></li><li class="listitem"><p>
+                        <span class="emphasis"><em>Never change the no-arg constructor – Reladomo needs that!</em></span>
+                    </p><pre class="programlisting">public class Person extends PersonAbstract
+{
+    public Person()
+    {
+        super();
+        // You must not modify this constructor.
+        // Reladomo calls this internally.
+        // You can call this constructor.
+        // You can also add new constructors.
+    }
+
+    public Person(String name, String country, int age)
+    {
+        super();
+        this.setName(name);
+        this.setCountry(country);
+        this.setAge(age);
+    }
+}</pre></li></ul>
+        </div><a name="N10392"/><div class="slide">
+            <h1 class="title">Inserting an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Reladomo provided method insert()</p><pre class="programlisting">Person snoopy = new Person("Snoopy", "USA", 12);
+snoopy.insert();</pre></li></ul>
+        </div><a name="N103A0"/><div class="slide">
+            <h1 class="title">Inserting an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Reladomo provided method insert()</p><pre class="programlisting">int peopleBeforeInsert = new PersonList(PersonFinder.all()).count();
+Person snoopy = new Person("Snoopy", "USA", 12);
+snoopy.insert();
+
+int peopleAfterInsert = new PersonList(PersonFinder.all()).count();
+Verify.assertEquals(peopleAfterInsert, peopleBeforeInsert + 1);</pre></li></ul>
+        </div><a name="N103AE"/><div class="slide">
+            <h1 class="title">Inserting an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Reladomo provided method insert()</p><pre class="programlisting">// Verify he's not there to start with:
+Verify.assertNull(PersonFinder.findOne(PersonFinder.name().eq("Snoopy")));
+new Person("Snoopy", "USA", 12).insert();
+
+// Now see if he's in the DB:
+Person snoopy = PersonFinder.findOne(PersonFinder.name().eq("Snoopy"));
+Verify.assertEquals("Snoopy", snoopy.getName());
+Verify.assertEquals(12, snoopy.getAge());</pre></li></ul>
+        </div><a name="N103BC"/><div class="slide">
+            <h1 class="title">Inserting an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Reladomo provided method insert()
+                    </p></li><li class="listitem"><p>Did Reladomo inflate a new copy of Snoopy from the DB?
+                    </p><pre class="programlisting">Person originalSnoopy = new Person("Snoopy", "USA", 12);
+originalSnoopy.insert();
+Person snoopyFromDb = PersonFinder.findOne(
+    PersonFinder.name().eq("Snoopy"));
+Assert.assertTrue(originalSnoopy.equals(snoopyFromDb)); // ???
+Assert.assertTrue(originalSnoopy == snoopyFromDb); // ???</pre></li></ul>
+        </div><a name="N103CD"/><div class="slide">
+            <h1 class="title">Inserting an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Reladomo provided method insert()
+                    </p></li><li class="listitem"><p>Reladomo guarantees there is only one copy of a given object in memory a any one given time</p><pre class="programlisting">Person originalSnoopy = new Person("Snoopy", "USA", 12);
+originalSnoopy.insert();
+Person snoopyFromDb = PersonFinder.findOne(
+    PersonFinder.name().eq("Snoopy"));
+Assert.assertTrue(originalSnoopy.equals(snoopyFromDb)); // true
+Assert.assertTrue(originalSnoopy == snoopyFromDb); // true</pre></li></ul>
+        </div><a name="N103DE"/><div class="slide">
+            <h1 class="title">Inserting an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Reladomo provided method insert()
+                    </p></li><li class="listitem"><p>Reladomo guarantees there is only one copy of a given object in memory a any one given time</p><pre class="programlisting">Person snoopy = new Person("Snoopy", "USA", 12);
+snoopy.insert();
+/*
+* Generated SQL:
+* insert into PERSON(PERSON_ID,NAME,COUNTRY,AGE)
+* values (9,'Snoopy','USA',12)
+**/</pre></li></ul>
+        </div><a name="N103EF"/><div class="slide">
+            <h1 class="title">Inserting an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Reladomo provided method insert()
+                    </p></li><li class="listitem"><p>Reladomo guarantees there is only one copy of a given object in memory a
+                        any one given time
+                    </p></li><li class="listitem"><p>Reladomo sets the sequence ID for the new Person we created</p><pre class="programlisting">Person snoopy = new Person("Snoopy", "USA", 12);
+snoopy.insert();
+/*
+* Generated SQL:
+* insert into PERSON(PERSON_ID,NAME,COUNTRY,AGE)
+* values (9,'Snoopy','USA',12)
+**/
+System.out.println(snoopy.getPersonId());
+// Prints 9</pre></li></ul>
+        </div><a name="N10403"/><div class="slide">
+            <h1 class="title">Inserting an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Reladomo provided method insert()
+                    </p></li><li class="listitem"><p>Reladomo guarantees there is only one copy of a given object in memory a
+                        any one given time
+                    </p></li><li class="listitem"><p>Reladomo sets the sequence ID for the new Person we created
+                    </p></li><li class="listitem"><p>Sequence IDs are declared in the Reladomo XML Object definition
+                    </p></li><li class="listitem"><p>In this case, it's in the Person.xml file</p><p>Reladomo Object XML</p><pre class="programlisting"><tag xmlns="xslthl">&lt;MithraObject</tag> <attribute xmlns="xslthl">objectType</attribute>=<value xmlns="xslthl">"transactional"</value>
+    <attribute xmlns="xslthl">...</attribute>
+    <attribute xmlns="xslthl">&lt;Attribute</attribute> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"personId"</value> <attribute xmlns="xslthl">javaType</attribute>=<value xmlns="xslthl">"int"</value>
+        <attribute xmlns="xslthl">columnName</attribute>=<value xmlns="xslthl">"PERSON_ID"</value> <attribute xmlns="xslthl">primaryKey</attribute>=<value xmlns="xslthl">"true"</value>
+    <attribute xmlns="xslthl">primaryKeyGeneratorStrategy</attribute>=<value xmlns="xslthl">"SimulatedSequence"</value><tag xmlns="xslthl">&gt;</tag>
+        <tag xmlns="xslthl">&lt;SimulatedSequence</tag> <attribute xmlns="xslthl">sequenceName</attribute>=<value xmlns="xslthl">"Person"</value>
+            <attribute xmlns="xslthl">sequenceObjectFactoryName</attribute>=
+                <value xmlns="xslthl">"kata.util.ObjectSequenceObjectFactory"</value>
+            <attribute xmlns="xslthl">hasSourceAttribute</attribute>=<value xmlns="xslthl">"false"</value>
+            <attribute xmlns="xslthl">batchSize</attribute>=<value xmlns="xslthl">"1"</value>
+            <attribute xmlns="xslthl">initialValue</attribute>=<value xmlns="xslthl">"1"</value>
+            <attribute xmlns="xslthl">incrementSize</attribute>=<value xmlns="xslthl">"1"</value><tag xmlns="xslthl"> /&gt;</tag>
+    <tag xmlns="xslthl">&lt;/Attribute&gt;</tag></pre></li></ul>
+        </div><a name="N1041F"/><div class="slide">
+            <h1 class="title">Inserting lots of objects</h1>
+            <ul class=""><li class="listitem"><p>Use the MithraList provided method insertAll()</p><pre class="programlisting">PersonList spiceGirls = new PersonList();
+spiceGirls.add(new Person("Emma Bunton", "UK", 20));
+spiceGirls.add(new Person("Geri Halliwell", "UK", 21));
+spiceGirls.add(new Person("Melanie Brown", "UK", 22));
+spiceGirls.add(new Person("Melanie Crisholm", "UK", 21));
+spiceGirls.add(new Person("Victoria Beckham", "UK", 20));
+spiceGirls.insertAll();</pre></li></ul>
+        </div><a name="N1042D"/><div class="slide">
+            <h1 class="title">Updating an object</h1>
+            <ul class=""><li class="listitem"><p>Just make the change!</p><pre class="programlisting">Person superman = PersonFinder.findOne(
+    PersonFinder.name().eq("Clark Kent"));
+Verify.assertEquals("Clark Kent", superman.getName());
+superman.setName("Christopher Reeve");
+superman.setAge(49);</pre></li></ul>
+        </div><a name="N1043B"/><div class="slide">
+            <h1 class="title">Updating an object</h1>
+            <ul class=""><li class="listitem"><p>Just make the change!
+                    </p></li><li class="listitem"><p>Reladomo identifies the correct row to change in the DB via the primary key
+                        you declared in the Reladomo Object XML
+                    </p><pre class="programlisting">Person superman = PersonFinder.findOne(
+    PersonFinder.name().eq("Clark Kent"));
+Verify.assertEquals("Clark Kent", superman.getName());
+superman.setName("Christopher Reeve");
+// SQL:update PERSON set NAME = 'Christopher Reeve' where PERSON_ID=5
+superman.setAge(49);
+// SQL: update PERSON set AGE = 49 where PERSON_ID = 5</pre></li></ul>
+        </div><a name="N1044C"/><div class="slide">
+            <h1 class="title">Updating lots of objects</h1>
+            <ul class=""><li class="listitem"><p>What if we want to update a whole bunch of objects, setting the same
+                        attribute value to all of them?
+                    </p><pre class="programlisting">PersonList people = new PersonList(PersonFinder.all());
+for (Person person : people)
+{
+    person.setCountry("USA");
+}</pre></li></ul>
+        </div><a name="N1045A"/><div class="slide">
+            <h1 class="title">Updating lots of objects</h1>
+            <ul class=""><li class="listitem"><p>What if we want to update a whole bunch of objects, setting the same
+                        attribute value to all of them?
+                    </p></li><li class="listitem"><p>Reladomo provides set___() methods on the generated list implementations</p><pre class="programlisting">PersonList people = new PersonList(PersonFinder.all());
+people.setCountry("USA");</pre></li></ul>
+        </div><a name="N1046B"/><div class="slide">
+            <h1 class="title">Updating lots of objects</h1>
+            <ul class=""><li class="listitem"><p>What if we want to update a whole bunch of objects, setting the same
+                        attribute value to all of them?
+                    </p><p>Reladomo provides set___() methods on the generated list implementations</p><pre class="programlisting">PersonList people = new PersonList(PersonFinder.all());
+people.setCountry("USA");
+// SQL:
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 0
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 2
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 3
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 4
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 8</pre></li></ul>
+        </div><a name="N1047B"/><div class="slide">
+            <h1 class="title">Deleting an object</h1>
+            <ul class=""><li class="listitem"><p>Use the Reladomo method delete()</p><pre class="programlisting">Person superman = PersonFinder.findOne(
+    PersonFinder.name().eq("Clark Kent"));
+superman.delete();</pre></li></ul>
+        </div><a name="N10489"/><div class="slide">
+            <h1 class="title">Deleting lots of objects</h1>
+            <ul class=""><li class="listitem"><p>Use the MithraList method deleteAll()</p><pre class="programlisting">new PersonList(PersonFinder.country().eq("UK")).deleteAll();</pre></li></ul>
+        </div><a name="N10497"/><div class="slide">
+            <h1 class="title">Adding indexes Reladomo knows about</h1>
+            <ul class=""><li class="listitem"><p>The end of a Reladomo Object XML description can include indexes
+                    </p></li><li class="listitem"><p>Can be unique, or not; Can be single column, or many columns
+                    </p></li><li class="listitem"><p>For a unique index Reladomo will add a convenience method to the Finder for you
+                    </p></li><li class="listitem"><p>Warning: You still need to remember to add the index to your DB table to get the performance benefit
+                    </p></li><li class="listitem"><p>Reladomo will generate the template DDL for the index
+                    </p></li><li class="listitem"><p>And correctness, if it is a "unique" constraint
+                    </p></li><li class="listitem"><p>XML and Java</p><pre class="programlisting"><tag xmlns="xslthl">&lt;Index</tag> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"socSecNumIndex"</value> <attribute xmlns="xslthl">unique</attribute>=<value xmlns="xslthl">"true"</value><tag xmlns="xslthl">&gt;</tag>ssn<tag xmlns="xslthl">&lt;/Index&gt;</tag>
+<tag xmlns="xslthl">&lt;Index</tag> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"productIndex"</value> <attribute xmlns="xslthl">unique</attribute>=<value xmlns="xslthl">"false"</value><tag xmlns="xslthl">&gt;</tag>productGroup, productName
+<tag xmlns="xslthl">&lt;/Index&gt;</tag></pre><pre class="programlisting">Person fred = PersonFinder.getBySocSecNumIndex("123-45-6789");
+ProductList products = PersonFinder.getByProductIndex(
+    "Ford", "Edsel");</pre></li></ul>
+        </div><a name="N104BB"/><div class="slide"><h1 class="title">Transactions</h1></div><a name="N104C0"/><div class="slide">
+            <h1 class="title">Introduction to Transactions</h1>
+            <ul class=""><li class="listitem"><p>A "transaction" is used to cause a set of operations to happen together – they either all happen, or none of them happen.
+                    </p></li><li class="listitem"><p>In SQL terms:
+                    </p></li><li class="listitem"><p>You would BEGIN TRANSACTION, and then perform queries and updates as necessary
+                    </p></li><li class="listitem"><p>If all your changes were successful you can COMMIT TRANSACTION, which makes your changes in the DB
+                    </p></li><li class="listitem"><p>If something went wrong, you could ROLLBACK TRANSACTION</p><p>SQL</p><pre class="programlisting">BEGIN TRANSACTION
+-- Do some stuff
+-- If successful
+COMMIT TRANSACTION
+-- Else, don't change anything
+ROLLBACK TRANSACTION</pre></li></ul>
+        </div><a name="N104DC"/><div class="slide">
+            <h1 class="title">Introduction to Transactions</h1>
+            <ul class=""><li class="listitem"><p>A Reladomo transaction is defined by an implementation of the TransactionalCommand interface</p><pre class="programlisting">new TransactionalCommand()
+{
+    public Object executeTransaction(MithraTransaction tx)
+    throws Throwable
+    {
+        new Person("Tweedle Dee", "UK", 10).insert();
+        new Person("Tweedle Dum", "UK", 10).insert();
+        return null;
+    }
+}</pre></li></ul>
+        </div><a name="N104EA"/><div class="slide">
+            <h1 class="title">Introduction to Transactions</h1>
+            <ul class=""><li class="listitem"><p>A Reladomo transaction is defined by an implementation of the TransactionalCommand interface
+                    </p></li><li class="listitem"><p>A TransactionalCommand is executed using the MithraManager</p><pre class="programlisting">MithraManagerProvider.getMithraManager().executeTransactionalCommand(
+new TransactionalCommand()
+{
+    public Object executeTransaction(MithraTransaction tx)
+    throws Throwable
+    {
+        new Person("Tweedle Dee", "UK", 10).insert();
+        new Person("Tweedle Dum", "UK", 10).insert();
+        return null;
+    }
+});</pre></li></ul>
+        </div><a name="N104FB"/><div class="slide">
+            <h1 class="title">Transactions and Updates</h1>
+            <ul class=""><li class="listitem"><p>Reladomo will batch up changes where possible within transactions to make updates more efficient</p><pre class="programlisting">Person superman = PersonFinder.findOne(
+    PersonFinder.name().eq("Clark Kent"));
+Verify.assertEquals("Clark Kent", superman.getName());
+superman.setName("Christopher Reeve");
+// SQL:update PERSON set NAME = 'Christopher Reeve' where PERSON_ID=5
+superman.setAge(49);
+// SQL: update PERSON set AGE = 49 where PERSON_ID = 5</pre></li></ul>
+        </div><a name="N10509"/><div class="slide">
+            <h1 class="title">Transactions and Updates</h1>
+            <ul class=""><li class="listitem"><p>Reladomo will batch up changes where possible within transactions to make updates more efficient</p><pre class="programlisting">MithraManagerProvider.getMithraManager().executeTransactionalCommand(
+new TransactionalCommand()
+{
+    public Object executeTransaction(MithraTransaction tx)
+    throws Throwable
+    {
+        Person superman = PersonFinder.findOne(
+            PersonFinder.name().eq("Clark Kent"));
+        superman.setName("Christopher Reeve");
+        superman.setAge(49);
+        return null;
+    }
+});</pre></li></ul>
+        </div><a name="N10517"/><div class="slide">
+            <h1 class="title">Transactions Example</h1>
+            <pre class="programlisting">/*
+* DEBUG com.gs.fw.common.mithra.transaction.MithraRootTransaction –
+* Starting transaction
+* select t0.PERSON_ID,t0.NAME,t0.COUNTRY,t0.AGE from PERSON t0
+* where t0.NAME = 'Clark Kent'
+* update PERSON set NAME = 'Christopher Reeve' , AGE = 49
+* where PERSON_ID = 5
+* DEBUG com.gs.fw.common.mithra.transaction.MithraRootTransaction -
+* Committing transaction
+**/
+
+MithraManagerProvider.getMithraManager().executeTransactionalCommand(
+new TransactionalCommand()
+{
+    public Object executeTransaction(MithraTransaction tx)
+    throws Throwable
+    {
+        Person superman = PersonFinder.findOne(
+            PersonFinder.name().eq("Clark Kent"));
+        superman.setName("Christopher Reeve");
+        superman.setAge(49);
+        return null;
+    }
+});</pre>
+        </div><a name="N10521"/><div class="slide">
+            <h1 class="title">Transactions and Updates</h1>
+            <ul class=""><li class="listitem"><p>Reladomo will batch up changes where possible within transactions to make updates more efficient</p><pre class="programlisting">PersonList people = new PersonList(PersonFinder.all());
+people.setCountry("USA");
+// SQL:
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 0
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 2
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 3
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 4
+// update with: update PERSON set COUNTRY = 'USA' where PERSON_ID = 8</pre></li></ul>
+        </div><a name="N1052F"/><div class="slide">
+            <h1 class="title">Transactions and Updates</h1>
+            <ul class=""><li class="listitem"><p>Reladomo will batch up changes where possible within transactions to make updates more efficient
+                    </p><pre class="programlisting">MithraManagerProvider.getMithraManager().executeTransactionalCommand(
+new TransactionalCommand()
+{
+    public Object executeTransaction(MithraTransaction tx)
+    throws Throwable
+    {
+        new PersonList(PersonFinder.all()).setCountry("USA"));
+        return null;
+    }
+});</pre></li></ul>
+        </div><a name="N1053D"/><div class="slide">
+            <h1 class="title">Transactions Example</h1>
+            <pre class="programlisting">/*
+*DEBUG com.gs.fw.common.mithra.transaction.MithraRootTransaction -
+*Starting transaction
+*find with:
+*select PERSON_ID,NAME,COUNTRY,AGE from PERSON retrieved 9 objects
+*multi updating with:
+*update PERSON set COUNTRY = 'USA' where PERSON_ID in (0,2,3,4,8)
+*DEBUG com.gs.fw.common.mithra.transaction.MithraRootTransaction -
+*Committing transaction
+**/
+
+MithraManagerProvider.getMithraManager().executeTransactionalCommand(
+new TransactionalCommand()
+{
+    public Object executeTransaction(MithraTransaction tx)
+    throws Throwable
+    {
+        new PersonList(PersonFinder.all()).setCountry("USA"));
+        return null;
+    }
+});</pre>
+        </div><a name="N10548"/><div class="slide"><h1 class="title">Kata Exercise 2</h1></div><a name="N1054D"/><div class="slide">
+            <h1 class="title">Kata Exercise 2</h1>
+            <p>Create, Update, Delete, Transactions</p>
+            <ul class=""><li class="listitem"><p>Find ExercisesCrud.java; it has assertion failures if you run it as a test.
+                    </p></li><li class="listitem"><p>Figure out how to get the tests to pass using what you have seen so far.
+                    </p></li><li class="listitem"><p>Should take about 25 minutes.</p></li></ul>
+        </div><a name="N10562"/><div class="slide"><h1 class="title">Relationships</h1></div><a name="N10567"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Consider two objects</p><img src="Relationships1.png" align="middle"/></li></ul>
+        </div><a name="N10577"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Consider two objects</p><img src="Relationships2.png" align="middle"/></li></ul>
+        </div><a name="N10587"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>For a given Customer, we could write the query explicitly ourselves
+                    </p></li><li class="listitem"><p>Not very manageable</p><pre class="programlisting">Customer smith = ...;
+CustomerAccountList smithAccounts = new CustomerAccountList(
+    CustomerAccountFinder.customerId().eq(smith.getCustomerId()));</pre></li></ul>
+        </div><a name="N10598"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Relationships can be expressed in Reladomo's object XML</p><pre class="programlisting"><tag xmlns="xslthl">&lt;MithraObject</tag> <attribute xmlns="xslthl">objectType</attribute>=<value xmlns="xslthl">"transactional"</value><tag xmlns="xslthl">&gt;</tag>
+    <tag xmlns="xslthl">&lt;ClassName&gt;</tag>Customer<tag xmlns="xslthl">&lt;/ClassName&gt;</tag>
+        ...
+    <tag xmlns="xslthl">&lt;Relationship</tag> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"accounts"</value>
+        <attribute xmlns="xslthl">relatedObject</attribute>=<value xmlns="xslthl">"CustomerAccount"</value>
+        <attribute xmlns="xslthl">cardinality</attribute>=<value xmlns="xslthl">"one-to-many"</value><tag xmlns="xslthl">&gt;</tag>
+            this.customerId = CustomerAccount.customerId
+    <tag xmlns="xslthl">&lt;/Relationship&gt;</tag></pre></li></ul>
+        </div><a name="N105A6"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Reladomo generates your relationship description into methods on the business objects</p><pre class="programlisting">Customer smith = ...;
+// Before
+CustomerAccountList smithAccounts = new CustomerAccountList(
+    CustomerAccountFinder.customerId().eq(smith.getCustomerId()));
+// After
+CustomerAccountList smithAccounts = smith.getAccounts();</pre></li></ul>
+        </div><a name="N105B4"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Reladomo generates your relationship description into methods on the business objects
+                    </p></li><li class="listitem"><p>How can we find Customers based on some related object?</p><pre class="programlisting">CustomerList customers = ???
+// fetch customers with accounts called "My Account"</pre></li></ul>
+        </div><a name="N105C5"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Reladomo generates your relationship description into methods on the business objects
+                    </p></li><li class="listitem"><p>How can we find Customers based on some related object?
+                    </p></li><li class="listitem"><p>Finder is your friend!
+                    </p></li><li class="listitem"><p>Relationships are navigable via the Finder</p><pre class="programlisting">CustomerList customers = new CustomerList(
+    CustomerFinder.accounts().accountName().eq("My Account"));</pre></li></ul>
+        </div><a name="N105DC"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Reladomo generates your relationship description into methods on the business objects
+                    </p></li><li class="listitem"><p>How can we find Customers based on some related object?
+                    </p></li><li class="listitem"><p>Finder is your friend!
+                    </p></li><li class="listitem"><p>Relationships are navigable via the Finder</p><pre class="programlisting">CustomerList customers = new CustomerList(
+    CustomerFinder.accounts().accountName().eq("My Account"));
+/* SQL:
+* select t0.CUSTOMER_I,t0.NAME_C,t0.COUNTRY_I
+* from CUSTOMER t0 inner join
+* (select t1.CUSTOMER_I c0 from CUSTOMER_ACCOUNT t1
+* where t1.ACCOUNT_NAME_C = 'My Account'
+* group by t1.CUSTOMER_I)
+* as d1 on t0.CUSTOMER_I = d1.c0
+**/</pre></li></ul>
+        </div><a name="N105F3"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Relationships can be expressed in Reladomo's object XML
+                    </p></li><li class="listitem"><p>Dependent relationships can be marked as such
+                    </p></li><li class="listitem"><p>Dependent objects can only exist while the parent exists
+                    </p></li><li class="listitem"><p>If a parent is inserted, so are all it's children
+                    </p></li><li class="listitem"><p>If the parent is removed, then the dependent objects are also removed</p><pre class="programlisting"><tag xmlns="xslthl">&lt;MithraObject</tag> <attribute xmlns="xslthl">objectType</attribute>=<value xmlns="xslthl">"transactional"</value><tag xmlns="xslthl">&gt;</tag>
+    <tag xmlns="xslthl">&lt;ClassName&gt;</tag>Customer<tag xmlns="xslthl">&lt;/ClassName&gt;</tag>
+        ...
+    <tag xmlns="xslthl">&lt;Relationship</tag> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"accounts"</value>
+        <attribute xmlns="xslthl">relatedObject</attribute>=<value xmlns="xslthl">"CustomerAccount"</value>
+        <attribute xmlns="xslthl">relatedIsDependent</attribute>=<value xmlns="xslthl">"true"</value>
+        <attribute xmlns="xslthl">cardinality</attribute>=<value xmlns="xslthl">"one-to-many"</value><tag xmlns="xslthl">&gt;</tag>
+            this.customerId = CustomerAccount.customerId
+    <tag xmlns="xslthl">&lt;/Relationship&gt;</tag></pre></li></ul>
+        </div><a name="N1060D"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Relationships can be expressed in Reladomo's object XML
+                    </p></li><li class="listitem"><p>Dependent relationships can be marked as such
+                    </p></li><li class="listitem"><p>Dependent objects can only exist while the parent exists
+                    </p></li><li class="listitem"><p>If the parent is removed, then the dependent objects are also removed
+                    </p></li><li class="listitem"><p>You can also specify a reverse relationship name, if appropriate
+                    </p></li><li class="listitem"><p>Reladomo can figure out the reverse join for itself</p><pre class="programlisting"><tag xmlns="xslthl">&lt;MithraObject</tag> <attribute xmlns="xslthl">objectType</attribute>=<value xmlns="xslthl">"transactional"</value><tag xmlns="xslthl">&gt;</tag>
+    <tag xmlns="xslthl">&lt;ClassName&gt;</tag>Customer<tag xmlns="xslthl">&lt;/ClassName&gt;</tag>...
+    <tag xmlns="xslthl">&lt;Relationship</tag> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"accounts"</value>
+        <attribute xmlns="xslthl">relatedObject</attribute>=<value xmlns="xslthl">"CustomerAccount"</value>
+        <attribute xmlns="xslthl">relatedIsDependent</attribute>=<value xmlns="xslthl">"true"</value>
+        <attribute xmlns="xslthl">cardinality</attribute>=<value xmlns="xslthl">"one-to-many"</value>
+        <attribute xmlns="xslthl">reverseRelationshipName</attribute>=<value xmlns="xslthl">"customer"</value><tag xmlns="xslthl">&gt;</tag>
+            this.customerId = CustomerAccount.customerId
+    <tag xmlns="xslthl">&lt;/Relationship&gt;</tag></pre></li></ul>
+        </div><a name="N1062A"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Relationships can be expressed in Reladomo's object XML
+                    </p></li><li class="listitem"><p>Dependent relationships can be marked as such
+                    </p></li><li class="listitem"><p>Dependent objects can only exist while the parent exists
+                    </p></li><li class="listitem"><p>If the parent is removed, then the dependent objects are also removed
+                    </p></li><li class="listitem"><p>You can also specify a reverse relationship name, if appropriate
+                    </p></li><li class="listitem"><p>Reladomo can figure out the reverse join for itself</p><pre class="programlisting">Customer customer = new Customer(...);
+CustomerAccount account = new CustomerAccount();
+account.setAccountName("Vacation Account");
+account.setAccountType("Savings Account");
+account.setCustomer(customer);
+customer.cascadeInsert();</pre></li></ul>
+        </div><a name="N10647"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Relationships can be expressed in Reladomo's object XML
+                    </p></li><li class="listitem"><p>Dependent relationships can be marked as such
+                    </p></li><li class="listitem"><p>Dependent objects can only exist while the parent exists
+                    </p></li><li class="listitem"><p>If the parent is removed, then the dependent objects are also removed
+                    </p></li><li class="listitem"><p>You can also specify a reverse relationship name, if appropriate
+                    </p></li><li class="listitem"><p>Reladomo can figure out the reverse join for itself</p><pre class="programlisting">CustomerAccount account = ...
+Customer customer = account.getCustomer();</pre></li></ul>
+        </div><a name="N10664"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Relationships can be expressed in Reladomo's object XML
+                    </p></li><li class="listitem"><p>Dependent relationships can be marked as such
+                    </p></li><li class="listitem"><p>You can also specify a reverse relationship name, if appropriate
+                    </p></li><li class="listitem"><p>Relationships can be parameterized
+                    </p></li><li class="listitem"><p>A parameterized relationship has one or more "constraints"</p><pre class="programlisting"><tag xmlns="xslthl">&lt;MithraObject</tag> <attribute xmlns="xslthl">objectType</attribute>=<value xmlns="xslthl">"transactional"</value><tag xmlns="xslthl">&gt;</tag>
+    <tag xmlns="xslthl">&lt;ClassName&gt;</tag>Customer<tag xmlns="xslthl">&lt;/ClassName&gt;</tag>...
+    <tag xmlns="xslthl">&lt;Relationship</tag> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"accountsOfType"</value>
+        <attribute xmlns="xslthl">relatedObject</attribute>=<value xmlns="xslthl">"CustomerAccount"</value>
+        <attribute xmlns="xslthl">cardinality</attribute>=<value xmlns="xslthl">"one-to-many"</value>
+        <attribute xmlns="xslthl">parameters</attribute>=<value xmlns="xslthl">"String accountType"</value><tag xmlns="xslthl">&gt;</tag>
+            this.customerId = CustomerAccount.customerId and
+            CustomerAccount.accountType = { accountType }
+    <tag xmlns="xslthl">&lt;/Relationship&gt;</tag></pre></li></ul>
+        </div><a name="N1067E"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Relationship existence:
+                    </p></li><li class="listitem"><p>You are interested in whether a relationship exists, but you are not interested in any part of the related object
+                    </p></li><li class="listitem"><p>Finder is your friend:
+                    </p></li><li class="listitem"><p>exists()
+                    </p></li><li class="listitem"><p>notExists()</p><pre class="programlisting">CustomerList customersWithAtLeastOneAccount =
+    new CustomerList(CustomerFinder.accounts().exists());
+CustomerList customersWithNoAccounts =
+    new CustomerList(CustomerFinder.accounts().notExists());
+/*
+* select t0.CUSTOMER_I,t0.NAME_C,t0.COUNTRY_I from CUSTOMER t0
+* left join (select t1.CUSTOMER_I c0 from CUSTOMER_ACCOUNT t1) as d1
+* on t0.CUSTOMER_I = d1.c0 where d1.c0 is null
+**/
+CustomerList customersWithNoSavingAccounts = new CustomerList(
+    CustomerFinder.accountsOfType("Saving").notExists());</pre></li></ul>
+        </div><a name="N10698"/><div class="slide">
+            <h1 class="title">Introduction to Relationships</h1>
+            <ul class=""><li class="listitem"><p>Reladomo can also generate DDL for you
+                    </p></li><li class="listitem"><p>Call the MithraDbDefinitionGenerator build task</p></li><li class="listitem"><p>Note: Reladomo generated the foreign-key relationship for you
+                    </p></li><li class="listitem"><p>Because of the relationship from Customer to CustomerAccount which is parameterized by accountType, Reladomo can infer that you need an
+                        index to make the query efficient
+                    </p><img src="RelationshipsDDLs.png" align="middle"/></li></ul>
+        </div><a name="N106B2"/><div class="slide"><h1 class="title">Sorting</h1></div><a name="N106B7"/><div class="slide">
+            <h1 class="title">Sorting</h1>
+            <ul class=""><li class="listitem"><p>How can we get objects in a certain order?</p><pre class="programlisting">PersonList peopleByName = ??? ;
+PersonList peopleByAge = ??? ;</pre></li></ul>
+        </div><a name="N106C5"/><div class="slide">
+            <h1 class="title">Sorting</h1>
+            <ul class=""><li class="listitem"><p>How can we get objects in a certain order?
+                    </p></li><li class="listitem"><p>Use MithraList's addOrderBy() method
+                    </p></li><li class="listitem"><p>Finder is your friend</p><pre class="programlisting">PersonList peopleByName = new PersonList(PersonFinder.all());
+peopleByName.addOrderBy(PersonFinder.name().ascendingOrderBy());
+PersonList peopleByAgeDescending = new PersonList(PersonFinder.all());
+peopleByAgeDescending.addOrderBy(
+    PersonFinder.age().descendingOrderBy());</pre></li></ul>
+        </div><a name="N106D9"/><div class="slide">
+            <h1 class="title">Sorting</h1>
+            <ul class=""><li class="listitem"><p>How can we get objects in a certain order?
+                    </p></li><li class="listitem"><p>Use MithraList's addOrderBy() method
+                    </p></li><li class="listitem"><p>Finder is your friend
+                    </p></li><li class="listitem"><p>You can order by many different levels
+                    </p></li><li class="listitem"><p>Call addOrderBy() many times
+                    </p></li><li class="listitem"><p>Or: call setOrderBy() with a complex specification</p><pre class="programlisting">PersonList peopleByAgeThenName = new PersonList(PersonFinder.all());
+peopleByName.addOrderBy(PersonFinder.age().descendingOrderBy());
+peopleByName.addOrderBy(PersonFinder.name().ascendingOrderBy());
+// _or_
+peopleByAgeThenName.setOrderBy(
+    PersonFinder.age().descendingOrderBy()
+        .and(PersonFinder.name().ascendingOrderBy()));</pre></li></ul>
+        </div><a name="N106F7"/><div class="slide"><h1 class="title">Deep Fetching</h1></div><a name="N106FC"/><div class="slide">
+            <h1 class="title">Deep Fetching</h1>
+            <ul class=""><li class="listitem"><p>Deep fetching means retrieving not just immediate target objects, but also some or all of their related objects</p><pre class="programlisting">PersonList people= new PersonList(PersonFinder.age().greaterThan(18));
+// One hit to DB
+for (Person person : people)
+{
+    AddressList addresses= person.getAddresses();
+    // Another hit to the DB for each person's set of addresses
+    System.out.println(person.getName() + " :: " + addresses.size())
+}</pre></li></ul>
+        </div><a name="N1070A"/><div class="slide">
+            <h1 class="title">Deep Fetching</h1>
+            <ul class=""><li class="listitem"><p>Deep fetching means retrieving not just immediate target objects, bu
+                        also some or all of their related objects
+                    </p></li><li class="listitem"><p>Reladomo supports deep fetching via MithraList.deepFetch()
+                    </p></li><li class="listitem"><p>Easier than writing code to fetch each set of objects yourself
+                    </p></li><li class="listitem"><p>Allows Reladomo to perform optimizations to keep the query efficient</p><pre class="programlisting">PersonList people= new PersonList(PersonFinder.age().greaterThan(18));
+people.deepFetch(PersonFinder.addresses());
+// Two hits to the DB, one for People, one for the related Addresses
+for (Person person : people)
+{
+    AddressList addresses= person.getAddresses();
+    // No DB hit here, the accounts are all in cache already
+    System.out.println(person.getName() + " :: " + addresses.size())
+}</pre></li></ul>
+        </div><a name="N10722"/><div class="slide"><h1 class="title">Kata Exercise 3</h1></div><a name="N10727"/><div class="slide">
+            <h1 class="title">Kata Exercise 3</h1>
+            <p>Relationships</p>
+            <ul class=""><li class="listitem"><p>Find ExercisesRelationships.java; it has assertion failures if you run it as a test.
+                    </p></li><li class="listitem"><p>Don't forget that in questions 3 and 4, you will be changing XML, so you will have to generate the Reladomo objects again (ant:
+                        clean-compile-all).
+                    </p></li><li class="listitem"><p>Figure out how to get the tests to pass using what you have seen so far.
+                    </p></li><li class="listitem"><p>Should take about 20 minutes.</p></li></ul>
+        </div><a name="N1073F"/><div class="slide"><h1 class="title">Advanced Finder</h1></div><a name="N10744"/><div class="slide">
+            <h1 class="title">Using objects as matching criteria</h1>
+            <ul class=""><li class="listitem"><p>So far we have specified attributes to match and uniquely identify a given object
+                    </p></li><li class="listitem"><p>Let's pretend a RegistrationRenewal has a relationship back to a VehicleRegistration</p><pre class="programlisting">Customer customer = ...;
+CustomerAccountList accounts = new CustomerAccountList(
+CustomerAccountFinder.customerId().eq(customer.getCustomerId());
+VehicleRegistration registration = ...;
+// PK is on licencePlate *and* stateOfIssue
+RegistrationRenewalList records = new RegistrationRenewalList(
+    RegistrationRenewalFinder.licencePlate().eq(
+        registration.getLicencePlate()
+            .and(RegistrationRenewalFinder.stateOfIssue()
+                .eq(registration.getStateOfIssue()));</pre></li></ul>
+        </div><a name="N10755"/><div class="slide">
+            <h1 class="title">Using objects as matching criteria</h1>
+            <ul class=""><li class="listitem"><p>So far we have specified attributes to match and uniquely identify a given object
+                    </p></li><li class="listitem"><p>Reladomo can infer the equality attributes of an objects primary key for us</p><pre class="programlisting">Customer customer = ...;
+CustomerAccountList accounts = new CustomerAccountList(
+CustomerAccountFinder.customer().eq(customer);
+VehicleRegistration registration = ...;
+// PK is on licencePlate *and* stateOfIssue
+RegistrationRenewalList records = new RegistrationRenewalList(
+    RegistrationRenewalFinder.registration().eq(registration));</pre></li></ul>
+        </div><a name="N10766"/><div class="slide">
+            <h1 class="title">Tuples</h1>
+            <ul class=""><li class="listitem"><p>A Tuple is an ordered list of elements</p><pre class="programlisting">// tupleType { month, year }
+// tupleData {"May", 2009 }
+// tupleData {"August", 2011 }</pre></li></ul>
+        </div><a name="N10774"/><div class="slide">
+            <h1 class="title">Tuples</h1>
+            <ul class=""><li class="listitem"><p>A Tuple is an ordered list of elements
+                    </p></li><li class="listitem"><p>A Tuple's type (TupleAttribute) can be specified using Reladomo
+                    </p></li><li class="listitem"><p>The Finder is your friend</p><pre class="programlisting">// tupleType { month, year }
+TupleAttribute calendarMonthYear =
+    CalendarEventFinder.month().tupleWith(CalendarEventFinder.year());
+// tupleData {"May", 2009 }
+// tupleData {"August", 2011 }</pre></li></ul>
+        </div><a name="N10788"/><div class="slide">
+            <h1 class="title">Tuples</h1>
+            <ul class=""><li class="listitem"><p>A Tuple is an ordered list of elements
+                    </p></li><li class="listitem"><p>A Tuple's type (TupleAttribute) can be specified using Reladomo
+                    </p></li><li class="listitem"><p>The Finder is your friend
+                    </p></li><li class="listitem"><p>You create tuple data set by adding elements to a MithraArrayTupleTupleSet</p><pre class="programlisting">// tupleType { month, year }
+TupleAttribute calendarMonthYear =
+    CalendarEventFinder.month().tupleWith(CalendarEventFinder.year());
+MithraArrayTupleTupleSet requestedMonthYears =
+    new MithraArrayTupleTupleSet();
+// tupleData {"May", 2009 }
+requestedMonthYears.add("May", 2009);
+// tupleData {"August", 2011 }
+requestedMonthYears.add("August", 2011);</pre></li></ul>
+        </div><a name="N1079F"/><div class="slide">
+            <h1 class="title">Tuples</h1>
+            <ul class=""><li class="listitem"><p>A Tuple is an ordered list of elements
+                    </p></li><li class="listitem"><p>A Tuple's type (TupleAttribute) can be specified using Reladomo
+                    </p></li><li class="listitem"><p>The Finder is your friend
+                    </p></li><li class="listitem"><p>You create tuple data set by adding elements to a MithraArrayTupleTupleSet
+                    </p></li><li class="listitem"><p>You can combine the tuple type with the tuple data set using an in() query</p><pre class="programlisting">// tupleType { month, year }
+TupleAttribute calendarMonthYear =
+    CalendarEventFinder.month().tupleWith(CalendarEventFinder.year());
+MithraArrayTupleTupleSet requestedMonthYears =
+    new MithraArrayTupleTupleSet();
+// tupleData {"May", 2009 }
+requestedMonthYears.add("May", 2009);
+// tupleData {"August", 2011 }
+requestedMonthYears.add("August", 2011);
+CalendarEventList events =
+    new CalendarEventList(calendarMonthYear.in(requestedMonthYears));</pre></li></ul>
+        </div><a name="N107B9"/><div class="slide">
+            <h1 class="title">Tuples</h1>
+            <ul class=""><li class="listitem"><p>A Tuple is an ordered list of elements
+                    </p></li><li class="listitem"><p>A Tuple's type (TupleAttribute) can be specified using Reladomo
+                    </p></li><li class="listitem"><p>The Finder is your friend
+                    </p></li><li class="listitem"><p>You create tuple data set by adding elements to a MithraArrayTupleTupleSet
+                    </p></li><li class="listitem"><p>You can combine the tuple type with the tuple data set using an in() query
+                    </p></li></ul>
+            <pre class="programlisting">Operation date1 = CalendarEventFinder.month().eq("May")
+    .and(CalendarEventFinder.year().eq(2009));
+Operation date2 = CalendarEventFinder.month().eq("August")
+    .and(CalendarEventFinder.year().eq(2011) );
+Operation operation = date1.or(date2);
+CalendarEventList events = new CalendarEventList(operation);</pre>
+        </div><a name="N107D4"/><div class="slide">
+            <h1 class="title">Counting rows</h1>
+            <ul class=""><li class="listitem"><p>List.size() will cause the list to be populated with data</p><pre class="programlisting">int customerCount = new CustomerList(CustomerFinder.all()).size();</pre></li></ul>
+        </div><a name="N107E2"/><div class="slide">
+            <h1 class="title">Counting rows</h1>
+            <ul class=""><li class="listitem"><p>MithraList.size() will cause the list to be populated with data
+                    </p></li><li class="listitem"><p>MithraList.count() will issue a SELECT COUNT(*) call and return only
+                        the count
+                    </p></li><li class="listitem"><p>Only use count() when you know you will not need any of the
+                        contents of the list
+                    </p><pre class="programlisting">int customerCount = new CustomerList(CustomerFinder.all()).size();
+int customerCount = new CustomerList(CustomerFinder.all()).count();</pre></li></ul>
+        </div><a name="N107F6"/><div class="slide">
+            <h1 class="title">Aggregates</h1>
+            <ul class=""><li class="listitem"><p>Gives you access to SQL-like features for sum(), average(), min(), max(), etc.
+                    </p></li><li class="listitem"><p>Finder is your friend</p><pre class="programlisting">AggregateList aggregateList = new AggregateList(StockFinder.all());
+aggregateList.addAggregateAttribute(
+    "sumQuantity", StockFinder.quantity().sum());</pre></li></ul>
+        </div><a name="N10807"/><div class="slide">
+            <h1 class="title">Aggregates</h1>
+            <ul class=""><li class="listitem"><p>Gives you access to SQL-like features for sum(), average(), min(), max(),
+                        etc.
+                    </p><pre class="programlisting">AggregateList aggregateList = new AggregateList(StockFinder.all());
+aggregateList .addAggregateAttribute(
+    "sumQuantity", StockFinder.quantity().sum());
+Verify.assertSize(1, aggregateList);
+int sumQuantity = aggregateList.get(0)
+    .getAttributeAsInt("sumQuantity");</pre></li></ul>
+        </div><a name="N10815"/><div class="slide">
+            <h1 class="title">Aggregates</h1>
+            <ul class=""><li class="listitem"><p>Gives you access to SQL-like features for sum(), average(), min(), max(),
+                        etc.
+                    </p></li><li class="listitem"><p>Different data types are also supported</p><pre class="programlisting">AggregateList aggregateList = new AggregateList(StockFinder.all());
+aggregateList.addAggregateAttribute(
+    "sumQuantity", StockFinder.quantity().sum());
+aggregateList.addAggregateAttribute(
+    "averageQuantity", StockFinder.quantity().avg());
+int sumQuantity = aggregateList.get(0)
+    .getAttributeAsInt("sumQuantity");
+double averageQuantity = aggregateList.get(0)</pre></li></ul>
+        </div><a name="N10826"/><div class="slide">
+            <h1 class="title">Aggregates</h1>
+            <ul class=""><li class="listitem"><p>Gives you access to SQL-like features for sum(), average(), min(), max(),
+                        etc.
+                    </p></li><li class="listitem"><p>Different data types are supported also
+                    </p></li><li class="listitem"><p>You can also group by attributes, similar to SQL's: GROUP BY clause</p><pre class="programlisting">AggregateList aggregateList = new AggregateList(StockFinder.all());
+aggregateList.addAggregateAttribute(
+    "value", StockFinder.tradeDateValue().sum());
+aggregateList.addGroupBy("code", StockFinder.classificationCode());
+for (AggregateData row : aggregateList)
+{
+    String code = row.getAttributeAsString("code");
+    double value = row.getAttributeAsDouble("value");
+    System.out.println(code + '\t' + value);
+}
+/*
+* Prints:
+* EQTY 200.0
+* BOND 1600.0
+* CCY 13425.62
+**/</pre></li></ul>
+        </div><a name="N1083A"/><div class="slide">
+            <h1 class="title">Custom List Methods</h1>
+            <ul class=""><li class="listitem"><p>Just as you can add your own methods to the business objects, you can
+                        also add your own methods to the lists
+                    </p></li><li class="listitem"><p>Always add your methods to the concrete class, never to the *Abstract classes</p><pre class="programlisting">public class DogList extends DogListAbstract
+{
+    ...
+    public void walkAll()
+    {
+        for (Dog dog : this)
+        {
+            System.out.println(dog.getName()
+                + " walked around the park");
+        }
+    }
+}</pre></li></ul>
+        </div><a name="N1084B"/><div class="slide">
+            <h1 class="title">Cursors</h1>
+            <ul class=""><li class="listitem"><p>Cursor is a concept where data is only fetched a row at a time as needed
+                    </p></li><li class="listitem"><p>Most use-cases don't need this – verify with a senior TA before using in a real
+                        project
+                    </p></li><li class="listitem"><p>Applies when:
+                    </p><ul class=""><li class="listitem"><p>You may only need the first part of a List
+                            </p></li><li class="listitem"><p>The List may be very large (and risk filling your heap-space)
+                            </p></li><li class="listitem"><p>You need to reduce peak memory usage</p></li></ul><pre class="programlisting">CustomerList allCustomers = new CustomerList(CustomerFinder.all());
+final Counter counter = new Counter();
+customer.forEachWithCursor(new DoWhileBlock&lt;Customer&gt;()
+{
+    public boolean value(Customer customer)
+    {
+        doSomethingWith(customer);
+        counter.increment();
+        return isNextCustomerNeeded(customer);
+    }
+});</pre></li></ul>
+        </div><a name="N1086A"/><div class="slide"><h1 class="title">Attributes and Metadata</h1></div><a name="N1086F"/><div class="slide">
+            <h1 class="title">Attributes and Metadata</h1>
+            <p>Reladomo Finders</p>
+            <ul class=""><li class="listitem"><p>Reladomo Finders and Attributes are a rich source of MetaData
+                    </p></li><li class="listitem"><p>Hold on to Finder references using AbstractRelatedFinder
+                    </p></li><li class="listitem"><p>From a Finder, you can:
+                    </p><ul class=""><li class="listitem"><p>getPersistentAttributes(): Attribute[]</p></li></ul><pre class="programlisting">AbstractRelatedFinder finder = PersonFinder.getFinderInstance();
+for (Attribute attribute : finder.getPersistentAttributes())
+{
+    System.out.println(attribute.getAttributeName());
+}</pre></li></ul>
+        </div><a name="N1088A"/><div class="slide">
+            <h1 class="title">Attributes and Metadata</h1>
+            <p>Reladomo Attributes</p>
+            <ul class=""><li class="listitem"><p>Reladomo Finders and Attributes are a rich source of MetaData
+                    </p></li><li class="listitem"><p>From an Attribute, you can:
+                    </p><ul class=""><li class="listitem"><p>getAttributeName(): String
+                            </p></li><li class="listitem"><p>valueType(): Class
+                            </p></li><li class="listitem"><p>getMaxLength(): integer
+                            </p></li><li class="listitem"><p>isNullable(): boolean
+                            </p></li><li class="listitem"><p>getMetaData(): AttributeMetaData</p></li></ul><pre class="programlisting">System.out.println(PersonFinder.personId().getAttributeName());
+// personId
+StringAttribute nameAttribute = CustomerFinder.name();
+System.out.println(nameAttribute.getMaxLength()
+    + '\t' + nameAttribute.isNullable()
+    + '\t' + nameAttribute.valueType());
+// Prints: 64 false String</pre></li></ul>
+        </div><a name="N108AE"/><div class="slide">
+            <h1 class="title">Attributes and Metadata</h1>
+            <p>Reladomo Attributes</p>
+            <ul class=""><li class="listitem"><p>Reladomo Finders and Attributes are a rich source of MetaData
+                    </p></li><li class="listitem"><p>From an attribute, you can also:
+                    </p><ul class=""><li class="listitem"><p>valueOf(&lt;MT&gt;): &lt;AVT&gt;
+                            </p></li><li class="listitem"><p>Gets the attribute value associated with an object
+                            </p></li><li class="listitem"><p>setValue(&lt;MT&gt;, &lt;AVT&gt;): void
+                            </p></li><li class="listitem"><p>Sets the attribute value for a given object</p></li></ul><pre class="programlisting">Dog fido = ...;
+System.out.println(DogFinder.name().valueOf(fido));
+// The Grand Marquis Fido Of Paris
+DogFinder.name().setValue(fido, "Supreme Champion Fido of Crufts");
+System.out.println(DogFinder.name().valueOf(fido));
+// Supreme Champion Fido of Crufts</pre></li></ul>
+        </div><a name="N108CF"/><div class="slide">
+            <h1 class="title">Attributes and Metadata</h1>
+            <ul class=""><li class="listitem"><p>You can define custom meta-data for your attributes
+                    </p></li><li class="listitem"><p>&lt;Property&gt;element in the Reladomo Object XML</p><p>Dog.xml</p><pre class="programlisting">...
+<tag xmlns="xslthl">&lt;Attribute</tag> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"name"</value> <attribute xmlns="xslthl">javaType</attribute>=<value xmlns="xslthl">"String"</value> <attribute xmlns="xslthl">nullable</attribute>=<value xmlns="xslthl">"false"</value>
+    <attribute xmlns="xslthl">maxLength</attribute>=<value xmlns="xslthl">"50"</value> <attribute xmlns="xslthl">columnName</attribute>=<value xmlns="xslthl">"NAME"</value><tag xmlns="xslthl">&gt;</tag>
+    <tag xmlns="xslthl">&lt;Property</tag> <attribute xmlns="xslthl">key</attribute>=<value xmlns="xslthl">"&amp;quot;integerProperty&amp;quot;"</value> <attribute xmlns="xslthl">value</attribute>=<value xmlns="xslthl">"256"</value><tag xmlns="xslthl"> /&gt;</tag>
+    <tag xmlns="xslthl">&lt;Property</tag> <attribute xmlns="xslthl">key</attribute>=<value xmlns="xslthl">"&amp;quot;stringProperty&amp;quot;"</value>
+    <attribute xmlns="xslthl">value</attribute>=<value xmlns="xslthl">"&amp;quot;Froo-froo ref&amp;quot;"</value><tag xmlns="xslthl"> /&gt;</tag>
+<tag xmlns="xslthl">&lt;/Attribute&gt;</tag>
+...</pre></li></ul>
+        </div><a name="N108E2"/><div class="slide">
+            <h1 class="title">Attributes and Metadata</h1>
+            <ul class=""><li class="listitem"><p>You can define custom meta-data for your attributes
+                    </p></li><li class="listitem"><p>
+                        &lt;Property&gt; element in the Reladomo Object XML
+                    </p></li><li class="listitem"><p>Access properties using: attribute.getProperty(String key): Object</p><pre class="programlisting">for (Attribute attribute :
+    DogFinder.getFinderInstance().getPersistentAttributes())
+{
+    Object intProperty = attribute.getProperty("integerProperty");
+    if (intProperty instanceof Integer)
+    {
+        System.out.println(intProperty);
+    }
+}
+// Prints: 256</pre></li></ul>
+        </div><a name="N108F7"/><div class="slide"><h1 class="title">Kata Exercise 4</h1></div><a name="N108FC"/><div class="slide">
+            <h1 class="title">Kata Exercise 4</h1>
+            <p>Advanced Finder</p>
+            <ul class=""><li class="listitem"><p>Find ExercisesAdvancedFinder.java; it has assertion failures if you run it as a test.</p></li><li class="listitem"><p>Figure out how to get the tests to pass using what you have seen so far.
+                    </p></li><li class="listitem"><p>Should take about 20 minutes.</p></li></ul>
+        </div><a name="N10911"/><div class="slide"><h1 class="title">Chaining: Audit Only</h1></div><a name="N10916"/><div class="slide">
+            <h1 class="title">Chaining: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Chaining:</p><ul class=""><li class="listitem"><p>Umbrella term to describe a way of storing time series data, audit data, or both, in a relational database
+                            </p></li><li class="listitem"><p>Referred by different terminologies for same or similar functionality.</p></li><li class="listitem"><p>Most common is milestoning.</p></li><li class="listitem"><p>Milestoning gives the wrong impression that the data can be snapshotted at various milestones.</p></li></ul></li><li class="listitem"><p>Chaining, or Bi-temporal data, is a super set (and in many instances a more efficient implementation) of milestoning.
+                    </p></li></ul>
+        </div><a name="N10931"/><div class="slide">
+            <h1 class="title">Chaining Audit Only: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Audit Only:</p><ul class=""><li class="listitem"><p>All edits to an object must be tracked</p></li><li class="listitem"><p>Although this audit trail is important, it is rarely, if ever queried</p></li><li class="listitem"><p>An audit trail is immutable. It's akin to a history book</p></li></ul></li><li class="listitem"><p>Terminology:</p><ul class=""><li class="listitem"><p>Academic literature calls the time that a particular piece of data changed as the transaction time, but we often call it
+                                processing date (even though it's a date-time)
+                            </p></li><li class="listitem"><p>We tend to call the actual date-times that changes happen, in and out, or sometimes, IN_Z and OUT_Z</p></li></ul></li></ul>
+        </div><a name="N10950"/><div class="slide">
+            <h1 class="title">Chaining Audit Only: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Consider an Account object
+                    </p></li><li class="listitem"><p>First we insert the new object, say on 1-Jan-2005 10:06 am
+                    </p></li><li class="listitem"><p>We can read this as:
+                    </p><ul class=""><li class="listitem"><p>The row came IN existence at 1-Jan-2005 10:06 am, and is valid through "infinity"
+                            </p></li><li class="listitem"><p>Databases can't store "infinity", so we typically choose an
+                                arbitrary date-time, such as 1-Dec-9999 11:59:00 pm
+                            </p></li></ul></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="AuditOnly1.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N10970"/><div class="slide">
+            <h1 class="title">Chaining Audit Only: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Consider an Account object
+                    </p></li><li class="listitem"><p>First we insert the new object, say on 1-Jan-2005 10:06 am
+                    </p></li><li class="listitem"><p>We can read this as:
+                    </p><ul class=""><li class="listitem"><p>First we insert the new object, say on 1-Jan-2005 10:06 am</p></li><li class="listitem"><p>The Trader changes on 4-Feb-2005 3:00 pm</p></li><li class="listitem"><p>The existing row stops being valid, so we update it's OUT value with "now"
+                            </p></li><li class="listitem"><p>We insert a new row, valid from "now" through "infinity"</p></li></ul></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="AuditOnly2.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N10996"/><div class="slide">
+            <h1 class="title">Chaining: Audit Only: XML Definition</h1>
+            <ul class=""><li class="listitem"><p>Reladomo Object XML defines an AsOfAttribute element
+                    </p></li><li class="listitem"><p>Define one of these for your processingDate below the
+                        DefaultTable element, and before the regular Attribute
+                        elements
+                    </p><pre class="programlisting"><tag xmlns="xslthl">&lt;AsOfAttribute</tag> <attribute xmlns="xslthl">name</attribute>=<value xmlns="xslthl">"processingDate"</value>
+    <attribute xmlns="xslthl">fromColumnName</attribute>=<value xmlns="xslthl">"IN_Z"</value> <attribute xmlns="xslthl">toColumnName</attribute>=<value xmlns="xslthl">"OUT_Z"</value>
+    <attribute xmlns="xslthl">toIsInclusive</attribute>=<value xmlns="xslthl">"false"</value>
+    <attribute xmlns="xslthl">isProcessingDate</attribute>=<value xmlns="xslthl">"true"</value>
+    <attribute xmlns="xslthl">infinityDate</attribute>=<value xmlns="xslthl">"[kata.util.TimestampProvider.getInfinityDate()]"</value>
+    <attribute xmlns="xslthl">defaultIfNotSpecified</attribute>=
+        <value xmlns="xslthl">"[kata.util.TimestampProvider.getInfinityDate()]"</value>
+    <attribute xmlns="xslthl">timezoneConversion</attribute>=<value xmlns="xslthl">"convert-to-utc"</value><tag xmlns="xslthl">
+/&gt;</tag></pre></li></ul>
+        </div><a name="N109A7"/><div class="slide">
+            <h1 class="title">Chaining: Audit Only</h1>
+            <p>Chaining: Audit Only: Queries</p>
+            <p>Query for "current" data</p>
+            <ul class=""><li class="listitem"><p>Query just as you would any other data</p></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="AuditOnly2.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">Account account = AccountFinder.findOne(
+    AccountFinder.accountId().eq(1234));
+/*
+* SQL
+* SELECT * FROM ACCOUNT t0
+* WHERE t0.ACCOUNT_ID = 1234
+* AND t0.OUT_Z = '9999-12-01 23:59:00.000' -- Reladomo adds this for you!
+* */
+System.out.println(account);
+// Prints: 1234 Helen Brown 4-Feb-2005 3:00pm 1-Dec-9999 11:59pm</pre>
+        </div><a name="N109C4"/><div class="slide">
+            <h1 class="title">Chaining: Audit Only</h1>
+            <p>Chaining: Audit Only: Queries</p>
+            <p>Query for an as-of processingDate</p>
+            <ul class=""><li class="listitem"><p>Query just as you would any other data
+                    </p></li><li class="listitem"><p>Additionally add the processing date you are interested in</p></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="AuditOnly2.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">Account account = AccountFinder.findOne(
+    AccountFinder.accountId().eq(1234)
+        .and(AccountFinder.processingDate().eq(timestamp4Feb2005)));
+
+/*
+* SQL:
+* SELECT * FROM ACCOUNT t0 WHERE t0.ACCOUNT_ID = 1234
+* AND t0.IN_Z &lt;= '2005-02-04 13:00:00.000'
+* AND t0.OUT_Z &gt; '2005-02-04 13:00:00.000'
+* */
+
+System.out.println(account);
+// Prints: 1234 Joe Smith 1-Jan-2005 10:06am 4-Feb-2005 3:00pm</pre>
+        </div><a name="N109E4"/><div class="slide">
+            <h1 class="title">Chaining: Audit Only</h1>
+            <p>Chaining: Audit Only: Queries</p>
+            <p>Query for all processingDate history
+            </p>
+            <ul class=""><li class="listitem"><p>Query just as you would any other data
+                    </p></li><li class="listitem"><p>Additionally add the processingDate.equalsEdgePoint()</p></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="AuditOnly2.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">AccountList accounts = new AccountList(
+    AccountFinder.accountId().eq(1234)
+        .and(AccountFinder.processingDate().equalsEdgePoint()));
+
+/*
+* SQL:
+* SELECT * FROM ACCOUNT t0 WHERE t0.ACCOUNT_ID = 1234
+*
+* Returns
+* 1234 Joe Smith 1-Jan-2005 10:06am 4-Feb-2005 3:00pm
+* 1234 Helen Brown 4-Feb-2005 5:00pm 1-Dec-9999 11:59pm
+**/</pre>
+        </div><a name="N10A04"/><div class="slide">
+            <h1 class="title">Chaining: Audit Only</h1>
+            <p>Chaining: Audit Only: Creating</p>
+            <ul class=""><li class="listitem"><p>Construct with the processingDate of "infinity"
+                    </p></li><li class="listitem"><p>Set data and insert as normal</p></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="AuditOnly1.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">Account account = new Account(TimestampProvider.getInfinityDate());
+account.setTrader("Joe Smith");
+account.insert();</pre>
+        </div><a name="N10A21"/><div class="slide">
+            <h1 class="title">Chaining: Audit Only</h1>
+            <p>Chaining: Audit Only: Updating</p>
+            <ul class=""><li class="listitem"><p>Update as normal
+                    </p></li><li class="listitem"><p>However, perform inside a transaction</p></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="AuditOnly2.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">MithraManagerProvider.getMithraManager().executeTransactionalCommand(
+new TransactionalCommand()
+{
+    public Object executeTransaction(MithraTransaction tx)
+        throws Throwable
+    {
+        Account account = AccountFinder.findOne(
+            AccountFinder.accountId().eq(1234));
+        account.setTrader("Helen Brown");
+        return null;
+    }
+});</pre>
+        </div><a name="N10A3E"/><div class="slide">
+            <h1 class="title">Chaining: Audit Only</h1>
+            <p>Chaining: Audit Only: Terminating</p>
+            <ul class=""><li class="listitem"><p>Rows cannot be "deleted" as they are required for audit purposes
+                    </p></li><li class="listitem"><p>However, we can "terminate" and object instead</p></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="AuditOnly3.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">MithraManagerProvider.getMithraManager().executeTransactionalCommand(
+new TransactionalCommand()
+{
+    public Object executeTransaction(MithraTransaction tx)
+        throws Throwable
+    {
+        Account account = AccountFinder.findOne(
+            AccountFinder.accountId().eq(1234));
+        account.terminate();
+        return null;
+    }
+});</pre>
+        </div><a name="N10A5C"/><div class="slide"><h1 class="title">Kata Exercise 5</h1></div><a name="N10A61"/><div class="slide">
+            <h1 class="title">Kata Exercise 5</h1>
+            <p>Chaining: Audit Only</p>
+            <ul class=""><li class="listitem"><p>Find ExercisesAuditOnly.java; it has assertion failures if you run it as a test.
+                    </p></li><li class="listitem"><p>Figure out how to get the tests to pass using what you have seen so far.
+                    </p></li><li class="listitem"><p>Should take about 25 minutes.</p></li></ul>
+        </div><a name="N10A76"/><div class="slide"><h1 class="title">Chaining: Bi-Temporal</h1></div><a name="N10A7B"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Bi-Temporal:
+            </p>
+            <ul class=""><li class="listitem"><p>Time Series as well as Audit
+                    </p></li><li class="listitem"><p>The two time axes are identified as "valid time" and "transaction time"</p><ul class=""><li class="listitem"><p>We call these business date and processing date respectively</p></li><li class="listitem"><p>Business dates usually have a fixed "time" portion For Example: 6:30 PM</p></li></ul></li><li class="listitem"><p>A row in the database represents a rectangle in the two dimensional phase space
+                    </p><ul class=""><li class="listitem"><p>No two rectangles (for the same data) may overlap</p></li></ul></li><li class="listitem"><p>The accepted way to implement this scenario is via four date columns
+                        (valid_from, valid_to, transaction_from, transaction_to)
+                    </p><ul class=""><li class="listitem"><p>For Example: these columns are (FROM_Z, THRU_Z, IN_Z, OUT_Z)</p></li></ul></li><li class="listitem"><p>Terminology:</p><ul class=""><li class="listitem"><p>Academic literature refers to this scenario as "bi-temporal data"</p></li></ul></li></ul>
+        </div><a name="N10AA8"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Consider a simple Balance example
+                    </p></li><li class="listitem"><p>On 1-Jan-2005, we insert a new row valid from 1-Jan-2005, for 100</p></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporal1.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N10ABE"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Diagram for balanceId = 1234</p>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporalGraph1.png" align="middle" height="252"/></td></tr></table>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporal1.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N10AD7"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Consider a simple Balance example
+                    </p></li><li class="listitem"><p>On 1-Jan-2005, we insert a new row valid from 1-Jan-2005, for 100
+                    </p></li><li class="listitem"><p>On 5-Feb-2005, we change the amount to 250, valid from 5-Feb-2005
+                    </p><ul class=""><li class="listitem"><p>The original row gets chained out
+                            </p></li><li class="listitem"><p>A new row shows the finite valid time that the object was 100
+                            </p></li><li class="listitem"><p>A new row shows the valid time that the object is 250</p></li></ul></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporal2.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N10AFA"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Diagram for balanceId = 1234</p>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporalGraph2.png" align="middle" height="252"/></td></tr></table>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporal2.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N10B13"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal: Introduction</h1>
+            <ul class=""><li class="listitem"><p>On 16-Feb-2005, we find a trade for 40 shares that hadn't been input when it was executed on 12-Jan-2005
+                    </p></li><ul class=""><li class="listitem"><p>Any rows valid on 12-Jan will need to be adjusted!
+                        </p><ul class=""><li class="listitem"><p>The two valid existing rows will be chained out
+                                </p></li></ul></li><li class="listitem"><p>A new row is added up to 12-Jan indicating the original amoun
+                        </p></li><li class="listitem"><p>A new row is added 12-Jan -&gt; 5-Feb indicating amount 140
+                        </p></li><li class="listitem"><p>A new row is added 5-Feb onwards indicating amount 290</p></li></ul></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporal3.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N10B37"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Diagram for balanceId = 1234</p>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporalGraph3.png" align="middle" height="252"/></td></tr></table>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporal3.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N10B50"/><div class="slide">
+            <h1 class="title">Querying Bi-Temporal data</h1>
+            <ul class=""><li class="listitem"><p>Currently, what is the latest balance for 1234?
+                    </p></li><li class="listitem"><p>businessDate = "now"
+                    </p></li><li class="listitem"><p>processingDate = "now"
+                    </p></li></ul>
+            <pre class="programlisting">Balance balance =
+    BalanceFinder.findOne(BalanceFinder.balanceId().eq(1234)
+        .and(BalanceFinder.businessDate().eq(timestamp16March2011)));
+/*
+* SQL:
+* SELECT * FROM BALANCE t0
+* WHERE t0.ACCOUNT_I = 100
+* AND t0.FROM_Z &lt; '2011-03-15 18:30:00.000'
+* AND t0.THRU_Z &gt;= '2011-03-15 18:30:00.000'
+* AND t0.OUT_Z = '9999-12-01 23:59:00.000'
+**/</pre>
+        </div><a name="N10B65"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Diagram for balanceId = 1234</p>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporalGraph3.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">Balance balance =
+    BalanceFinder.findOne(BalanceFinder.balanceId().eq(1234));
+/*
+* SQL:
+* SELECT * FROM BALANCE t0
+* WHERE t0.ACCOUNT_I = 100
+* AND t0.FROM_Z &lt; '2011-03-15 18:30:00.000'
+* AND t0.THRU_Z &gt;= '2011-03-15 18:30:00.000'
+* AND t0.OUT_Z = '9999-12-01 23:59:00.000'
+**/
+
+System.out.println(balance.getAmount());
+// Prints: 290.0</pre>
+        </div><a name="N10B7A"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Querying Bi-Temporal data</p>
+            <ul class=""><li class="listitem"><p>Taking revisions into account, what was the balance on 30-Jan-2005?
+                    </p></li><ul class=""><li class="listitem"><p>businessDate = 30-Jan-2005
+                        </p></li><li class="listitem"><p>processingDate = "now"</p></li></ul></ul>
+            <pre class="programlisting">Balance balance =
+    BalanceFinder.findOne(BalanceFinder.balanceId().eq(1234)
+        .and(BalanceFinder.businessDate().eq(timestamp30Jan2005)));
+
+/*
+* SQL:
+* SELECT * FROM BALANCE t0
+* WHERE t0.ACCOUNT_I = 100
+* AND t0.FROM_Z &lt; '2005-01-30 18:30:00.000'
+* AND t0.THRU_Z &gt;= '2005-01-30 18:30:00.000'
+* AND t0.OUT_Z = '9999-12-01 23:59:00.000'
+**/</pre>
+        </div><a name="N10B93"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Diagram for balanceId = 1234</p>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporalGraph5.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">Balance balance =
+    BalanceFinder.findOne(BalanceFinder.balanceId().eq(1234)
+        .and(BalanceFinder.businessDate().eq(timestamp30Jan2005)));
+
+/*
+* SQL:
+* SELECT * FROM BALANCE t0
+* WHERE t0.ACCOUNT_I = 100
+* AND t0.FROM_Z &lt; '2005-01-30 18:30:00.000'
+* AND t0.THRU_Z &gt;= '2005-01-30 18:30:00.000'
+* AND t0.OUT_Z = '9999-12-01 23:59:00.000'
+**/
+System.out.println(balance.getAmount());
+// Prints: 140.0</pre>
+        </div><a name="N10BA8"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Querying Bi-Temporal data</p>
+            <ul class=""><li class="listitem"><p>What was the balance when we looked at the system on 28-Jan-2005?
+                    </p><ul class=""><li class="listitem"><p>businessDate = 28-Jan-2005
+                            </p></li><li class="listitem"><p>processingDate = 28-Jan-2005</p></li></ul></li></ul>
+            <pre class="programlisting">Balance balance =
+    BalanceFinder.findOne(BalanceFinder.balanceId().eq(1234)
+        .and(BalanceFinder.businessDate().eq(timestamp28Jan2005))
+        .and(BalanceFinder.processingDate().eq(timestamp28Jan2005)));
+
+/*
+* SQL:
+* SELECT * FROM BALANCE t0
+* WHERE t0.ACCOUNT_I = 100
+* AND t0.FROM_Z &lt; '2005-01-28 18:30:00.000'
+* AND t0.THRU_Z &gt;= '2005-01-28 18:30:00.000'
+* AND t0.IN_Z &lt; '2005-01-28 18:30:00.000'
+* AND t0.OUT_Z &gt;= '2005-01-28 18:30:00.000'
+**/</pre>
+        </div><a name="N10BC1"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Diagram for balanceId = 1234</p>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporalGraph6.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">Balance balance =
+    BalanceFinder.findOne(BalanceFinder.balanceId().eq(1234)
+        .and(BalanceFinder.businessDate().eq(timestamp28Jan2005))
+        .and(BalanceFinder.processingDate().eq(timestamp28Jan2005)));
+
+/*
+* SQL:
+* SELECT * FROM BALANCE t0 WHERE t0.ACCOUNT_I = 100
+* AND t0.FROM_Z &lt; '2005-01-28 18:30:00.000'
+* AND t0.THRU_Z &gt;= '2005-01-28 18:30:00.000'
+* AND t0.IN_Z &lt; '2005-01-28 18:30:00.000'
+* AND t0.OUT_Z &gt;= '2005-01-28 18:30:00.000'
+**/
+
+System.out.println(balance.getAmount());
+//Prints: 100</pre>
+        </div><a name="N10BD6"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Querying Bi-Temporal data</p>
+            <ul class=""><li class="listitem"><p>Fetch all the history for a balance
+                    </p><ul class=""><li class="listitem"><p>Finder.businessDate().equalsEdgePoint() is your special friend</p></li></ul></li></ul>
+            <pre class="programlisting">BalanceList balances =
+    BalanceFinder.findMany(BalanceFinder.balanceId().eq(1234)
+        .and(BalanceFinder.businessDate().equalsEdgePoint()));
+/*
+* SQL:
+* SELECT * FROM BALANCE t0 WHERE t0.ACCOUNT_I = 100
+* AND t0.OUT_Z = '9999-12-01 23:59:00.000'
+**/</pre>
+        </div><a name="N10BEC"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Diagram for balanceId = 1234</p>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="BiTemporalGraph7.png" align="middle" height="252"/></td></tr></table>
+            <pre class="programlisting">BalanceList balances =
+    BalanceFinder.findMany(BalanceFinder.balanceId().eq(1234)
+        .and(BalanceFinder.businessDate().equalsEdgePoint()));
+
+/*
+* SQL:
+* SELECT * FROM BALANCE t0 WHERE t0.ACCOUNT_I = 100
+* AND t0.OUT_Z = '9999-12-01 23:59:00.000'
+**/
+
+System.out.println(balances);
+/*
+* Prints:
+* 1234 100.0 1-Jan-2005 12-Jan-2005
+* 1234 140.0 12-Jan-2005 5-Feb-2005
+* 1234 290.0 5-Feb-2005 1-Dec-9999
+**/</pre>
+        </div><a name="N10C01"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Chaining: Bi-Temporal: Other Methods</p>
+            <ul class=""><li class="listitem"><p>Reladomo offers special methods on dated objects:
+                    </p><ul class=""><li class="listitem"><p>insertUntil(Timestamp)
+                            </p></li><li class="listitem"><p>insertWithIncrement(), insertWithIncrementUntil(Timestamp)
+                            </p></li><li class="listitem"><p>increment___(T), increment___Until(T, Timestamp)
+                            </p></li><li class="listitem"><p>set___Until(T, Timestamp)
+                            </p></li><li class="listitem"><p>insertForRecovery(), purge(): beyond scope of this session</p></li></ul></li></ul>
+        </div><a name="N10C1F"/><div class="slide">
+            <h1 class="title">Chaining: Bi-Temporal</h1>
+            <p>Chaining: Bi-Temporal: Special Considerations</p>
+            <ul class=""><li class="listitem"><p>Bi-Temporal operations require transactions.</p><ul class=""><li class="listitem"><p>A single update or even insert could cause multiple rows to change / be inserted. The operations should happen atomically.
+                            </p></li><li class="listitem"><p>So, operations must occur in a transaction.</p></li></ul></li><li class="listitem"><p>Relationships between tables are typically done via a foreign key.</p><ul class=""><li class="listitem"><p>Chaining as described here for a single table, makes it impossible to have enforced foreign keys between tables. The virtual
+                                relationship between chained tables is therefore qualitatively different than non-chained tables.
+                            </p></li><li class="listitem"><p>It is important to realize that chained operation on a particular table must not be propagated to its dependent tables.</p></li></ul></li></ul>
+        </div><a name="N10C3F"/><div class="slide"><h1 class="title">Kata Exercise 6</h1></div><a name="N10C44"/><div class="slide">
+            <h1 class="title">Kata Exercise 6</h1>
+            <p>Chaining: Bi-Temporal</p>
+            <ul class=""><li class="listitem"><p>Find ExercisesBiTemporal.java; it has assertion failures if you run it as a test.
+                    </p></li><li class="listitem"><p>Figure out how to get the tests to pass using what you have seen so far.
+                    </p></li><li class="listitem"><p>Should take about 25 minutes.</p></li></ul>
+        </div><a name="N10C59"/><div class="slide"><h1 class="title">Reladomo Objects From Scratch</h1></div><a name="N10C5E"/><div class="slide">
+            <h1 class="title">Create Reladomo Object from Scratch: Checklist</h1>
+            <ul class=""><li class="listitem"><p>Create Reladomo Object XML file.</p><p>Example: MyObject.xml</p></li><li class="listitem"><p>Set PackageName, ClassName, and DefaultTableName</p></li><li class="listitem"><p>Add any AsOfAttributes as necessary.</p><p>Example: businessDate and processingDate</p></li><li class="listitem"><p>Mark Primary Key ID attributes with SimulatedSequences as needed</p></li><li class="listitem"><p>Add regular Attributes</p></li><li class="listitem"><p>Create Relationships as appropriate</p></li><li class="listitem"><p>Add entry to Reladomo Class List file.</p><p>Example: MithraTestAppClassList.xml</p></li><li class="listitem"><p>Add entry to the Reladomo Runtime Configuration.</p><p>Example: TestMithraRuntimeConfig.xml</p></li><li class="listitem"><p>Compile and Test – make sure you didn't break anything else.</p></li><li class="listitem"><p>Write tests for your new object.</p></li><li class="listitem"><p>Add data to your test data file.</p><p>Example: data_ObjectFromScratch.txt</p></li><li class="listitem"><p>Test again!</p></li></ul>
+        </div><a name="N10C95"/><div class="slide"><h1 class="title">Kata Exercise 7</h1></div><a name="N10C9A"/><div class="slide">
+            <h1 class="title">Kata Exercise 7</h1>
+            <p>Reladomo Object from Scratch</p>
+            <ul class=""><li class="listitem"><p>Find ExercisesObjectFromScratch.java; it has assertion failures if you run it as a test.
+                    </p></li><li class="listitem"><p>Figure out how to get the tests to pass using what you have seen so far.
+                    </p></li><li class="listitem"><p>Should take about 25 minutes.</p></li></ul>
+        </div><a name="N10CAF"/><div class="slide"><h1 class="title">Detached Objects</h1></div><a name="N10CB4"/><div class="slide">
+            <h1 class="title">Detached Objects: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Detached Objects are copies of Reladomo objects that support a lot of the original methods, but modifications are not immediately
+                        persisted.
+                    </p></li><li class="listitem"><p>A prime use-case for Detached Objects is where an object backs a GUI form</p><ul class=""><li class="listitem"><p>The user may change and edit the form fields several times before submitting or cancelling</p></li></ul></li></ul>
+            <pre class="programlisting">Automobile car = AutomobileFinder.findOne(...);
+boolean shouldSave = editUsingGui(car);
+if (shouldSave)
+{
+    // Persist changes to DB
+}
+else
+{
+    // Don't save changes
+}</pre>
+        </div><a name="N10CCA"/><div class="slide">
+            <h1 class="title">Detached Objects: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Detached Objects are copies of Reladomo objects that support a lot of the originals methods, but do not cause immediate changes to the
+                        database/cache
+                    </p><ul class=""><li class="listitem"><p>.getDetachedCopy()</p></li><li class="listitem"><p>
+                                .copyDetachedObjectToOriginalOrInsertIfNew()
+                            </p></li></ul></li></ul>
+            <pre class="programlisting">Automobile car = AutomobileFinder.findOne(...).getDetachedCopy();
+boolean shouldSave = editUsingGui(car);
+if (shouldSave)
+{
+    // Persist changes to DB
+    car.copyDetachedValuesToOriginalOrInsertIfNew();
+}
+else
+{
+    // Don't save changes
+}</pre>
+        </div><a name="N10CE0"/><div class="slide">
+            <h1 class="title">Detached Objects: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Detached Objects are copies of Reladomo objects that support a lot of the
+                        originals methods, but do not cause immediate changes to the database/cache
+                    </p><ul class=""><li class="listitem"><p>.getDetachedCopy()</p></li><li class="listitem"><p>.copyDetachedObjectToOriginalOrInsertIfNew()</p></li></ul></li></ul>
+            <pre class="programlisting">Automobile car = new Automobile();
+// don't even need getDetachedObject() here
+boolean shouldSave = editUsingGui(car);
+if (shouldSave)
+{
+    // Persist changes to DB
+    car.copyDetachedValuesToOriginalOrInsertIfNew();
+}
+else
+{
+    // Don't save changes
+}</pre>
+        </div><a name="N10CF6"/><div class="slide">
+            <h1 class="title">Detached Objects: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Detached Objects are copies of Reladomo objects that support a lot of the
+                        originals methods, but do not cause immediate changes to the database/cache
+                    </p><ul class=""><li class="listitem"><p>.getDetachedCopy()</p></li><li class="listitem"><p>.copyDetachedObjectToOriginalOrInsertIfNew()</p></li></ul></li><li class="listitem"><p>Detached objects can be reset</p></li></ul>
+            <pre class="programlisting">Automobile car = AutomobileFinder.findOne(...).getDetachedCopy();
+UserAction action = editUsingGui(car);
+switch (action)
+{
+    case UserAction.SAVE:
+        car.copyDetachedValuesToOriginalOrInsertIfNew();
+        break;
+    case UserAction.RESET_FORM:
+        car.resetFromOriginalPersistentObject();
+        break;
+    ...
+}</pre>
+        </div><a name="N10D0F"/><div class="slide">
+            <h1 class="title">Detached Objects: Introduction</h1>
+            <ul class=""><li class="listitem"><p>Detached Objects are copies of Reladomo objects that support a lot of the
+                        originals methods, but do not cause immediate changes to the database/cache
+                    </p><ul class=""><li class="listitem"><p>.getDetachedCopy()</p></li><li class="listitem"><p>.copyDetachedObjectToOriginalOrInsertIfNew()</p></li></ul></li><li class="listitem"><p>Detached objects can be reset</p></li><li class="listitem"><p>You can "clone" data: getNonPersistentCopy();
+                        </p><p>generateAndSet___();</p><p>
+                    </p></li></ul>
+            <pre class="programlisting">Automobile mitsubishiEclipse = AutomobileFinder.findOne(...);
+Automobile eagleTalon = mitsubishiEclipse.getNonPersistentCopy();
+eagleTalon.setBrandName("Eagle");
+eagleTalon.setModelName("Talon");
+// all other attributes remain same.
+// Example: engine size, number of seats, safety rating, etc.
+eagleTalon.generateAndSetAutomobileId();
+eagleTalon.insert();</pre>
+        </div><a name="N10D2F"/><div class="slide"><h1 class="title">Kata Exercise 8</h1></div><a name="N10D34"/><div class="slide">
+            <h1 class="title">Kata Exercise 8</h1>
+            <ul class=""><li class="listitem"><p>Find ExercisesDetachedObjects.java; it has assertion failures if you run it as a test.</p></li><li class="listitem"><p>Figure out how to get the tests to pass using what you have seen so far.</p></li><li class="listitem"><p>Should take about 10 minutes.</p></li></ul>
+        </div><a name="N10D46"/><div class="slide"><h1 class="title">MT Loader</h1></div><a name="N10D4B"/><div class="slide">
+            <h1 class="title">MT Loader</h1>
+            <ul class=""><li class="listitem"><p>Consider, a "feed" file which contains updates for a set of tables in the database.
+                    </p></li><li class="listitem"><p>Feed data needs to be loaded in the database as fast as possible.
+                    </p></li><li class="listitem"><p>Feed data can be in any form:</p><ul class=""><li class="listitem"><p>File, Web-Service endpoint output, EJB output, even other Database</p></li></ul></li><li class="listitem"><p>Assumption:</p><ul class=""><li class="listitem"><p>Feed contains all the new information for a known subset of the data in our tables</p></li></ul></li><li class="listitem"><p>Operations to perform:</p><ul class=""><li class="listitem"><p>Close out whatever is not in the feed</p></li><li class="listitem"><p>Insert whatever is in the feed but not in the database</p></li><li class="listitem"><p>Update anything that matches</p></li></ul></li><li class="listitem"><p>All this should happen asynchronously and very fast. Let's see how!</p></li></ul>
+        </div><a name="N10D77"/><div class="slide">
+            <h1 class="title">MT Loader</h1>
+            <ul class=""><li class="listitem"><p>Consider a simple table, Pet with pet's name and age
+                    </p><ul class=""><li class="listitem"><p>Primary key – name: used to decide whether two sets match
+                            </p></li><li class="listitem"><p>Existing data DSet. Update feed FSet
+                            </p></li></ul></li><li class="listitem"><p>Operations which should be performed</p><ul class=""><li class="listitem"><p>Chirpy is in FSet but not in DSet -&gt; Insert Row
+                            </p></li><li class="listitem"><p>Speedy, Wuzzy are in DSet but not in FSet -&gt; Closed Out Rows.
+                            </p></li><li class="listitem"><p>Tabby is in both sets, but age is different -&gt; Update only age.
+                            </p></li><li class="listitem"><p>Fuzzy is in both sets but nothing has changed -&gt; Do Nothing.
+                            </p></li></ul></li></ul>
+            <table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="720"><tr style="height: 252px"><td align="center"><img src="MTLoader.png" align="middle" height="252"/></td></tr></table>
+        </div><a name="N10DA1"/><div class="slide">
+            <h1 class="title">MT Loader</h1>
+            <p>D/b data in SERIAL. Input data in SERIAL.</p>
+            <pre class="programlisting">SingleQueueExecutor singleQueueExecutor =
+    new SingleQueueExecutor(
+        NUMBER_OF_THREADS,
+        PetFinder.petName().ascendingOrderBy(),
+        BATCH_SIZE,
+        PetFinder.getFinderInstance(),
+        INSERT_THREADS);
+
+MatcherThread &lt;Pet&gt; matcherThread = new MatcherThread&lt;&gt;(
+    singleQueueExecutor,
+    new Extractor[]{PetFinder.petName()});
+matcherThread.start();
+
+PetList dbList = PetFinder.findMany(PetFinder.all());
+matcherThread.addDbRecords(dbList);
+matcherThread.setDbDone();
+
+matcherThread.addFileRecords(getInputPetList());
+matcherThread.setFileDone();
+
+matcherThread.waitTillDone();</pre>
+            <ul class=""><li class="listitem"><p>singleQueueExecutor is the Executor which MatcherThread requires</p></li><li class="listitem"><p>Extractor is the entity on which matcher thread will match</p></li><li class="listitem"><p>dbList are the database records</p></li><li class="listitem"><p>FileRecords are the input data</p></li></ul>
+        </div><a name="N10DBC"/><div class="slide">
+            <h1 class="title">MT Loader</h1>
+            <p>D/b data in PARALLEL. Input data in SERIAL.</p>
+            <pre class="programlisting">SingleQueueExecutor singleQueueExecutor =
+    new SingleQueueExecutor(
+        NUMBER_OF_THREADS,
+        PetFinder.petName().ascendingOrderBy(),
+        BATCH_SIZE,
+        PetFinder.getFinderInstance(),
+        INSERT_THREADS);
+
+MatcherThread &lt;Pet&gt; matcherThread = new MatcherThread&lt;&gt;(
+    singleQueueExecutor,
+    new Extractor[]{PetFinder.petName()});
+matcherThread.start();
+
+PetList dbList = PetFinder.findMany(PetFinder.all());
+DbLoadThread dbLoadThread = new DbLoadThread(dbList, null, matcherThread);
+dbLoadThread.start();
+
+matcherThread.addFileRecords(getInputPetList());
+matcherThread.setFileDone();
+
+matcherThread.waitTillDone();</pre>
+            <ul class=""><li class="listitem"><p>singleQueueExecutor is the Executor which MatcherThread requires</p></li><li class="listitem"><p>Extractor is the entity on which matcher thread will match</p></li><li class="listitem"><p>dbList are the database records</p></li><li class="listitem"><p>FileRecords are the input data</p></li></ul>
+        </div><a name="N10DD7"/><div class="slide">
+            <h1 class="title">MT Loader</h1>
+            <p>D/b data in PARALLEL. Input data in PARALLEL.</p>
+            <pre class="programlisting">SingleQueueExecutor singleQueueExecutor =
+    new SingleQueueExecutor(
+        NUMBER_OF_THREADS,
+        PetFinder.petName().ascendingOrderBy(),
+        BATCH_SIZE,
+        PetFinder.getFinderInstance(),
+        INSERT_THREADS);
+
+MatcherThread &lt;Pet&gt; matcherThread = new MatcherThread&lt;&gt;(
+    singleQueueExecutor,
+    new Extractor[]{PetFinder.petName()});
+matcherThread.start();
+
+PetList dbList = PetFinder.findMany(PetFinder.all());
+DbLoadThread dbLoadThread = new DbLoadThread(dbList, null, matcherThread);
+dbLoadThread.start();
+
+PlainInputThread inputThread = new PlainInputThread(new InputDataLoader(), matcherThread);
+inputThread.run();
+
+matcherThread.waitTillDone();</pre>
+            <ul class=""><li class="listitem"><p>singleQueueExecutor is the Executor which MatcherThread requires</p></li><li class="listitem"><p>Extractor is the entity on which matcher thread will match</p></li><li class="listitem"><p>dbList are the database records</p></li><li class="listitem"><p>inputThread is for the input data. PlainInputThread can be used for input sources like files.</p></li></ul>
+        </div><a name="N10DF3"/><div class="slide"><h1 class="title">Kata Exercise 9</h1></div><a name="N10DF8"/><div class="slide">
+            <h1 class="title">Kata Exercise 9</h1>
+            <p>MT Loader</p>
+            <ul class=""><li class="listitem"><p>Find ExercisesMTLoader.java; it has assertion failures if you run it as a test.</p></li><li class="listitem"><p>Figure out how to get the tests to pass using what you have seen so far.
+                    </p></li><li class="listitem"><p>Should take about 15 minutes.</p></li></ul>
+        </div></body></html>
