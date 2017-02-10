@@ -66,6 +66,9 @@ We haven't come up with an instruction for NetBeans yet.
 
 Kata Presentation
 -----------------
+### Slides available online
+You can access the slides for the [Main Kata](https://goldmansachs.github.io/reladomo-kata/main-kata-presentation/ReladomoKata.xhtml) and [Mini Kata](https://goldmansachs.github.io/reladomo-kata/mini-kata-presentation/MiniKataPresentation.xhtml) online.
+
 ### IntelliJ IDEA users
 Run the Maven task "site" to generate slides for the kata.
 It should generate the presentation.
