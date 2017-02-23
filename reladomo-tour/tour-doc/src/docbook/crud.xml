@@ -1,0 +1,288 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2016 Goldman Sachs.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  -->
+
+<chapter >
+    <title>CRUD Operations</title>
+        <para>This chapter demonstrates basic CRUD (Create, Read, Update, Delete) operations using Reladomo.</para>
+        <para>
+            Imagine that we want to build a REST API for our bank. The API for <code>Customer</code> could look like this. 
+        </para>
+        <programlisting language="java"><![CDATA[GET    /customer              Get all Customers
+GET    /customer/{id}         Get a Customer by id
+GET    /customer/{lastName}   Get all Customers by last name.
+POST   /customer              Create a Customer with the POST payload
+PUT    /customer/{id}         Update the details of a Customer
+DELETE /customer/{id}         Delete a Customer]]></programlisting>
+        <para>
+            To implement each of the above listed APIs, we need to use Reladomo to create, fetch and modify objects in the database.
+        </para>
+        <sect1>
+            <title>Object Creation (C)</title>
+            <para>
+                Creating objects is straightfoward in Reladomo. For each <code>MithraObject</code>, Reladomo generates a no-arg constructor.
+                Simply invoke the constructor and the generated setter methods. These methods correspond to the attributes defined in the <code>MithraObject</code> XML.
+                Then insert the object by invoking the generated <code>insert</code> method.
+                The implementation of the <code>POST</code> API for the <code>Customer</code>, will invoke the following code.
+            </para>
+            <programlisting language="java"><![CDATA[Customer mickey = new Customer();
+mickey.setCustomerId(123);
+mickey.setFirstName("Mickey");
+mickey.setLastName("Mouse");
+]]></programlisting>
+            <para>
+                Invoking multiple setters is clunky. This can be improved by adding a custom constructor to the generated <code>Customer</code> class.
+            </para>
+            <programlisting language="java"><![CDATA[public Customer(int customerId, String firstName, String lastName)
+{
+    super();
+    this.setCustomerId(customerId);
+    this.setFirstName(firstName);
+    this.setLastName(lastName);
+}]]></programlisting>
+            <note>
+                The generated classes are meant to be modified. However, the default no-arg constructor has to be preserved as it is used internally by Reladomo.
+                When adding a custom constructor make sure to call the no-arg constructor.
+            </note>
+            <sect2>
+                <title>Cascaded Insert</title>
+                <para>
+                    Consider the case where we want to create (insert) a <code>Customer</code> and his/her <code>CustomerAccount</code>
+                    . The naive approach is to instantiate and insert each object individually.
+                    Another option is to wire up the object graph and let Reladomo cascade the inserts.
+                </para>
+                <programlisting language="java"><![CDATA[Customer mickey = new Customer();
+mickey.setCustomerId(123);
+mickey.setFirstName("Mickey");
+mickey.setLastName("Mouse");
+
+CustomerAccount savingsAccount = new CustomerAccount();
+savingsAccount.setAccountId(1000);
+savingsAccount.setBalance(100);
+savingsAccount.setAccountType("savings");
+
+mickey.getAccounts().add(savingsAccount);
+
+mickey.cascadeInsert();]]></programlisting>
+                <para>
+                    When using cascading inserts, make sure the <code>relatedIsDependent="true"</code> attribute is enabled on the <code>Relationship</code> definition in the <code>MithraObject</code> XML.
+                </para>
+            </sect2>
+            <para>
+                In the snippet above, the <code>cascadeInsert</code> inserts both the objects. However, the inserts are not atomic.
+                If atomic inserts are needed, simply wrap the insert in a transaction.
+            </para>
+            <programlisting language="java"><![CDATA[MithraManagerProvider.getMithraManager().executeTransactionalCommand((tx) -> {
+    Customer mickey = new Customer();
+    mickey.setCustomerId(123);
+    mickey.setFirstName("Mickey");
+    mickey.setLastName("Mouse");
+
+    CustomerAccount savingsAccount = new CustomerAccount();
+    savingsAccount.setAccountId(1000);
+    savingsAccount.setBalance(100);
+    savingsAccount.setAccountType("savings");
+
+    mickey.getAccounts().add(savingsAccount);
+
+    mickey.cascadeInsert();
+    return null;
+});]]></programlisting>
+        </sect1>
+        <sect1>
+            <title>Object Read (R)</title>
+            <para>
+                Objects are read using generated classes called <code>Finder</code>s. There are two parts to a finder. The first is the <code>Operation</code>. An operation corresponds to an expression in a SQL <code>where</code> clause.
+                For each attribute in the <code>MithraObject</code>, Reladomo generates a method
+                named after the attribute. These methods return <code>Attribute</code> objects
+                which in turn expose methods that return <code>Operation</code>s.
+            </para>
+            <programlisting language="java"><![CDATA[StringAttribute<Customer> firstNameAttribute = CustomerFinder.firstName();
+Operation firstNameOperation = firstNameAttribute.eq("Mickey");
+
+IntegerAttribute<Customer> idAttribute = CustomerFinder.customerId();
+Operation idOperation = idAttribute.in(IntSets.immutable.of(123, 456, 789));
+]]></programlisting>
+            <para>
+                Operations can also be chained. Once an operation is built, one of the generated <code>findMany</code>, <code>findOne</code> methods is used to actually fetch the objects.
+            </para>
+            <programlisting language="java"><![CDATA[CustomerList mickeys = CustomerFinder.findMany(firstNameOperation);]]></programlisting>
+            <para>
+                Here are some snippets that are used to implement the <code>GET</code> API for <code>Customer</code>.
+            </para>
+            <programlisting language="java"><![CDATA[public Customer getCustomerById(int customerId)
+{
+    return CustomerFinder.findByPrimaryKey(customerId);
+}
+
+public CustomerList getCustomersByLastName(String lastName)
+{
+    return CustomerFinder.findMany(CustomerFinder.lastName().eq(lastName));
+}]]></programlisting>
+            <note>
+                <title>Caching</title>
+                <para>When a <code>Finder</code> is invoked, Reladomo normally constructs a SQL query and executes it against the database. However, this is not always the case. If the object has been cached in memory, Reladomo will return the cached object instead of hitting the database.</para>
+            </note>
+            <sect2>
+                <title>Cursors</title>
+                <para>When a finder that returns a list is invoked, the entire list is forced into memory. This is not ideal if the list is huge. In such cases, it is better to iterate over the list with a cursor.
+                 The snippet below iterates over the first hundred Customers. The cursor is terminated when the <code>DoWhileProcedure</code> lambda returns false.
+                </para>
+                <programlisting language="java"><![CDATA[CustomerList customers = ...;
+MutableIntSet ids = IntSets.mutable.empty();
+customers.forEachWithCursor(o -> {
+    Customer p = (Customer)o;
+    ids.add(p.getCustomerId());
+    return ids.size() < 100;
+});]]></programlisting>
+            </sect2>
+            <sect2>
+                <title>Deep Fetch</title>
+                <para>
+                    Consider the case of fetching related objects. Let's say we have a customer and are interested in all the accounts owned by this customer. A naive approach to implementing this looks as follows.
+                </para>
+                <programlisting language="java"><![CDATA[CustomerList customers = CustomerFinder.findMany(CustomerFinder.firstName().eq("mickey"));
+MutableList<Object> mickeysAccounts = Lists.mutable.empty();
+for (Customer customer : customers)
+{
+    for (CustomerAccount account : customer.getAccounts())
+    {
+        mickeysAccounts.add(account.getAccountId());
+    }
+}]]></programlisting>
+                <para>If there is a single customer with first name "mickey" and he has five accounts,
+                    the above snippet results in six database hits.
+                The first hit is to fetch the record for mickey (line 1). There are five more hits to the database,
+                    one per account (line 7). In ORM literature, this anti-pattern is referred to as the <emphasis>N+1 query problem</emphasis>.
+                </para>
+                <para>
+                    Clearly this can be very inefficient for large lists. This problem is fixed by using a "deep fetch". When a deep fetch is performed, Reladomo will not only fetch the object in question, but will also traverse the relationship graph to fetch related objects. The above example using deep fetch is as follows.
+                </para>
+                <programlisting language="java"><![CDATA[CustomerList customers = CustomerFinder.findMany(CustomerFinder.firstName().eq("mickey"));
+
+customers.deepFetch(CustomerFinder.accounts());  // configure deep fetch
+
+MutableList<Object> mickeysAccounts = Lists.mutable.empty();
+for (Customer customer : customers)
+{
+    for (CustomerAccount account : customer.getAccounts())
+    {
+        mickeysAccounts.add(account.getAccountId());
+    }
+}]]></programlisting>
+                <para>
+                    All of the code remains the same except for line 2 where we configure the deep fetch. For each <code>Relationship</code> defined in the <code>MithraObject</code>, Reladomo generates a related finder instance which can be used to fetch related objects.
+                    In this case, the <code>accounts</code> related finder is because of the <code>accounts</code> relationship between <code>Customer</code> and <code>CustomerAccount</code>.
+                </para>
+                <programlisting language="xml"><![CDATA[<Relationship name="accounts"
+    relatedObject="CustomerAccount"
+    cardinality="one-to-many"
+    reverseRelationshipName="customer">
+        this.customerId = CustomerAccount.customerId
+   </Relationship>
+]]></programlisting>
+                <para>
+                    Now with the deep fetch configured, Reladomo issues a single query against the database.
+                </para>
+            </sect2>
+        </sect1>
+    <sect1>
+        <title>Object Modification (U)</title>
+        <para>Objects retrieved via finders are "live" objects. Any changes made to these objects via the generated setters are reflected in the database immediately.</para>
+        <para>
+            In the following snippet, execution of the setter in line 2 results in a SQL update statement being executed against the database.
+        </para>
+        <programlisting language="java"><![CDATA[Customer mickey = CustomerFinder.findOne(CustomerFinder.firstName().eq("mickey"));
+mickey.setFirstName("SuperMickey");]]></programlisting>
+        <para>
+            In some cases this is not desirable. For example, you might want a set of updates to an object to be executed atomically. Or set a of updates to multiple objects be executed atomically.
+            In these cases, the solution is to wrap the updates in a transaction.
+        </para>
+        <programlisting language="java"><![CDATA[MithraManagerProvider.getMithraManager().executeTransactionalCommand((tx) -> {
+    Customer mickey = CustomerFinder.findOne(CustomerFinder.firstName().eq("mickey"));
+    mickey.setFirstName("Mickey");
+    mickey.setLastName("Mouse");
+    return null;
+});]]></programlisting>
+        <sect2>
+            <title>Detached Objects</title>
+            <para>
+                As described previously, an objected fetched via a Finder is a "live" object ; changes to which are immediately flushed to the database.
+                To disable these flushes, simply detach the object from the database.
+            </para>
+            <para>
+                Imagine you are building a UI that allows users to change multiple attributes of an account.
+                In this case, you do not want each change to be flushed to the database, since the user could decide
+                not apply his changes. Detached objects are handy in use cases like this, where there is a good chance
+                that changes made to an object might have to be discarded.
+            </para>
+            <programlisting language="java" linenumbering="numbered" startinglinenumber="1"><![CDATA[public void testDetached()
+{
+    Customer mickey = CustomerFinder.findByPrimaryKey(1);
+    assertEquals("mickey", mickey.getFirstName());
+
+    p.setFirstName("Mickey");
+    assertEquals("Mickey", CustomerFinder.findByPrimaryKey(1).getFirstName());
+
+    Customer detached = p.getDetachedCopy();
+    detached.setFirstName("SuperMickey");
+    assertEquals("Mickey", CustomerFinder.findByPrimaryKey(1).getFirstName());
+}]]></programlisting>
+        </sect2>
+        <para>
+            In the above snippet, the set of the first name in line 6 is flushed to the database right away.
+            In line 9 the object is detached via the <code>getDetachedCopy</code> method. After it has been detached, the set of the first name
+            in the subsequent line is not flushed to the database.
+        </para>
+        <para>
+            Detaching an object not only detaches that object, but the entire object graph attached to the object.
+        </para>
+        <note>
+            <title>Database flush</title>
+            <para>
+                In general a setter invocation results in the change being flushed to the database. But this is not always the case.
+                When inside a transaction, all updates are flushed only when the transaction is committed.
+            </para>
+        </note>
+    </sect1>
+    <sect1>
+        <title>Object Deletion (D)</title>
+        <para>
+            Deleting an object involves invoking the generated delete method.
+            <programlisting><![CDATA[Operation idOp = CustomerAccountFinder.accountId().eq(100);
+CustomerAccount account = CustomerAccountFinder.findOne(idOp);
+account.delete();]]></programlisting>
+        </para>
+        <para>
+            Similar to insert a cascading delete operation is available as well.
+            <example>
+                <title>simple-bank/CustomerResource.java</title>
+            </example>
+            <programlisting><![CDATA[@DELETE
+@Path("/{id}")
+public Response deleteCustomer(@PathParam("id") int customerId)
+{
+    Customer customer = CustomerFinder.findOne(CustomerFinder.customerId().eq(customerId));
+    customer.cascadeDelete();
+    return Response.ok().build();
+}]]></programlisting>
+        </para>
+        <para>
+            Similar to create and modification, deletes can be wrapped in a transaction as well.
+        </para>
+    </sect1>
+</chapter>

@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2016 Goldman Sachs.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  -->
+
+<chapter >
+    <title>Domain Modeling</title>
+    <para>
+        This chapter introduces domain modeling in Reladomo.
+        We start by building a domain model of an application and then
+        use Reladomo to generate classes and DDL statements off of the domain model.
+    </para>
+    <sect1>
+        <title>Domain Model</title>
+        <para>
+            A domain model represents the various entities in a system and their relationships.
+            Consider a backend application for a bank. A simple domain model of this application can be
+            expressed in UML as follows.
+        </para>
+        <figure id="chap11.fig" float="true">
+            <title>Bank Domain Model</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="domain-modeling/simplebank-domain.png" scale="75"/>
+                </imageobject>
+                <textobject>
+                    <phrase>Bank Domain Model</phrase>
+                </textobject>
+            </mediaobject>
+        </figure>
+        <para>
+            We have two entities : <code>Customer</code> and <code>CustomerAccount</code>.
+            We start by defining the attributes of each entity and some metadata in a <code>MithraObject</code> XML file.
+        </para>
+        <example>
+            <title>tour-examples/simple-bank/Customer.xml</title>
+            <programlisting language="xml"><![CDATA[
+<MithraObject objectType="transactional"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="mithraobject.xsd">
+
+    <PackageName>simplebank.domain</PackageName>
+    <ClassName>Customer</ClassName>
+    <DefaultTable>CUSTOMER</DefaultTable>
+
+    <Attribute name="customerId" javaType="int"
+            columnName="CUSTOMER_ID"  primaryKey="true"/>
+    <Attribute name="firstName" javaType="String"
+            columnName="FIRST_NAME"  nullable="false" maxLength="64"/>
+    <Attribute name="lastName" javaType="String"
+            columnName="LAST_NAME"  nullable="false" maxLength="64"/>
+    <Attribute name="country"  javaType="String"
+            columnName="COUNTRY"  nullable="false" maxLength="48"/>
+
+</MithraObject>]]></programlisting>
+        </example>
+        <example>
+        <title>tour-examples/simple-bank/CustomerAccount.xml</title>
+            <programlisting language="xml"><![CDATA[<MithraObject objectType="transactional"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="mithraobject.xsd">
+
+    <PackageName>simplebank.domain</PackageName>
+    <ClassName>CustomerAccount</ClassName>
+    <DefaultTable>CUSTOMER_ACCOUNT</DefaultTable>
+
+    <Attribute name="accountId" javaType="int"
+            columnName="ACCOUNT_ID" primaryKey="true"/>
+    <Attribute name="customerId" javaType="int"
+            columnName="CUSTOMER_ID" nullable="false"/>
+    <Attribute name="accountName"  javaType="String"
+            columnName="ACCOUNT_NAME" nullable="false" maxLength="48"/>
+    <Attribute name="accountType" javaType="String"
+            columnName="ACCOUNT_TYPE" nullable="false" maxLength="16"/>
+    <Attribute name="balance" javaType="double"
+            columnName="BALANCE"/>
+
+</MithraObject>]]></programlisting>
+        </example>
+        <para>
+            These XML files contain metadata that allows Reladomo to map entities to Java classes (e.g. <code>ClassName</code>, <code>javaType</code>) and to database tables (e.g. <code>DefaultTable</code>, <code>columName</code>). The XML schema definition (<code>mithraobject.xsd</code>) explains the various components in detail.
+        </para>
+        <sect2>
+            <title>Primary Keys</title>
+            <para>
+                In Reladomo, each object requires a primary key.
+                A primary key might be composed of a single attribute or multiple attributes.
+                For the <code>Customer</code> object, the <code>customerId</code> attribute is unique. So we simply include a <code>primaryKey</code> tag.
+            </para>
+            <programlisting language="xml"><![CDATA[<Attribute name="customerId" javaType="int" columnName="CUSTOMER_ID" primaryKey="true"/>]]></programlisting>
+            <para>
+                A primary key can also be composed of multiple attributes. If the full name (first name and last name) of a <code>Customer</code> where unique,
+                we can create a primary key by adding the <code>primaryKey</code> attribute to both these attributes.
+            </para>
+                <programlisting language="xml"><![CDATA[
+<Attribute name="firstName" javaType="String"
+        columnName="FIRST_NAME" maxLength="16" primaryKey="true"/>
+<Attribute name="lastName" javaType="String"
+        columnName="LAST_NAME" maxLength="24" primaryKey="true"/>]]></programlisting>
+            <para>
+                In some cases, a natural primary key does not exist. We can ask Reladomo to generate a primary key by using the <code>primaryKeyGeneratorStrategy</code>. Primary key generation is discussed in other Reladomo documentation.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Relationships</title>
+            <para>
+                In the bank a <code>Customer</code> is related to <code>CustomerAccount</code>s. More specifically a customer can have one or more accounts.
+            </para>
+            <programlisting language="xml"><![CDATA[<Relationship name="accounts"
+            relatedObject="CustomerAccount"
+            cardinality="one-to-many"
+        this.customerId = CustomerAccount.customerId
+</Relationship>
+]]></programlisting>
+            <para>
+                The relationship definition contains the expression that relates the two objects. In this
+                case, <code>Customer</code> and <code>CustomerAccount</code> are related by the <code>customerId</code> attribute.
+                The relationship also influences Reladomo's code generation. In particular, the <code>Customer</code> class will have a
+                <code>getAccounts</code> method. This is because the name of the relationship is <code>accounts</code>.
+            </para>
+
+            <para>
+                Sometimes it is desirable to navigate relationships in the reverse direction. e.g. given a <code>CustomerAccount</code>
+                navigate to the <code>Customer</code> that owns it. This can be implemented by adding another
+                <code>Relationship</code> in the XML for <code>CustomerAccount</code> linking it to <code>Customer</code>.
+                A better approach is to use a single <code>Relationship</code> in <code>Customer</code>, but add the <code>reverseRelationshipName</code> attribute.
+            </para>
+            <programlisting language="xml"><![CDATA[<Relationship name="accounts"
+            relatedObject="CustomerAccount"
+            cardinality="one-to-many"
+            reverseRelationshipName="customer">
+        this.customerId = CustomerAccount.customerId
+</Relationship>
+]]></programlisting>
+            <para>
+                Using the <code>reverseRelationshipName</code> attribute provides the benefit of a single definition but with the code generated for both the classes.
+            </para>
+            <para>
+                Here is the full listing of all the <code>MithraObject</code>s.
+            </para>
+            <example>
+                <title>tour-examples/simple-bank/Customer.xml</title>
+                <programlisting language="xml"><![CDATA[<MithraObject objectType="transactional"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="mithraobject.xsd">
+
+    <PackageName>simplebank.domain</PackageName>
+    <ClassName>Customer</ClassName>
+    <DefaultTable>CUSTOMER</DefaultTable>
+
+    <Attribute name="customerId"  javaType="int"
+            columnName="CUSTOMER_ID" primaryKey="true"/>
+    <Attribute name="firstName"  javaType="String"
+            columnName="FIRST_NAME"  nullable="false" maxLength="64"/>
+    <Attribute name="lastName"  javaType="String"
+            columnName="LAST_NAME"  nullable="false" maxLength="64"/>
+    <Attribute name="country"  javaType="String"
+            columnName="COUNTRY"  nullable="false" maxLength="48"/>
+
+   <Relationship name="accounts" relatedObject="CustomerAccount" cardinality="one-to-many" reverseRelationshipName="customer" relatedIsDependent="true">
+        this.customerId = CustomerAccount.customerId
+   </Relationship>
+
+</MithraObject>
+]]></programlisting>
+            </example>
+            <example>
+                <title>tour-examples/simple-bank/CustomerAccount.xml</title>
+                <programlisting language="xml"><![CDATA[<MithraObject objectType="transactional"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="mithraobject.xsd">
+
+    <PackageName>simplebank.domain</PackageName>
+    <ClassName>CustomerAccount</ClassName>
+    <DefaultTable>CUSTOMER_ACCOUNT</DefaultTable>
+
+    <Attribute name="accountId"  javaType="int"
+            columnName="ACCOUNT_ID" primaryKey="true"/>
+    <Attribute name="customerId"  javaType="int"
+            columnName="CUSTOMER_ID" nullable="false"/>
+    <Attribute name="accountName" javaType="String"
+            columnName="ACCOUNT_NAME" nullable="false" maxLength="48"/>
+    <Attribute name="accountType" javaType="String"
+            columnName="ACCOUNT_TYPE" nullable="false" maxLength="16"/>
+    <Attribute name="balance"  javaType="double"
+            columnName="BALANCE"/>
+</MithraObject>]]></programlisting>
+            </example>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Code Generation</title>
+        <para>
+            To generate classes, Reladomo has to be told about the <code>MithraObject</code>s that it should generate code for.
+            This is done via a <code>MithraClassList</code>.
+        </para>
+        <example>
+            <title>tour-examples/simple-bank/SimpleBankClassList.xml</title>
+            <programlisting language="xml"><![CDATA[<Mithra>
+    <MithraObjectResource name="Customer"/>
+    <MithraObjectResource name="CustomerAccount" />
+</Mithra>]]></programlisting>
+        </example>
+        <para>
+            With the class list created, we can generate classes by invoking an Ant task with the class list as input. Here is a snippet showing the Ant task being invoked from Maven.
+        </para>
+        <example>
+            <title>tour-examples/simple-bank/pom.xml</title>
+            <programlisting language="xml"><![CDATA[<taskdef name="gen-reladomo" classpath="plugin_classpath"
+            classname="com.gs.fw.common.mithra.generator.MithraGenerator"/>
+<gen-reladomo
+    xml="${project.basedir}/src/main/reladomoxml/SimpleBankClassList.xml"
+    generateGscListMethod="true"
+    generatedDir="${project.build.directory}/generated-sources/reladomo"
+    nonGeneratedDir="${project.basedir}/src/main/java"/>
+
+    // elided for brevity
+]]></programlisting>
+        </example>
+        <para>
+            The code generator generates two sets of classes.
+            These are sent to different source directores via the <code>generatedDir</code> and <code>nonGeneratedDir</code>
+            attributes. The classes in <code>generatedDir</code> (below figure on the left) are Reladomo framework classes which are always generated. (i.e on every run of the code generator).
+            These should never be committed to a version control system.
+        </para>
+        <para>
+            The classes under <code>nonGeneratedDir</code> (below figure on the right) are the main domain classes.
+            Your business logic can be added to these classes and they can be committed to a version control system.
+            Because you could have custom business logic in these classes, the code generator will not re-generate these classes if they already exist in the target directory.
+        </para>
+        <para>
+            <figure id="generated.fig" float="true">
+            <title>Simple Bank - Generated Classes</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata scale="75" fileref="domain-modeling/simplebank-generated-nongenerated.png" />
+                </imageobject>
+            </mediaobject>
+            </figure>
+        </para>
+    </sect1>
+    <sect1>
+        <title>Database DDL Generation</title>
+        <para>
+            Reladomo not only generates Java classes but can also generate DDL statements for bootstrapping the application database.
+            These include scripts to create tables, indices and foreign keys. DDL generation is an optional feature of Reladomo. You can always choose to manually create database tables that map to the various <code>MithraObject</code>s.
+        </para>
+        <para>
+            Similar to code generation, the DDL generator is invoked with the <code>MithraClassList</code> containing the
+            <code>MithraObject</code>s for which you want DDLs generated. It also has to be told the type of database for which DDLs have to be generated.
+        </para>
+        <para>Here is a snippet showing the DDL generator Ant task being invoked from Maven.</para>
+        <example>
+            <title>tour-examples/simple-bank/pom.xml</title>
+            <programlisting language="xml"><![CDATA[<tasks><property name="plugin_classpath" refid="maven.plugin.classpath"/>
+    <taskdef name="gen-reladomo-db" classpath="plugin_classpath"
+                classname="com.gs.fw.common.mithra.generator.dbgenerator.MithraDbDefinitionGenerator"/>
+    <gen-reladomo-db
+        xml="${project.basedir}/src/main/reladomoxml/SimpleBankClassList.xml"
+        generatedDir="${project.build.directory}/generated-resources/db"
+        databaseType="UDB82"/>
+
+        // elided for brevity
+</tasks>
+]]></programlisting>
+        </example>
+        <para>
+            Running the DDL generator, produces the following files. <code>.ddl</code> files contain the create table statements. <code>.idx</code> and <code>.fk</code> files
+            contain the statements for creating indices and foreign keys.
+        </para>
+        <figure id="ddl.fig">
+            <title>Simple Bank - Generated DDL</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="domain-modeling/simplebank-generated-ddl.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <note>
+            <title>Optimal DDLs</title>
+            <para>
+                The DDLs generated by Reladomo are not meant to be used as is. They are merely meant to be a starting point for further customization.
+                There are two common reasons to customize the generated DDLs. One is to add database specific clauses for specifying table spaces, schemas etc.
+                Another is to add additional indices based on usage patterns seen in the application.
+            </para>
+        </note>
+    </sect1>
+    <sect1>
+        <title>References</title>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis>
+                            <ulink url="https://goldmansachs.github.io/reladomo/xsddoc/index.html">Object Definition Reference</ulink>
+                        </emphasis>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis>
+                            <ulink url="https://goldmansachs.github.io/reladomo/primaryKeyGenerator/PrimaryKeyGenerator.html">Primary Key Generation</ulink>
+                        </emphasis>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis>
+                            <ulink url="https://goldmansachs.github.io/reladomo/mithraddl/ReladomoDdlGenerator.html">Database Definition Generators</ulink>
+                        </emphasis>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis>
+                            <ulink url="https://goldmansachs.github.io/reladomo/objectxmlgenerator/Generator.html">Object XML Generator</ulink>
+                        </emphasis>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis>
+                            <ulink url="https://goldmansachs.github.io/reladomo/visualization/ReladomoVisualization.html">Visualize Domain Model Using Reladomo Metadata</ulink>
+                        </emphasis>
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </sect1>
+</chapter>

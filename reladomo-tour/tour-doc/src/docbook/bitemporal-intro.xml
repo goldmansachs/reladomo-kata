@@ -1,0 +1,303 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2016 Goldman Sachs.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  -->
+
+<chapter >
+    <title>Bitemporal Chaining</title>
+    <para>
+        This chapter introduces the concept of bitemporal chaining for
+        relational databases. Continuing the bank example, it shows
+        how by using bitemporal chaining, it is easy to make corrections to historical data without losing
+        any history.
+    </para>
+    <sect1>
+        <title>Motivating Example - The SlowBank</title>
+        <para>
+            Consider the case of the "SlowBank".
+            The bank has several ATMs but the ATM's connectivity to the bank's backend systems is flaky.
+            When an ATM is not able to communicate with the bank's backend, ATM transactions are recorded
+            locally. Later someone is sent to fetch these local transactions which are manually applied to the
+            bank's database.
+        </para>
+        <para>
+            This delay in updating the bank's database means that your bank balance is not always upto date.
+            Sometimes the bank says you have less money than you actually have ; sometimes it says you have more money than you actually have!
+            All of this is very frustrating. But the bank happily adjusts your balance everytime you report a discrepancy.
+        </para>
+        <para>
+            However, the bank has a new problem. They have been manually adjusting the balance so many times, that they are completely unable to reason about your account's history.
+            Lucikly, they have learnt about bitemporal chaining that will help them fix these problems.
+        </para>
+    </sect1>
+    <sect1>
+        <title>
+            Bitemporal Chaining
+        </title>
+        <para>
+            In bitemporal chaining, all changes to a database are tracked along two dimensions.
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Business Time - This is when the change actually occurred in the world
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Processing Time - This is when the change actually was recorded in the database
+                    </para>
+                </listitem>
+            </itemizedlist>
+            While these two times are often the same, they can be different.
+        </para>
+    </sect1>
+    <sect1>
+        <title>Bitemporal Updates To An Account</title>
+        <para>
+            In this section we look at a sequence of transactions to an account and demonstrate how bitemporal chaining is used to capture history.
+        </para>
+        <sect2>
+            <title>Jan 1 - Open an account with $100</title>
+            <para>
+                On Jan 1 you open a new bank account with a balance of $100. The bank updates it's database (table) with an entry for your account.
+                Since bitemporal chaining is being used, each row in the table has four timestamp columns:
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            FROM_Z and THRU_Z track the validity of the row along the business time dimension
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            IN_Z and OUT_Z track the validity of the row along the processing time dimension
+                        </para>
+                    </listitem>
+                </itemizedlist>
+                The table looks as follows. (The number to the right of every row provides an easy way to refer to rows in this document.)
+                <figure id="bitemporal1.fig">
+                    <title>Bank Account On Jan 1</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="bitemporal-intro/bitemporal-1.png" scale="80"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                Row 1 records the following facts:
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            The account was created on today (Jan 1). So FROM_Z = Jan 1. This example will use dates (formatted as 'Jan 1' for simplicity) instead of timestamps.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            The account was added to the database today (Jan 1). So IN_Z = Jan 1
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            This is the only row for this account. And we mark these rows as valid by setting the THRU_Z and OUT_Z to Infinity. Infinity is a magic timestamp chosen such that it cannot possibly be a valid date in the system e.g. 9999/1/1.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                The chart on the right (which is not drawn to scale), is a handy tool to visualize the progression of
+                the chaining. The chart visualizes each row as a rectangle. In this case, there is only one row that extends
+                to infinity along both the time dimensions.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Jan 17 - Deposit $50</title>
+            <para>
+                A few days later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
+                the ATM does not send your deposit to the bank right away. While you walk away thinking your account has $150, your account actually has only $100.
+            </para>
+            <warning>
+                <title>Missed Deposit !!</title>
+                <para>
+                    The table remains unchanged as the deposit was never posted to the account.
+                </para>
+            </warning>
+            <figure id="bitemporal2.fig">
+                <title>Bank Account On Jan 17</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="bitemporal-intro/bitemporal-2.png" scale="80"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </sect2>
+        <sect2>
+            <title>Jan 20 - Deposit $200</title>
+            <para>
+                A few days later, on Jan 20 you deposit $200 at one of the ATMs.
+            </para>
+            <para>
+                The goal of bitemporal milestoning is to track changes along both dimensions. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either as that loses history.
+            </para>
+            <para>
+                In general, making changes to a bitemporally chained database is a two step process :
+                <itemizedlist>
+                    <listitem>
+                        <para>Invalidate rows whose view of the world is incorrect
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>Add new rows to reflect the new view of the world
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <sect3>
+                <title>Invalidating Rows</title>
+                <para>
+                    Row 1 currently states that the balance is $0 from Jan 1 to Infinity. This is not true anymore as the bank just accepted a $200 deposit on Jan 20. So we invalidate Row 1 by setting its OUT_Z to today (Jan 20).
+                </para>
+                <figure id="bitemporal31.fig">
+                    <title>Bank Account On Jan 20 - After invalidating existing rows</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="bitemporal-intro/bitemporal-31.png" scale="80" />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect3>
+            <sect3>
+                <title>Adding new rows</title>
+                <para>
+                    Our new view of the world is as follows :
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                From Jan 1 to Jan 20, balance = $100 (opening balance)
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                From Jan 20 to Infinity, balance = $300 (opening balance + $200 deposit)
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    So we add Rows 2 and 3 to capture these facts. The IN_Z and OUT_Z of these rows captures the fact that these changes were made today and that these rows represent the latest state of the account (i.e OUT_Z is Infinity)
+                </para>
+                <figure id="bitemporal32.fig">
+                    <title>Bank Account On Jan 20 - After adding new rows</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="bitemporal-intro/bitemporal-32.png" scale="80" />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Jan 25 - Correct the missing $50</title>
+            <para>
+                On Jan 25 you check your bank account and realize that the $50 deposit on Jan 17 has not been posted to the account.
+                Furious, you call the bank to complain. They are apologetic and are willing to update the account.
+            </para>
+            <para>
+                Just as before, the bank wants to preserve history in both dimensions. They follow the same approach :
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            Invalidate rows whose view of the world is incorrect
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Add new rows to reflect the new view of the world
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <sect3>
+                <title>Invalidate rows</title>
+                <para>
+                    Row 1 is already invalid. It does not need to be updated.
+                </para>
+                <para>
+                    Rows 2 and 3 are invalid along the business time dimension. However, we want to preserve the fact that they are invalid. So we invalidate them by setting their OUT_Z to today (Jan 25).
+                </para>
+                <figure id="bitemporal41.fig">
+                    <title>Bank Account On Jan 25 - After invalidating existing rows</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="bitemporal-intro/bitemporal-41.png" scale="80"  />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect3>
+            <sect3>
+                <title>
+                    Add new rows
+                </title>
+                <para>
+                    Our new view of the world is as follows :
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                From Jan 1 to Jan 17, balance = $100 (opening balance)
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                From Jan 17 to Jan 20, balance = $150 (opening balance + deposit of $50 on Jan 17)
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                From Jan 20 to Jan Infinity, balance = $1350 (opening balance + deposit of $50 on Jan 17 + deposit of $200 on Jan 20)
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    Since we are adding these rows today (Jan 25), the IN_Z of these newly added rows = Jan 25.
+                </para>
+                <figure id="bitemporal42.fig">
+                    <title>Bank Account On Jan 25 - After adding new rows</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="bitemporal-intro/bitemporal-42.png" scale="80"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect3>
+            <para>
+                To be more explicit about what we just did, we were able to go back in time and
+                record an update for Jan 17 (business time), along with recording the fact that this update was made today on Jan 25 (processing time).
+                This is the beauty of bitemporal chaining.
+            </para>
+            <para>
+                As you can see the visualization now shows a rectangle for each of the rows in the table. It should be clear that since rows are never deleted, we never lose history.
+            </para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>References</title>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis>
+                            <ulink url="http://www2.cs.arizona.edu/~rts/tdbbook.pdf">Developing Time-Oriented Database Applications in SQL, Richard T. Snodgrass</ulink>
+                        </emphasis>
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </sect1>
+</chapter>

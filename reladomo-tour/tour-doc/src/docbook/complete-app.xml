@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2016 Goldman Sachs.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  -->
+
+<chapter >
+    <title>A Complete Reladomo Application</title>
+    <para>
+        This chapter does not introduce any new Reladomo concepts. It uses all the concepts introduced
+        in the previous chapters to build a REST API for the bank domain model introduced in chapter 1.
+    </para>
+    <para>
+        It is assumed you have a basic familiarity with REST and building REST APIs with Jersey.
+    </para>
+    <sect1>
+        <title>Jersey Boilerplate</title>
+        <sect2>
+            <title>REST Resource</title>
+            <para>
+                The first step is to build a Jersey resource class that implements the REST API.
+                The implementation of the API uses the Reladomo CRUD APIs that were reviewed in the previous chapter.
+            </para>
+            <para>
+                The <code>CustomerResource</code> class implements the <code>Jersey</code> resource for <code>Customer.</code>
+            </para>
+            <example>
+                <title>tour-examples/simple-bank/CustomerResource.java</title>
+                <programlisting language="java"><![CDATA[@Path("/api/customer")
+public class CustomerResource
+{
+    @POST
+    public Response createCustomer(
+            @FormParam("customerId") int customerId,
+            @FormParam("firstName") String firstName,
+            @FormParam("lastName") String lastName)
+    {
+        Customer customer = new Customer();
+        customer.setCustomerId(customerId);
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+        customer.insert();
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Customer getCustomerById(@PathParam("id") int customerId) throws JsonProcessingException
+    {
+        return CustomerFinder.findByPrimaryKey(customerId);
+    }
+
+    // elided for brevity
+}]]></programlisting>
+            </example>
+        </sect2>
+        <sect2>
+            <title>REST Server Main Class</title>
+            <para>
+                The <code>SimpleBankServer</code> class initializes Reladomo with the <code>MithraRuntime</code>
+                XML and starts the web server with the Jersey resource class.
+            </para>
+            <example>
+                <title>tour-examples/simple-bank/SimpleBankServer.java</title>
+                <programlisting language="java"><![CDATA[public class SimpleBankServer
+{
+    private ResourceConfig config;
+
+    public SimpleBankServer(String runtimeConfigXML) throws Exception
+    {
+        this.initReladomo(runtimeConfigXML);
+    }
+
+    protected void initReladomo(String runtimeConfigXML) throws Exception
+    {
+        MithraManager mithraManager = MithraManagerProvider.getMithraManager();
+        mithraManager.setTransactionTimeout(60 * 1000);
+        InputStream stream = loadReladomoXMLFromClasspath(runtimeConfigXML);
+        MithraManagerProvider.getMithraManager().readConfiguration(stream);
+        stream.close();
+    }
+
+    private InputStream loadReladomoXMLFromClasspath(String fileName) throws Exception
+    {
+        InputStream stream = SimpleBankServer.class
+                                .getClassLoader().getResourceAsStream(fileName);
+        if (stream == null)
+        {
+            throw new Exception("Failed to locate " + fileName + " in classpath");
+        }
+        return stream;
+    }
+
+    protected void initResources()
+    {
+        this.config = new ResourceConfig(CustomerResource.class);
+        config.register(JacksonFeature.class);
+        config.register(SimpleBankJacksonObjectMapperProvider.class);
+    }
+
+    public void start() throws IOException
+    {
+        initResources();
+        URI baseUri = UriBuilder.fromUri("http://localhost/").port(9998).build();
+        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, config);
+        server.start();
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        String runtimeConfigXML = "reladomoxml/SimpleBankRuntimeConfiguration.xml";
+        new SimpleBankServer(runtimeConfigXML).start();
+    }
+
+    // elided for brevity
+}]]></programlisting>
+            </example>
+        </sect2>
+    </sect1>
+    <sect1>
+            <title>JSON Serialization</title>
+            <para>
+                The REST API's endpoints consume JSON input and produce JSON output. In the <code>CustomerResource</code> class,
+                we have used the Reladomo generated classes like <code>Customer</code> as the data transfer POJOs.
+            </para>
+            <para>
+                But the generated classes are not pure POJOs (in the Java sense). Therefore we need to add some
+                extra plumbing to help with the JSON serialization and deserialization. This can be seen in the <code>initResources</code>
+                method of the <code>SimpleBankServer</code> class.
+            </para>
+            <para>
+                It should be pointed out thatReladomo has no opinion on how you choose to implement JSON serialization and deserialization.
+            </para>
+    </sect1>
+</chapter>

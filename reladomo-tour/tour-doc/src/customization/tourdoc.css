@@ -1,0 +1,144 @@
+div.article {
+    font-family: Ariel, Helvetica, sans-serif;
+}
+body {
+    margin: 8px;
+    padding: 0;
+    font-family: verdana, sans-serif;
+    font-size: 95%;
+    color: #000;
+    background-color: #fff;
+}
+A:link {
+    color: #0066A2;
+}
+A:visited {
+    color: #004E66;
+}
+A:active {
+    color: #0066A2;
+}
+A:hover {
+    color: #000000;
+}
+H1 {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    color: #EC5800;
+}
+H2 {
+    font-size: 1.2em;
+    margin: 1.2em 0em 1.2em 0em;
+    font-weight: bold;
+    color: #000000;
+}
+H3 {
+    font-size: 1.1em;
+    margin: 1.2em 0em 1.2em 0em;
+    font-weight: bold;
+    color: #000000;
+}
+H4 {
+    font-size: 0.95em;
+    margin: 1.2em 0em 1.2em 0em;
+    font-weight: bold;
+    color: #000000;
+}
+H5 {
+    font-size: 0.9em;
+    margin: 1.2em 0em 1.2em 0em;
+    font-weight: normal;
+}
+H6 {
+    font-size: 0.85em;
+    margin: 1.2em 0em 1.2em 0em;
+    font-weight: normal;
+}
+.BOOK .TOC DL DT {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.programlisting {
+    background-color: #F0F0F0;
+    border: 1px solid #666666;
+    -moz-border-radius: 12px;
+    padding: 6px;
+}
+.syntax0 {
+    font-family: Fixedsys, Lucida Console, Monospaced, Courier, monospace;
+    font-size: 10pt;
+    color: #000000;
+}
+.syntax1 {
+    color: #006666;
+    font-style: italic;
+}
+.syntax2 {
+    color: #990033;
+    font-style: italic;
+}
+.syntax3 {
+    font-family: Fixedsys, Lucida Console, Monospaced, Courier, monospace;
+    font-size: 10pt;
+    color: #008000;
+}
+.syntax4 {
+    font-family: Fixedsys, Lucida Console, Monospaced, Courier, monospace;
+    font-size: 10pt;
+    color: #000080;
+}
+.syntax5 {
+    color: #3F7F7F;
+}
+.syntax6 {
+    font-family: Fixedsys, Lucida Console, Monospaced, Courier, monospace;
+    font-size: 10pt;
+    color: #000080;
+}
+.syntax7 {
+    font-family: Fixedsys, Lucida Console, Monospaced, Courier, monospace;
+    font-size: 10pt;
+    color: #000080;
+}
+.syntax8 {
+    font-family: Fixedsys, Lucida Console, Monospaced, Courier, monospace;
+    font-size: 10pt;
+    color: #000080;
+}
+.syntax9 {
+    color: #000000;
+}
+.syntax10 {
+    font-family: Fixedsys, Lucida Console, Monospaced, Courier, monospace;
+    font-size: 10pt;
+    color: #000080;
+}
+.syntax11 {
+    color: #000000;
+    font-weight: bold;
+}
+.syntax12 {
+    color: #0000FF;
+}
+.syntax13 {
+    color: #ff0000;
+}
+.gutter {
+    background: #ffffff;
+    color: #000000;
+}
+.gutterH {
+    background: #ffffff;
+    color: #666699;
+}
+div.sect2,
+div.SECT2 {
+    margin-top: 4ex;
+}
+div.sect3,
+div.SECT3 {
+    margin-top: 3ex;
+    margin-left: 3ex;
+}

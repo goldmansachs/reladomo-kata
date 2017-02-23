@@ -1,0 +1,12 @@
+class bitemporalbank.domain.Customer
+customerId,firstName,lastName,country,businessDateFrom,businessDateTo,processingDateFrom,processingDateTo
+1,"mickey","mouse","usa","2017-01-01 00:00:00.000","9999-12-01 23:59:00.000","2017-01-01 00:00:00.000","9999-12-01 23:59:00.000"
+
+class bitemporalbank.domain.CustomerAccount
+accountId,customerId,accountName,accountType,balance,businessDateFrom,businessDateTo,processingDateFrom,processingDateTo
+12345,1,"retirement","savings",100,"2017-01-01 00:00:00.000","9999-12-01 23:59:00.000","2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+12345,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000","2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+12345,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-17 00:00:00.000","2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"
+12345,1,"retirement","savings",150,"2017-01-17 00:00:00.000","2017-01-20 00:00:00.000","2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"
+12345,1,"retirement","savings",300,"2017-01-20 00:00:00.000","9999-12-01 23:59:00.000","2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+12345,1,"retirement","savings",350,"2017-01-20 00:00:00.000","9999-12-01 23:59:00.000","2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"

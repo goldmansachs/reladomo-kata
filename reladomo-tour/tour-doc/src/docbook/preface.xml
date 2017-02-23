@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2016 Goldman Sachs.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  -->
+
+<chapter >
+    <title>Preface</title>
+    <sect1>
+        <title>Introduction</title>
+        <para>
+            The goal of this book is to introduce you to object relational mapping using Reladomo.
+            It provides a broad overview of various Reladomo features. The goal is to provide a feel and flavor for what is possible with Reladomo.
+        </para>
+    </sect1>
+    <sect1>
+        <title>Audience</title>
+        <para>
+            This book is written for Java programmers who want to use Reladomo for object relational mapping.
+            This book assumes that the reader is familiar with the basic concepts behind object relational mapping (such as domain modeling) and SQL.
+        </para>
+    </sect1>
+    <sect1>
+        <title>How to read this book</title>
+        <para>
+            This book is intentionally light on commentary and heavy on Java code examples and snippets. The reader is encouraged to consult and run the complete
+            examples which are distributed with this book.
+        </para>
+        <para>
+            The examples are structured as multiple Maven modules.
+        </para>
+    </sect1>
+    <sect1>
+        <title>Conventions</title>
+        <para>The following conventions have been used :
+            <itemizedlist>
+                <listitem>
+                    <para>Example references - When a program/example listing refers to a source file, the title
+                    of the listing is formattted as <code>&lt;name of maven module&gt;/&lt;name source file&gt;</code>.</para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Elided examples - Elided examples contain the text <code>// elided for brevity</code>. For the full example,
+                        consult the source file as indicated by the example's title.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </sect1>
+    <sect1>
+        <title>Additional Documentation</title>
+        <para>
+            This book is meant to be a practical guide. It is not reference documentation. Documentation that explores various Reladomo features in more detail,
+            can be found at the <emphasis><ulink url="https://github.com/goldmansachs/reladomo">Reladomo Github project page</ulink></emphasis>. Some of these documents
+            have also been linked in various chapters in this book.
+        </para>
+    </sect1>
+</chapter>

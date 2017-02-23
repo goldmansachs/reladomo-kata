@@ -1,0 +1,12 @@
+class simplebank.domain.Customer
+customerId, firstName, lastName, country
+1, "mickey", "mouse", "USA"
+2, "minnie", "mouse", "USA"
+3, "peter", "pan", "Neverland"
+
+class simplebank.domain.CustomerAccount
+accountId, customerId, accountName, accountType, balance
+100, 1, "mickey mouse club", "savings", 5000
+101, 2, "retirement", "savings", 10000
+102, 3, "fun stuff", "checking", 3000
+

@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2016 Goldman Sachs.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  -->
+
+<chapter >
+    <title>Testing With Reladomo</title>
+    <para>
+        One of the features that distinguishes Reladomo from other ORM frameworks is its first class
+        support for testing. This chapter demonstrates writing simple and fast tests for a Reladomo
+        application.
+    </para>
+    <para>
+        Reladomo's testing philosophy is very simple. You should be able to test your application
+        without the usual ceremony of mocks and other test helpers. Reladomo facilitates this
+        by starting and populating an in-memory H2 database with test data. All of you have to do is
+        to point your application against this in-memory database and exercise your
+        application's API/interface.
+    </para>
+    
+        <sect1>
+            <title>Test Connection Manager</title>
+            <para>
+                Chapter 2 introduced the <code>ConnectionManager</code> which is responsible for obtaining
+                a database connection. Since we are going to be connecting to an in-memory test database,
+                we cannot simply use the same connection manager as we would in production.
+            </para>
+            <para>
+                Instead we use the <code>com.gs.fw.common.mithra.test.ConnectionManagerForTests</code> that
+                ships with the Reladomo test jars. This class is a convenience class with factory methods for
+                creating a connection manager. You don't have to do much other than use this class.
+            </para>
+        </sect1>
+        <sect1>
+            <title>Test Runtime Configuration</title>
+            <para>
+                Chapter 2 introduced the <code>MithraRuntime</code> XML file. This file ties together the
+                various Reladomo domain model classes along with the <code>ConnectionManager</code> to fetch
+                and persist these objects.
+            </para>
+            <para>
+                The <code>MithraRuntime</code> XML for testing differs from production in two ways. First,
+                it uses <code>com.gs.fw.common.mithra.test.ConnectionManagerForTests</code>. Second, it has
+                an extra <code>Property</code> tag. This tag is used to simulate multiple databases in the same in-memory
+                H2 database server.
+            </para>
+            <para>
+                The snippet below shows a testing <code>MithraRuntime</code> with entities being loaded from two
+                databases.
+            </para>
+            <programlisting language="xml"><![CDATA[<MithraRuntime>
+    <ConnectionManager className="com.gs.fw.common.mithra.test.ConnectionManagerForTests">
+        <Property name="resourceName" value="test_db"/>
+        <MithraObjectConfiguration className="com.gs.fw.myapp.Foo" cacheType="partial"/>
+        <MithraObjectConfiguration className="com.gs.fw.myapp.Bar" cacheType="partial"/>
+        ...
+    </ConnectionManager>
+    <ConnectionManager className="com.gs.fw.common.mithra.test.ConnectionManagerForTests">
+        <Property name="resourceName" value="desk_db"/>
+        <MithraObjectConfiguration className="com.gs.fw.myapp.Product" cacheType="partial"/>
+        <MithraObjectConfiguration className="com.gs.fw.myapp.Account" cacheType="partial"/>
+        ...
+    </ConnectionManager>
+ </MithraRuntime>]]></programlisting>
+            <para>
+                The snippet below shows the <code>SimpleBankTestRuntimeConfiguration</code> XML in its entirety.
+            </para>
+            <example>
+                <title>tour-examples/simple-bank/SimpleBankTestRuntimeConfiguration.xml</title>
+                <programlisting language="xml"><![CDATA[<MithraRuntime
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="mithraruntime.xsd">
+    <ConnectionManager className="com.gs.fw.common.mithra.test.ConnectionManagerForTests">
+        <Property name="testResource" value="mithra_db"/>
+        <MithraObjectConfiguration cacheType="partial" className="simplebank.domain.Customer"/>
+        <MithraObjectConfiguration cacheType="partial" className="simplebank.domain.CustomerAccount"/>
+    </ConnectionManager>
+</MithraRuntime>]]></programlisting>
+            </example>
+        </sect1>
+        <sect1>
+            <title>Test Data</title>
+            <para>
+                Reladomo will not only start a in-memory H2 database, but also populate it with data.
+                All you have to do is provide a test data file. The following snippet describes the data file's format.
+            </para>
+            <programlisting language="xml"><![CDATA[class <classname>
+<attribute name 1>, <attribute name 2>... <attribute name N>
+<value 1, 1>, <value 1, 2> ... <value 1, N>
+<value 2, 1>, <value 2, 2> ... <value 2, N>
+...
+...
+<value M, 1>, <value M, 2> ... <value M, N>]]></programlisting>
+            <para>
+                The snippet below shows the <code>SimpleBankTestData.txt</code> file that will be used
+                to test the REST API we built in chapter 4.
+            </para>
+            <example>
+                <title>tour-examples/simple-bank/SimpleBankTestData.txt</title>
+                <programlisting language="xml"><![CDATA[class simplebank.domain.Customer
+customerId, firstName, lastName, country
+1, "mickey", "mouse", "USA"
+2, "minnie", "mouse", "USA"
+3, "peter", "pan", "Neverland"
+
+class simplebank.domain.CustomerAccount
+accountId, customerId, accountName, accountType, balance
+100, 1, "mickey mouse club", "savings", 5000
+101, 2, "retirement", "savings", 10000
+102, 3, "fun stuff", "checking", 3000]]></programlisting>
+            </example>
+        </sect1>
+        <sect1>
+            <title>Test Resource</title>
+            <para>
+                The <code>MithraTestResource</code> wires everything together. It is used  to load
+                the <code>MithraClassList</code>, and initialize the test database with test data.
+                The following is a snippet from <code>SimpleBankAPITest</code>, showing a complete test.
+            </para>
+            <example>
+                <title>tour-examples/simple-bank/SimpleBankAPITest.java</title>
+                <programlisting language="java"><![CDATA[public class SimpleBankAPITest
+{
+    private String testRuntimeConfigXML = "testconfig/SimpleBankTestRuntimeConfiguration.xml";
+
+    @Before
+    public void setup() throws Exception
+    {
+        intializeReladomoForTest();
+        initializeApp();
+    }
+
+    private void intializeReladomoForTest()
+    {
+        MithraTestResource testResource = new MithraTestResource(testRuntimeConfigXML);
+        ConnectionManagerForTests connectionManager = ConnectionManagerForTests.getInstance("test_db");
+        testResource.createSingleDatabase(connectionManager, "testconfig/SimpleBankTestData.txt");
+        testResource.setUp();
+    }
+
+    private void initializeApp() throws Exception
+    {
+        new SimpleBankServer(testRuntimeConfigXML).start();
+    }
+
+    @Test
+    public void testGetCustomer()
+    {
+        WebTarget target = webTarget("/api/customer/1");
+        Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Customer mickey = response.readEntity(Customer.class);
+        assertEquals(1, mickey.getCustomerId());
+        assertEquals("mickey", mickey.getFirstName());
+        assertEquals("mouse", mickey.getLastName());
+
+        CustomerAccountList mickeysAccounts = mickey.getAccounts();
+        assertEquals(1, mickeysAccounts.size());
+        CustomerAccount clubhouseAccount = mickeysAccounts.get(0);
+        assertEquals(100, clubhouseAccount.getAccountId());
+        assertEquals("mickey mouse club", clubhouseAccount.getAccountName());
+        assertEquals("savings", clubhouseAccount.getAccountType());
+        assertEquals(5000, clubhouseAccount.getBalance(), 0);
+    }
+    // elided for brevity
+}]]></programlisting>
+            </example>
+        </sect1>
+        <sect1>
+            <title>Debugging</title>
+            <para>
+                When using an ORM, it is useful to inspect the SQL that is being executed.
+                In Reladomo, SQL logging is enabled by setting the log level of the SQL loggers to DEBUG.
+            </para>
+            <para>
+                The following snippet shows a Logback configuration file that enables SQL logging.
+                The same can be implemented with other logging frameworks such as Log4j.
+                <example>
+                    <title>simple-bank/logback.xml</title>
+                    <programlisting language="xml"><![CDATA[<configuration>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.gs.fw.common.mithra.sqllogs" level="DEBUG"></logger>
+    <logger name="com.gs.fw.common.mithra.batch.sqllogs" level="DEBUG"></logger>
+    <logger name="com.gs.fw.common.mithra.test.sqllogs" level="DEBUG"></logger>
+    <!--
+    <logger name="com.gs.fw.common.mithra.test.multivm.SlaveVm" level="DEBUG"></logger>
+    -->
+
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+    </root>
+</configuration>]]></programlisting>
+                </example>
+            </para>
+            <para>
+                The following is a snippet of running a test with SQL logging enabled.
+                Logs are generated not only for main code (i.e SQL executed by the generated Reladomo classes),
+                but also for test code like the <code>MithraTestResource</code> when it populates the in-memory H2 database.
+            </para>
+            <para>
+                The logs also include the number of objects affected and timing information.
+                <programlisting><![CDATA[// in-memory database setup
+
+H2DbServer - Starting H2 database Server
+H2DbServer - H2 database Server Started
+Customer - executing statement drop table CUSTOMER
+Customer - executing statement create table CUSTOMER ( CUSTOMER_ID integer not null,FIRST_NAME varchar(64) not null,LAST_NAME varchar(64) not null,COUNTRY varchar(48) not null )
+Customer - executing statement CREATE UNIQUE INDEX I_CUSTOMER_PK ON CUSTOMER (CUSTOMER_ID)
+CustomerAccount - executing statement drop table CUSTOMER_ACCOUNT
+CustomerAccount - executing statement create table CUSTOMER_ACCOUNT ( ACCOUNT_ID integer not null,CUSTOMER_ID integer not null,ACCOUNT_NAME varchar(48) not null,ACCOUNT_TYPE varchar(16) not null,BALANCE double )
+CustomerAccount - executing statement CREATE UNIQUE INDEX I_CUSTOMER_ACCOUNT_PK ON CUSTOMER_ACCOUNT (ACCOUNT_ID)
+Customer - executing statement truncate table CUSTOMER
+CustomerAccount - executing statement truncate table CUSTOMER_ACCOUNT
+
+// inserting test data into the in-memory database
+
+Customer - executing statement INSERT INTO CUSTOMER (CUSTOMER_ID,FIRST_NAME,LAST_NAME,COUNTRY) values (1,'mickey','mouse','USA')
+Customer - executing statement INSERT INTO CUSTOMER (CUSTOMER_ID,FIRST_NAME,LAST_NAME,COUNTRY) values (2,'minnie','mouse','USA')
+Customer - executing statement INSERT INTO CUSTOMER (CUSTOMER_ID,FIRST_NAME,LAST_NAME,COUNTRY) values (3,'peter','pan','Neverland')
+CustomerAccount - executing statement INSERT INTO CUSTOMER_ACCOUNT (ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE) values (100,1,'mickey mouse club','savings',5000.0)
+CustomerAccount - executing statement INSERT INTO CUSTOMER_ACCOUNT (ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE) values (101,2,'retirement','savings',10000.0)
+CustomerAccount - executing statement INSERT INTO CUSTOMER_ACCOUNT (ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE) values (102,3,'fun stuff','checking',3000.0)
+
+// SQL executed to satisfy a finder query
+
+Customer - connection:1690573857 find with: select t0.CUSTOMER_ID,t0.FIRST_NAME,t0.LAST_NAME,t0.COUNTRY from CUSTOMER t0 where  t0.CUSTOMER_ID = 1
+Customer - retrieved 1 objects, 13.0 ms per
+CustomerAccount - connection:1690573857 find with: select t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE from CUSTOMER_ACCOUNT t0 where  t0.CUSTOMER_ID = 1
+CustomerAccount - retrieved 1 objects, 1.0 ms per
+                ]]></programlisting>
+            </para>
+            <warning>
+                <title>Too much logs!!</title>
+                <para>
+                    Depending on your application, SQL logging can be very verbose and spam
+                    your logs. In general, SQL logging should not be enabled by default in production.
+                </para>
+            </warning>
+        </sect1>
+        <sect1>
+            <title>References</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            <emphasis>
+                                <ulink url="https://goldmansachs.github.io/reladomo/mithraTestResource/ReladomoTestResource.html">Reladomo Test Resource</ulink>
+                            </emphasis>
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect1>
+</chapter>
