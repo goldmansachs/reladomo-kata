@@ -1,0 +1,444 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2016 Goldman Sachs.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  -->
+
+
+<chapter >
+    <title>Bitemporal Chaining API</title>
+    <para>
+        This chapter introduces various Reladomo APIs that are used to update a bitemporally chained table.
+        We will use the SlowBank example from the previous chapter and write code for each of the updates.
+    </para>
+    <sect1>
+        <title>Domain Model</title>
+        <para>
+            Bitemporal chaining requires four additional timestamp columns. Also, Reladomo needs to be told
+            that the domain objects are bitemporal. All of this means that we need to update the <code>MithraObject</code>
+            XML definitions.
+        </para>
+        <para>
+            When temporal chaining is used, the entire object graph is temporally chained. In this case, it means
+            that both the <code>Customer</code> and <code>CustomerAccount</code> objects are chained. It is very unusual
+            to have only parts of an object graph chained.
+        </para>
+        <warning>
+            <title>
+                Mixing temporal and non temporal objects
+            </title>
+            <para>
+                In some cases temporal and non temporal objects can be mixed. For example, a temporal object could refer
+                to a non-temporal object. But a non-temporal object cannot refer to a temporal one (as there can be
+                multiple versions of the object).
+            </para>
+        </warning>
+        <para>
+            The snippet below shows the <code>Customer</code> <code>MithraObject</code> with the new attributes
+            to enable bitemporal chaining.
+            <example>
+                <title>tour-examples/bitemporal-bank/Customer.xml</title>
+                <programlisting language="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<MithraObject objectType="transactional"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="mithraobject.xsd">
+
+    <PackageName>bitemporalbank.domain</PackageName>
+    <ClassName>Customer</ClassName>
+    <DefaultTable>CUSTOMER</DefaultTable>
+
+    <AsOfAttribute name="businessDate" fromColumnName="FROM_Z" toColumnName="THRU_Z"
+                   toIsInclusive="false"
+                   isProcessingDate="false"
+                   infinityDate="[bitemporalbank.util.TimestampProvider.getInfinityDate()]"
+                   futureExpiringRowsExist="true"
+    />
+    <AsOfAttribute name="processingDate" fromColumnName="IN_Z" toColumnName="OUT_Z"
+                   toIsInclusive="false"
+                   isProcessingDate="true"
+                   infinityDate="[bitemporalbank.util.TimestampProvider.getInfinityDate()]"
+                   defaultIfNotSpecified="[bitemporalbank.util.TimestampProvider.getInfinityDate()]"
+    />
+
+    // elided for brevity
+</MithraObject>]]></programlisting>
+            </example>
+        </para>
+        <para>
+            Bitemporal chaining is enabled by adding two <code>AsOfAttribute</code> elements to the object.
+            The first <code>AsOfAttribute</code> declares business date.
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        The name of the attribute is <code>businessDate</code> and that Reladomo should call the corresponding columns <code>FROM_Z</code> and <code>THRU_Z</code>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        This attribute is for the business date (<code>isProcessing=false</code>)
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            The second <code>AsOfAttribute</code> declares the transaction date.
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        The name of the attribute is <code>processingDate</code> and that Reladomo should call the corresponding columns <code>IN_Z</code> and <code>OUT_Z</code>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        This attribute is for the processing date (<code>isProcessing=true</code>)
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            For both these attributes, Reladomo needs to be told what is the value of Infinity. To recap, infinity can
+            be any date that can be reasonably expected to not be part of normal chaining history. The
+            <code>infinityDate</code> attribute points to a simple helper class which returns a <code>java.sql.Timestamp</code> object
+            to be used as Infinity.
+        </para>
+        <para>
+            Other than these two attributes, the rest of the <code>MithraObject</code> definition remains the same as before.
+        </para>
+    </sect1>
+    <sect1>
+        <title>Generated Code</title>
+        <para>
+            Code generation is the same as before. But since the <code>MithraObjects</code> are bitemporally chained,
+            the generated classes have a few additions.
+        </para>
+        <para>
+            First, each generated class's constructor accepts two timestamps.
+        </para>
+        <example>
+            <title>tour-examples/bitemporal-bank/Customer.java</title>
+            <programlisting language="java"><![CDATA[
+public class Customer extends CustomerAbstract
+{
+	public Customer(Timestamp businessDate, Timestamp processingDate)
+	{
+		super(businessDate ,processingDate);
+		// You must not modify this constructor. Mithra calls this internally.
+		// You can call this constructor. You can also add new constructors.
+	}
+
+	public Customer(Timestamp businessDate)
+	{
+		super(businessDate);
+	}
+}]]></programlisting>
+        </example>
+        <para>
+            Second, the generated <code>Finder</code> classes expose attribute methods
+            which are used to set the business and processing date when working with the objects.
+            <programlisting language="java"><![CDATA[CustomerFinder.businessDate();
+CustomerFinder.processingDate();]]></programlisting>
+        </para>
+    </sect1>
+    <sect1>
+        <title>Putting It All Together</title>
+        <para>
+            This section will demonstrate chaining in action by implementing each of the events from the previous chapter's motivating example.
+        </para>
+        <warning>
+            <title>Gotcha!</title>
+            <para>
+                The following sections map the code in <code>BitemporalChainingInAction.java</code> to the motivating example
+                discussed before. But running the code as is will result in different results than
+                what is described in this section.
+            </para>
+            <para>
+                This is because the example uses timestamps in Jan 2017. If you happen to run this example
+                in say March 2017, the IN_Z and OUT_Z values will be that of March 2017 and will differ
+                from what is presented here.
+            </para>
+            <para>
+                If you want to practice querying the table but with the example's test data,
+                you can initialize a <code>MithraTestResource</code> with the data from <code>BitemporalChainingInActionTestData.txt</code>.
+            </para>
+        </warning>
+        <sect2>
+            <title>Jan 1 - Open an account with $100</title>
+            <para>
+                To open an account, we create the <code>Customer</code> and <code>CustomerAccount</code> and insert them.
+                However, since the objects are bitemporal, the constructor needs to be supplied with a business and processing date.
+                In this case, we are using the overloaded constructor which sets both the dates to Jan 1.
+            </para>
+            <example>
+                <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private void createAccountOnJan1(int accountId)
+{
+    Timestamp jan1 = DateUtils.parse("2017-01-01");
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
+    {
+        Customer customer = new Customer(jan1);
+        customer.setFirstName("mickey");
+        customer.setLastName("mouse");
+        customer.setCustomerId(1);
+        customer.setCountry("usa");
+
+        CustomerAccount account = new CustomerAccount(jan1);
+        account.setAccountId(accountId);
+        account.setBalance(100);
+        account.setAccountType("savings");
+        account.setAccountName("retirement");
+        customer.getAccounts().add(account);
+        customer.cascadeInsert();
+        return null;
+    });
+}]]></programlisting>
+            </example>
+        </sect2>
+        <sect2>
+            <title>Jan 1 - Fetch the account</title>
+            <para>
+                Here we use the generated <code>Finder</code> but have to specify an additional operation
+                for the business date.
+            </para>
+            <example>
+                <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private void fetchAccountWithBusinessDateJan1(int accountId)
+{
+    Timestamp jan1 = DateUtils.parse("2017-01-01");
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    Operation jan1Op = CustomerAccountFinder.businessDate().eq(jan1);
+    CustomerAccount account = CustomerAccountFinder.findOne(idOp.and(jan1Op));
+    assertEquals(100, (int)account.getBalance());
+}]]></programlisting>
+            </example>
+            <para>
+                When the above code is run, Reladomo generates the following SQL.
+            </para>
+            <programlisting language="sql"><![CDATA[select t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,
+            t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
+    from CUSTOMER_ACCOUNT t0
+    where
+    t0.CUSTOMER_ID = 1 and
+    t0.FROM_Z <= '2017-01-01 00:00:00.000' and t0.THRU_Z > '2017-01-01 00:00:00.000' and
+    t0.OUT_Z = '9999-12-01 23:59:00.000']]></programlisting>
+            <para>In other words, Reladomo is looking for the latest state of the account (i.e OUT_Z=Infinity) and where the business date is >= Jan 1.</para>
+        </sect2>
+        <sect2>
+            <title>Jan 17 - Deposit $50</title>
+            <para>
+                In the narrative of the SlowBank, this deposit is lost. So we simulate it by not updating the account on Jan 17.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Jan 20 - Deposit $200</title>
+            <para>
+                To deposit $200, we have to fetch the account and increment its balance by 200.
+                However, updating a row in bitemporal table can result in the creation of new rows. Therefore the update
+                has to be wrapped in a transaction for atomicity.
+            </para>
+            <example>
+                <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private void deposit200onJan20(int accountId)
+{
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
+
+        Timestamp jan20TS = DateUtils.parse("2017-01-20");
+        Operation ts = CustomerAccountFinder.businessDate().eq(jan20TS);
+        Operation id = CustomerAccountFinder.accountId().eq(accountId);
+        CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
+        account.incrementBalance(200);
+        return null;
+    });
+}]]></programlisting>
+            </example>
+            <para>
+                Running this method results in the following SQL statements being executed. Reladomo is invalidating the row (update OUT_Z) with business date (Jan 1 to Infinity) and adding new rows for business date (Jan 1 to Jan 20) and (Jan 20 to Infinity).
+            </para>
+            <programlisting language="sql"><![CDATA[update CUSTOMER_ACCOUNT set OUT_Z = '2017-02-27 15:16:53.550'
+where ACCOUNT_ID = 100 AND THRU_Z = '9999-12-01 23:59:00.000' AND OUT_Z = '9999-12-01 23:59:00.000'
+
+insert into CUSTOMER_ACCOUNT (...) values (?,?,?,?,?,?,?,?,?) for 2 objects
+
+insert into CUSTOMER_ACCOUNT (...)
+    values (12345,1,'retirement','savings',300.0,
+        '2017-01-20 00:00:00.000','9999-12-01 23:59:00.000',
+        '2017-02-27 15:16:53.550','9999-12-01 23:59:00.000')
+
+insert into CUSTOMER_ACCOUNT (...)
+    values (12345,1,'retirement','savings',100.0,
+        '2017-01-01 00:00:00.000','2017-01-20 00:00:00.000',
+        '2017-02-27 15:16:53.550','9999-12-01 23:59:00.000')]]></programlisting>
+        </sect2>
+        <sect2>
+            <title>Jan 20 - Fetch the account (dump history)</title>
+            <para>
+                This fetch is no different than the fetch on Jan 1. Simply set the <code>businessDate</code> on the finder
+                to be Jan 20. Sometimes it is useful to be able to fetch the entire history of an object. Example use cases
+                include debugging, generating reports etc.
+            </para>
+            <para>
+                History along a time dimension can be fetched by using the <code>equalsEdgePoint()</code> operation. e.g <code>businessDate().equalsEdgePoint()</code>.
+                In this case we will use the <code>equalsEdgePoint</code> operation on both dimensions to get the full history.
+            </para>
+            <example>
+                <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private Operation computeHistoryOperation(int accountId)
+{
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    Operation processingDateOp = CustomerAccountFinder
+            .processingDate().equalsEdgePoint();
+    Operation businessDateOp = CustomerAccountFinder
+            .businessDate().equalsEdgePoint();
+    return idOp.and(processingDateOp).and(businessDateOp);
+}]]></programlisting>
+            </example>
+            <para>
+                The <code>edgePoint</code> operations instruct Reladomo to generate the following query. As you can see, the where clause
+                does not include any of the temporal columns, resulting in a full dump of the database.
+            </para>
+            <programlisting language="sql"><![CDATA[select t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,
+t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
+from CUSTOMER_ACCOUNT t0
+where t0.ACCOUNT_ID = 100]]>
+            </programlisting>
+            <para>
+                This <code>Operation</code> can now be used with the <code>Finder</code>. To make this more interestig,
+                let's use Reladomo's <code>DbExtractor</code> which can extract the data from a table and among other things dump it to
+                a file.
+            </para>
+            <example>
+                <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private String dumpCustomerAccount(int accountId) throws Exception
+{
+    Operation historyOperation = computeHistoryOperation(accountId);
+    Path tempFile = Files.createTempFile(System.nanoTime() + "", "");
+    DbExtractor dbExtractor = new DbExtractor(tempFile.toFile().getAbsolutePath(), false);
+    dbExtractor.addClassToFile(CustomerAccountFinder.getFinderInstance(), historyOperation);
+
+    String data = Files.readAllLines(tempFile).stream().collect(Collectors.joining("\n"));
+    System.out.println(data);
+    return data;
+}]]></programlisting>
+            </example>
+            <para>
+                The <code>DbExtractor</code>'s output is not only a listing of all the rows in the table.
+                 The output is also formatted to be copy/pasteable into a Reladomo <code>MithraTestResource</code> file for use in
+                tests. See <code>BitemporalChainingInActionTestData.txt</code>.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Jan 25 - Correct the missing $50</title>
+            <para>
+                Here we need to adjust the balance for Jan 17. All we have to do is fetch the account with a business date
+                of Jan 17 and update the balance. As before Reladomo takes care of invalidating existing rows and adding new rows.
+            </para>
+            <example>
+                <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private void updateBalanceForJan17OnJan25(int accountId)
+{
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
+        Timestamp jan17TS = DateUtils.parse("2017-01-17");
+        Operation ts = CustomerAccountFinder.businessDate().eq(jan17TS);
+        Operation id = CustomerAccountFinder.accountId().eq(accountId);
+        CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
+        account.incrementBalance(50);
+        return null;
+    });
+}]]></programlisting>
+            </example>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Querying a chained table</title>
+        <para>
+            Consider the visualization from chapter 6. Each colored rectangle corresponds to row in the table.
+            <figure id="bitemporal7.fig">
+                <title>Bank Account On Jan 1</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="bitemporal-intro/bitemporal42.png" scale="80" />
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>
+        <para>
+            Each of these rows can be queried by setting the business date and processing date as required.
+            The following snippet shows querying for the account balance for business date Jan 12 but on processing date Jan 23.
+        </para>
+        <example>
+            <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
+            <programlisting language="java"><![CDATA[@Test
+public void balanceAsOfJan12_OnJan23()
+{
+    Timestamp jan12TS = DateUtils.parse("2017-01-12");
+    Timestamp jan23TS = DateUtils.parse("2017-01-23");
+
+    Operation id = CustomerAccountFinder.accountId().eq(100);
+    Operation businessDate = CustomerAccountFinder.businessDate().eq(jan12TS);
+    Operation processingDate = CustomerAccountFinder.processingDate().eq(jan23TS);
+    CustomerAccount account = CustomerAccountFinder
+                                    .findOne(id.and(businessDate).and(processingDate));
+    assertEquals(100, (int)account.getBalance());
+}]]></programlisting>
+        </example>
+        <para>
+            Running the above code results in Reladomo executuing the following query.
+        </para>
+        <programlisting language="sql"><![CDATA[select t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,
+        t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
+from CUSTOMER_ACCOUNT t0
+where t0.ACCOUNT_ID = 12345
+and t0.FROM_Z <= '2017-01-12 00:00:00.000' and t0.THRU_Z > '2017-01-12 00:00:00.000'
+and t0.IN_Z <= '2017-01-23 00:00:00.000' and t0.OUT_Z > '2017-01-23 00:00:00.000'
+        ]]></programlisting>
+        <para>
+            The beauty of bitemporal chaining is that the above query can be run at any point in time as long
+            as the rows exist in the database. For example, five years from now, you could run the above query
+            to determine what we thought the balance was for business date Jan 12 but five years ago (Jan 23 2017).
+        </para>
+    </sect1>
+    <sect1>
+        <title>Next steps</title>
+        <para>
+            This section has barely scratched the surface of the what is possible with bitemporal chaining and
+            other APIs that are relevant to chaining. Some interesting questions to consider :
+            <itemizedlist>
+                <listitem>
+                    <para>What happens if <code>futureExpiringRowsExist</code>is set to false in <code>MithraObject</code> XML ?</para>
+                </listitem>
+                <listitem>
+                    <para>
+                        What if you have to update a non numeric column ? i.e we cannot use <code>incrementBalance</code>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        When we use <code>incrementBalance</code>, Reladomo automatically cascades the update to cover the active history. (TODO : rephrase this sentence)
+                        What if you want to increment the balance for a few specific dates ?
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        What if you really really want to delete history ?
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            To answer these questions, consider completing one of the Reladomo Katas.
+            You might also want to complete the REST API in the <code>bitemporal-bank</code> Maven module.
+        </para>
+    </sect1>
+</chapter>
