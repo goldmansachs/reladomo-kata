@@ -16,14 +16,13 @@
 
 package kata.test;
 
+import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.factory.Lists;
+import com.gs.collections.impl.factory.Sets;
 import com.gs.collections.impl.test.Verify;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.gs.fw.finder.Navigation;
-import kata.domain.PersonList;
-import kata.domain.PetFinder;
-import kata.domain.PetList;
-import kata.domain.PetType;
+import kata.domain.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,6 +51,19 @@ public class Exercise2Test extends AbstractMithraTest
     {
         PersonList petPeople = null;
         Verify.assertSize(6, petPeople);
+    }
+
+    /**
+     * Get all the pets who's owner's last name is "Smith"
+     * Extra credit: try getting the list of people and then the list of pets from the people list.
+     */
+    @Test
+    public void getAllPetsOfSmiths()
+    {
+        PetList smithPets = null;
+
+        Verify.assertSetsEqual(Sets.mutable.with("Dolly", "Spike", "Tabby", "Spot"),
+                smithPets.asGscList().collect(TO_PET_NAME, Sets.mutable.empty()));
     }
 
     /**

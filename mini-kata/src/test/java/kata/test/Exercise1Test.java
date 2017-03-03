@@ -21,11 +21,7 @@ import com.gs.collections.impl.factory.Lists;
 import com.gs.collections.impl.factory.Sets;
 import com.gs.collections.impl.test.Verify;
 import com.gs.fw.common.mithra.finder.Operation;
-import kata.domain.Person;
-import kata.domain.PersonFinder;
-import kata.domain.PersonList;
-import kata.domain.Pet;
-import kata.domain.PetList;
+import kata.domain.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,19 +47,6 @@ public class Exercise1Test extends AbstractMithraTest
     {
         PersonList smiths = null;
         Verify.assertSize(3, smiths);
-    }
-
-    /**
-     * Use the same method as above to get all Smiths. After that get all the {@code Pet}s.
-     * Look at the data-type of {@code smithPets}, it is a {@link MutableList}. use the convenience method {@code asGscList()} on Reladomo Lists.
-     */
-    @Test
-    public void getAllPetsOfSmiths()
-    {
-        MutableList<Pet> smithPets = Lists.mutable.empty();
-
-        Verify.assertSetsEqual(Sets.mutable.with("Dolly", "Spike", "Tabby", "Spot"),
-                smithPets.collect(TO_PET_NAME, Sets.mutable.empty()));
     }
 
     /**
