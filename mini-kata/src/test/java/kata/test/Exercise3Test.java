@@ -55,7 +55,7 @@ public class Exercise3Test extends AbstractMithraTest
         );
 
         Verify.assertMapsEqual(
-                Maps.mutable.with(1, 3, 2, 10, 3, 4),
+                Maps.mutable.with(1, 3, 2, 20, 3, 4),
                 personIdToTotalPetAgeMap
         );
     }
