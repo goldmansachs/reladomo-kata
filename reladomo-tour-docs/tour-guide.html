@@ -1,0 +1,1802 @@
+<html><head><META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Guided Tour Of Reladomo</title><link href="tourdoc.css" type="text/css" rel="stylesheet"><meta content="DocBook XSL Stylesheets V1.79.1" name="generator"><!-- (c) 2016 Copyright Goldman Sachs, Inc. --></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div lang="en" class="book"><div class="titlepage"><div><div><h1 class="title"><a name="N40003"></a>Guided Tour Of Reladomo</h1></div><div><h2 class="subtitle">A hands-on guide for developers</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#N40015">1. Preface</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4001B">1.1. Introduction</a></span></dt><dt><span class="sect1"><a href="#N40024">1.2. Audience</a></span></dt><dt><span class="sect1"><a href="#N4002D">1.3. How to read this book</a></span></dt><dt><span class="sect1"><a href="#N40039">1.4. Conventions</a></span></dt><dt><span class="sect1"><a href="#N40057">1.5. Additional Documentation</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40067">2. Domain Modeling</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40070">2.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40153">2.2. Code Generation</a></span></dt><dt><span class="sect1"><a href="#N401A0">2.3. Database DDL Generation</a></span></dt><dt><span class="sect1"><a href="#N401E7">2.4. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40236">3. Wiring A Reladomo Application</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4023F">3.1. Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N40273">3.2. Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N40295">3.3. Wiring it all together</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N402B0">4. CRUD Operations</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N402C6">4.1. Object Creation (C)</a></span></dt><dt><span class="sect1"><a href="#N40318">4.2. Object Read (R)</a></span></dt><dt><span class="sect1"><a href="#N403A3">4.3. Object Modification (U)</a></span></dt><dt><span class="sect1"><a href="#N403DE">4.4. Object Deletion (D)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N403FB">5. A Complete Reladomo Application</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40407">5.1. Jersey Boilerplate</a></span></dt><dt><span class="sect1"><a href="#N40445">5.2. JSON Serialization</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40462">6. Testing With Reladomo</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4046E">6.1. Test Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N40480">6.2. Test Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N404B5">6.3. Test Data</a></span></dt><dt><span class="sect1"><a href="#N404D2">6.4. Test Resource</a></span></dt><dt><span class="sect1"><a href="#N404EE">6.5. Debugging</a></span></dt><dt><span class="sect1"><a href="#N40519">6.6. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40534">7. Bitemporal Chaining</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4053D">7.1. Motivating Example - The SlowBank</a></span></dt><dt><span class="sect1"><a href="#N4054C">7.2. 
+            Bitemporal Chaining
+        </a></span></dt><dt><span class="sect1"><a href="#N40564">7.3. Bitemporal Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N4069F">7.4. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N406BA">8. Bitemporal Chaining API</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N406C3">8.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40748">8.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N4076B">8.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N40849">8.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N4087A">8.5. Next steps</a></span></dt></dl></dd></dl></div>
+    
+
+    
+
+    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40015"></a>Chapter&nbsp;1.&nbsp;Preface</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4001B">1.1. Introduction</a></span></dt><dt><span class="sect1"><a href="#N40024">1.2. Audience</a></span></dt><dt><span class="sect1"><a href="#N4002D">1.3. How to read this book</a></span></dt><dt><span class="sect1"><a href="#N40039">1.4. Conventions</a></span></dt><dt><span class="sect1"><a href="#N40057">1.5. Additional Documentation</a></span></dt></dl></div>
+    
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4001B"></a>1.1.&nbsp;Introduction</h2></div></div></div>
+        
+        <p>
+            The goal of this book is to introduce you to object relational mapping using Reladomo.
+            It provides a broad overview of various Reladomo features. The goal is to provide a feel and flavor for what is possible with Reladomo.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40024"></a>1.2.&nbsp;Audience</h2></div></div></div>
+        
+        <p>
+            This book is written for Java programmers who want to use Reladomo for object relational mapping.
+            This book assumes that the reader is familiar with the basic concepts behind object relational mapping (such as domain modeling) and SQL.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4002D"></a>1.3.&nbsp;How to read this book</h2></div></div></div>
+        
+        <p>
+            This book is intentionally light on commentary and heavy on Java code examples and snippets. The reader is encouraged to consult and run the complete
+            examples which are distributed with this book.
+        </p>
+        <p>
+            The examples are structured as multiple Maven modules.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40039"></a>1.4.&nbsp;Conventions</h2></div></div></div>
+        
+        <p>The following conventions have been used :
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>Example references - When a program/example listing refers to a source file, the title
+                    of the listing is formattted as <code class="code">&lt;name of maven module&gt;/&lt;name source file&gt;</code>.</p>
+                </li><li class="listitem">
+                    <p>
+                        Elided examples - Elided examples contain the text <code class="code">// elided for brevity</code>. For the full example,
+                        consult the source file as indicated by the example's title.
+                    </p>
+                </li></ul></div><p>
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40057"></a>1.5.&nbsp;Additional Documentation</h2></div></div></div>
+        
+        <p>
+            This book is meant to be a practical guide. It is not reference documentation. Documentation that explores various Reladomo features in more detail,
+            can be found at the <span class="emphasis"><em><a class="ulink" href="https://github.com/goldmansachs/reladomo" target="_top">Reladomo Github project page</a></em></span>. Some of these documents
+            have also been linked in various chapters in this book.
+        </p>
+    </div>
+</div>
+    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40067"></a>Chapter&nbsp;2.&nbsp;Domain Modeling</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40070">2.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40153">2.2. Code Generation</a></span></dt><dt><span class="sect1"><a href="#N401A0">2.3. Database DDL Generation</a></span></dt><dt><span class="sect1"><a href="#N401E7">2.4. References</a></span></dt></dl></div>
+    
+    <p>
+        This chapter introduces domain modeling in Reladomo.
+        We start by building a domain model of an application and then
+        use Reladomo to generate classes and DDL statements off of the domain model.
+    </p>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40070"></a>2.1.&nbsp;Domain Model</h2></div></div></div>
+        
+        <p>
+            A domain model represents the various entities in a system and their relationships.
+            Consider a backend application for a bank. A simple domain model of this application can be
+            expressed in UML as follows.
+        </p>
+        <div class="figure-float"><div class="figure"><a name="chap11.fig"></a><p class="title"><b>Figure&nbsp;2.1.&nbsp;Bank Domain Model</b></p><div class="figure-contents">
+            
+            <div class="mediaobject"><img src="domain-modeling/simplebank-domain.png" alt="Bank Domain Model"></div>
+        </div></div><br class="figure-break"></div>
+        <p>
+            We have two entities : <code class="code">Customer</code> and <code class="code">CustomerAccount</code>.
+            We start by defining the attributes of each entity and some metadata in a <code class="code">MithraObject</code> XML file.
+        </p>
+        <div class="example"><a name="N4009C"></a><p class="title"><b>Example&nbsp;2.1.&nbsp;tour-examples/simple-bank/Customer.xml</b></p><div class="example-contents">
+            
+            <pre class="programlisting">
+<strong xmlns:xslthl="http://xslthl.sf.net" style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
+        <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+        <span style="color: blue" class="hl-attribute">xsi:noNamespaceSchemaLocation</span>=<span style="color: green" class="hl-value">"mithraobject.xsd"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;PackageName&gt;</strong>simplebank.domain<strong style="color: navy" class="hl-tag">&lt;/PackageName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ClassName&gt;</strong>Customer<strong style="color: navy" class="hl-tag">&lt;/ClassName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;DefaultTable&gt;</strong>CUSTOMER<strong style="color: navy" class="hl-tag">&lt;/DefaultTable&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"customerId"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"int"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"CUSTOMER_ID"</span>  <span style="color: blue" class="hl-attribute">primaryKey</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"firstName"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"FIRST_NAME"</span>  <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"64"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"lastName"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"LAST_NAME"</span>  <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"64"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"country"</span>  <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"COUNTRY"</span>  <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"48"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+
+<strong style="color: navy" class="hl-tag">&lt;/MithraObject&gt;</strong></pre>
+        </div></div><br class="example-break">
+        <div class="example"><a name="N400A6"></a><p class="title"><b>Example&nbsp;2.2.&nbsp;tour-examples/simple-bank/CustomerAccount.xml</b></p><div class="example-contents">
+        
+            <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
+        <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+        <span style="color: blue" class="hl-attribute">xsi:noNamespaceSchemaLocation</span>=<span style="color: green" class="hl-value">"mithraobject.xsd"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;PackageName&gt;</strong>simplebank.domain<strong style="color: navy" class="hl-tag">&lt;/PackageName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ClassName&gt;</strong>CustomerAccount<strong style="color: navy" class="hl-tag">&lt;/ClassName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;DefaultTable&gt;</strong>CUSTOMER_ACCOUNT<strong style="color: navy" class="hl-tag">&lt;/DefaultTable&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accountId"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"int"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"ACCOUNT_ID"</span> <span style="color: blue" class="hl-attribute">primaryKey</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"customerId"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"int"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"CUSTOMER_ID"</span> <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accountName"</span>  <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"ACCOUNT_NAME"</span> <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"48"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accountType"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"ACCOUNT_TYPE"</span> <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"16"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"balance"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"double"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"BALANCE"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+
+<strong style="color: navy" class="hl-tag">&lt;/MithraObject&gt;</strong></pre>
+        </div></div><br class="example-break">
+        <p>
+            These XML files contain metadata that allows Reladomo to map entities to Java classes (e.g. <code class="code">ClassName</code>, <code class="code">javaType</code>) and to database tables (e.g. <code class="code">DefaultTable</code>, <code class="code">columName</code>). The XML schema definition (<code class="code">mithraobject.xsd</code>) explains the various components in detail.
+        </p>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N400C2"></a>2.1.1.&nbsp;Primary Keys</h3></div></div></div>
+            
+            <p>
+                In Reladomo, each object requires a primary key.
+                A primary key might be composed of a single attribute or multiple attributes.
+                For the <code class="code">Customer</code> object, the <code class="code">customerId</code> attribute is unique. So we simply include a <code class="code">primaryKey</code> tag.
+            </p>
+            <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"customerId"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"int"</span> <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"CUSTOMER_ID"</span> <span style="color: blue" class="hl-attribute">primaryKey</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">/&gt;</strong></pre>
+            <p>
+                A primary key can also be composed of multiple attributes. If the full name (first name and last name) of a <code class="code">Customer</code> where unique,
+                we can create a primary key by adding the <code class="code">primaryKey</code> attribute to both these attributes.
+            </p>
+                <pre class="programlisting">
+<strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"firstName"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+        <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"FIRST_NAME"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"16"</span> <span style="color: blue" class="hl-attribute">primaryKey</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+<strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"lastName"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+        <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"LAST_NAME"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"24"</span> <span style="color: blue" class="hl-attribute">primaryKey</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">/&gt;</strong></pre>
+            <p>
+                In some cases, a natural primary key does not exist. We can ask Reladomo to generate a primary key by using the <code class="code">primaryKeyGeneratorStrategy</code>. Primary key generation is discussed in other Reladomo documentation.
+            </p>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N400EB"></a>2.1.2.&nbsp;Relationships</h3></div></div></div>
+            
+            <p>
+                In the bank a <code class="code">Customer</code> is related to <code class="code">CustomerAccount</code>s. More specifically a customer can have one or more accounts.
+            </p>
+            <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;Relationship</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accounts"</span>
+            <span style="color: blue" class="hl-attribute">relatedObject</span>=<span style="color: green" class="hl-value">"CustomerAccount"</span>
+            <span style="color: blue" class="hl-attribute">cardinality</span>=<span style="color: green" class="hl-value">"one-to-many"</span>
+        <span style="color: blue" class="hl-attribute">this.customerId</span> = <span style="color: green" class="hl-value">CustomerAccount.customerId</span>
+<span style="color: blue" class="hl-attribute">&lt;/Relationship&gt;</span>
+</pre>
+            <p>
+                The relationship definition contains the expression that relates the two objects. In this
+                case, <code class="code">Customer</code> and <code class="code">CustomerAccount</code> are related by the <code class="code">customerId</code> attribute.
+                The relationship also influences Reladomo's code generation. In particular, the <code class="code">Customer</code> class will have a
+                <code class="code">getAccounts</code> method. This is because the name of the relationship is <code class="code">accounts</code>.
+            </p>
+
+            <p>
+                Sometimes it is desirable to navigate relationships in the reverse direction. e.g. given a <code class="code">CustomerAccount</code>
+                navigate to the <code class="code">Customer</code> that owns it. This can be implemented by adding another
+                <code class="code">Relationship</code> in the XML for <code class="code">CustomerAccount</code> linking it to <code class="code">Customer</code>.
+                A better approach is to use a single <code class="code">Relationship</code> in <code class="code">Customer</code>, but add the <code class="code">reverseRelationshipName</code> attribute.
+            </p>
+            <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;Relationship</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accounts"</span>
+            <span style="color: blue" class="hl-attribute">relatedObject</span>=<span style="color: green" class="hl-value">"CustomerAccount"</span>
+            <span style="color: blue" class="hl-attribute">cardinality</span>=<span style="color: green" class="hl-value">"one-to-many"</span>
+            <span style="color: blue" class="hl-attribute">reverseRelationshipName</span>=<span style="color: green" class="hl-value">"customer"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+        this.customerId = CustomerAccount.customerId
+<strong style="color: navy" class="hl-tag">&lt;/Relationship&gt;</strong>
+</pre>
+            <p>
+                Using the <code class="code">reverseRelationshipName</code> attribute provides the benefit of a single definition but with the code generated for both the classes.
+            </p>
+            <p>
+                Here is the full listing of all the <code class="code">MithraObject</code>s.
+            </p>
+            <div class="example"><a name="N4013D"></a><p class="title"><b>Example&nbsp;2.3.&nbsp;tour-examples/simple-bank/Customer.xml</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
+    <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span style="color: blue" class="hl-attribute">xsi:noNamespaceSchemaLocation</span>=<span style="color: green" class="hl-value">"mithraobject.xsd"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;PackageName&gt;</strong>simplebank.domain<strong style="color: navy" class="hl-tag">&lt;/PackageName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ClassName&gt;</strong>Customer<strong style="color: navy" class="hl-tag">&lt;/ClassName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;DefaultTable&gt;</strong>CUSTOMER<strong style="color: navy" class="hl-tag">&lt;/DefaultTable&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"customerId"</span>  <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"int"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"CUSTOMER_ID"</span> <span style="color: blue" class="hl-attribute">primaryKey</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"firstName"</span>  <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"FIRST_NAME"</span>  <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"64"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"lastName"</span>  <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"LAST_NAME"</span>  <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"64"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"country"</span>  <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"COUNTRY"</span>  <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"48"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+
+   <strong style="color: navy" class="hl-tag">&lt;Relationship</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accounts"</span> <span style="color: blue" class="hl-attribute">relatedObject</span>=<span style="color: green" class="hl-value">"CustomerAccount"</span> <span style="color: blue" class="hl-attribute">cardinality</span>=<span style="color: green" class="hl-value">"one-to-many"</span> <span style="color: blue" class="hl-attribute">reverseRelationshipName</span>=<span style="color: green" class="hl-value">"customer"</span> <span style="color: blue" class="hl-attribute">relatedIsDependent</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+        this.customerId = CustomerAccount.customerId
+   <strong style="color: navy" class="hl-tag">&lt;/Relationship&gt;</strong>
+
+<strong style="color: navy" class="hl-tag">&lt;/MithraObject&gt;</strong>
+</pre>
+            </div></div><br class="example-break">
+            <div class="example"><a name="N40147"></a><p class="title"><b>Example&nbsp;2.4.&nbsp;tour-examples/simple-bank/CustomerAccount.xml</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
+    <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span style="color: blue" class="hl-attribute">xsi:noNamespaceSchemaLocation</span>=<span style="color: green" class="hl-value">"mithraobject.xsd"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;PackageName&gt;</strong>simplebank.domain<strong style="color: navy" class="hl-tag">&lt;/PackageName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ClassName&gt;</strong>CustomerAccount<strong style="color: navy" class="hl-tag">&lt;/ClassName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;DefaultTable&gt;</strong>CUSTOMER_ACCOUNT<strong style="color: navy" class="hl-tag">&lt;/DefaultTable&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accountId"</span>  <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"int"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"ACCOUNT_ID"</span> <span style="color: blue" class="hl-attribute">primaryKey</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"customerId"</span>  <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"int"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"CUSTOMER_ID"</span> <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accountName"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"ACCOUNT_NAME"</span> <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"48"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accountType"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"ACCOUNT_TYPE"</span> <span style="color: blue" class="hl-attribute">nullable</span>=<span style="color: green" class="hl-value">"false"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"16"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"balance"</span>  <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"double"</span>
+            <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"BALANCE"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+<strong style="color: navy" class="hl-tag">&lt;/MithraObject&gt;</strong></pre>
+            </div></div><br class="example-break">
+        </div>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40153"></a>2.2.&nbsp;Code Generation</h2></div></div></div>
+        
+        <p>
+            To generate classes, Reladomo has to be told about the <code class="code">MithraObject</code>s that it should generate code for.
+            This is done via a <code class="code">MithraClassList</code>.
+        </p>
+        <div class="example"><a name="N40161"></a><p class="title"><b>Example&nbsp;2.5.&nbsp;tour-examples/simple-bank/SimpleBankClassList.xml</b></p><div class="example-contents">
+            
+            <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;Mithra&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;MithraObjectResource</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"Customer"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;MithraObjectResource</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"CustomerAccount"</span><strong style="color: navy" class="hl-tag"> /&gt;</strong>
+<strong style="color: navy" class="hl-tag">&lt;/Mithra&gt;</strong></pre>
+        </div></div><br class="example-break">
+        <p>
+            With the class list created, we can generate classes by invoking an Ant task with the class list as input. Here is a snippet showing the Ant task being invoked from Maven.
+        </p>
+        <div class="example"><a name="N4016E"></a><p class="title"><b>Example&nbsp;2.6.&nbsp;tour-examples/simple-bank/pom.xml</b></p><div class="example-contents">
+            
+            <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;taskdef</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"gen-reladomo"</span> <span style="color: blue" class="hl-attribute">classpath</span>=<span style="color: green" class="hl-value">"plugin_classpath"</span>
+            <span style="color: blue" class="hl-attribute">classname</span>=<span style="color: green" class="hl-value">"com.gs.fw.common.mithra.generator.MithraGenerator"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+<strong style="color: navy" class="hl-tag">&lt;gen-reladomo</strong>
+    <span style="color: blue" class="hl-attribute">xml</span>=<span style="color: green" class="hl-value">"${project.basedir}/src/main/reladomoxml/SimpleBankClassList.xml"</span>
+    <span style="color: blue" class="hl-attribute">generateGscListMethod</span>=<span style="color: green" class="hl-value">"true"</span>
+    <span style="color: blue" class="hl-attribute">generatedDir</span>=<span style="color: green" class="hl-value">"${project.build.directory}/generated-sources/reladomo"</span>
+    <span style="color: blue" class="hl-attribute">nonGeneratedDir</span>=<span style="color: green" class="hl-value">"${project.basedir}/src/main/java"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+
+    // elided for brevity
+</pre>
+        </div></div><br class="example-break">
+        <p>
+            The code generator generates two sets of classes.
+            These are sent to different source directores via the <code class="code">generatedDir</code> and <code class="code">nonGeneratedDir</code>
+            attributes. The classes in <code class="code">generatedDir</code> (below figure on the left) are Reladomo framework classes which are always generated. (i.e on every run of the code generator).
+            These should never be committed to a version control system.
+        </p>
+        <p>
+            The classes under <code class="code">nonGeneratedDir</code> (below figure on the right) are the main domain classes.
+            Your business logic can be added to these classes and they can be committed to a version control system.
+            Because you could have custom business logic in these classes, the code generator will not re-generate these classes if they already exist in the target directory.
+        </p>
+        <p>
+            </p><div class="figure-float"><div class="figure"><a name="generated.fig"></a><p class="title"><b>Figure&nbsp;2.2.&nbsp;Simple Bank - Generated Classes</b></p><div class="figure-contents">
+            
+            <div class="mediaobject"><img src="domain-modeling/simplebank-generated-nongenerated.png" alt="Simple Bank - Generated Classes"></div>
+            </div></div><br class="figure-break"></div><p>
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N401A0"></a>2.3.&nbsp;Database DDL Generation</h2></div></div></div>
+        
+        <p>
+            Reladomo not only generates Java classes but can also generate DDL statements for bootstrapping the application database.
+            These include scripts to create tables, indices and foreign keys. DDL generation is an optional feature of Reladomo. You can always choose to manually create database tables that map to the various <code class="code">MithraObject</code>s.
+        </p>
+        <p>
+            Similar to code generation, the DDL generator is invoked with the <code class="code">MithraClassList</code> containing the
+            <code class="code">MithraObject</code>s for which you want DDLs generated. It also has to be told the type of database for which DDLs have to be generated.
+        </p>
+        <p>Here is a snippet showing the DDL generator Ant task being invoked from Maven.</p>
+        <div class="example"><a name="N401B7"></a><p class="title"><b>Example&nbsp;2.7.&nbsp;tour-examples/simple-bank/pom.xml</b></p><div class="example-contents">
+            
+            <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;tasks&gt;</strong><strong style="color: navy" class="hl-tag">&lt;property</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"plugin_classpath"</span> <span style="color: blue" class="hl-attribute">refid</span>=<span style="color: green" class="hl-value">"maven.plugin.classpath"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;taskdef</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"gen-reladomo-db"</span> <span style="color: blue" class="hl-attribute">classpath</span>=<span style="color: green" class="hl-value">"plugin_classpath"</span>
+                <span style="color: blue" class="hl-attribute">classname</span>=<span style="color: green" class="hl-value">"com.gs.fw.common.mithra.generator.dbgenerator.MithraDbDefinitionGenerator"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;gen-reladomo-db</strong>
+        <span style="color: blue" class="hl-attribute">xml</span>=<span style="color: green" class="hl-value">"${project.basedir}/src/main/reladomoxml/SimpleBankClassList.xml"</span>
+        <span style="color: blue" class="hl-attribute">generatedDir</span>=<span style="color: green" class="hl-value">"${project.build.directory}/generated-resources/db"</span>
+        <span style="color: blue" class="hl-attribute">databaseType</span>=<span style="color: green" class="hl-value">"UDB82"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+
+        // elided for brevity
+<strong style="color: navy" class="hl-tag">&lt;/tasks&gt;</strong>
+</pre>
+        </div></div><br class="example-break">
+        <p>
+            Running the DDL generator, produces the following files. <code class="code">.ddl</code> files contain the create table statements. <code class="code">.idx</code> and <code class="code">.fk</code> files
+            contain the statements for creating indices and foreign keys.
+        </p>
+        <div class="figure"><a name="ddl.fig"></a><p class="title"><b>Figure&nbsp;2.3.&nbsp;Simple Bank - Generated DDL</b></p><div class="figure-contents">
+            
+            <div class="mediaobject"><img src="domain-modeling/simplebank-generated-ddl.png" alt="Simple Bank - Generated DDL"></div>
+        </div></div><br class="figure-break">
+        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Optimal DDLs"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Optimal DDLs</th></tr><tr><td valign="top" align="left">
+            
+            <p>
+                The DDLs generated by Reladomo are not meant to be used as is. They are merely meant to be a starting point for further customization.
+                There are two common reasons to customize the generated DDLs. One is to add database specific clauses for specifying table spaces, schemas etc.
+                Another is to add additional indices based on usage patterns seen in the application.
+            </p>
+        </td></tr></table></div>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N401E7"></a>2.4.&nbsp;References</h2></div></div></div>
+        
+        <p>
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>
+                        <span class="emphasis"><em>
+                            <a class="ulink" href="https://goldmansachs.github.io/reladomo/xsddoc/index.html" target="_top">Object Definition Reference</a>
+                        </em></span>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        <span class="emphasis"><em>
+                            <a class="ulink" href="https://goldmansachs.github.io/reladomo/primaryKeyGenerator/PrimaryKeyGenerator.html" target="_top">Primary Key Generation</a>
+                        </em></span>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        <span class="emphasis"><em>
+                            <a class="ulink" href="https://goldmansachs.github.io/reladomo/mithraddl/ReladomoDdlGenerator.html" target="_top">Database Definition Generators</a>
+                        </em></span>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        <span class="emphasis"><em>
+                            <a class="ulink" href="https://goldmansachs.github.io/reladomo/objectxmlgenerator/Generator.html" target="_top">Object XML Generator</a>
+                        </em></span>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        <span class="emphasis"><em>
+                            <a class="ulink" href="https://goldmansachs.github.io/reladomo/visualization/ReladomoVisualization.html" target="_top">Visualize Domain Model Using Reladomo Metadata</a>
+                        </em></span>
+                    </p>
+                </li></ul></div><p>
+        </p>
+    </div>
+</div>
+    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40236"></a>Chapter&nbsp;3.&nbsp;Wiring A Reladomo Application</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4023F">3.1. Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N40273">3.2. Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N40295">3.3. Wiring it all together</a></span></dt></dl></div>
+    
+    <p>This chapter demonstrates the basic template for initializing Reladomo for use in an application.</p>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4023F"></a>3.1.&nbsp;Connection Manager</h2></div></div></div>
+        
+        <p>
+            Clearly, an application that persists to a database needs a mechanism to acquire a database connection.
+            The job of acquiring a connection is delegated to a connection manager class. Reladomo is not opinionated about how the connection is obtained as long as the connection is associated with a database transaction.
+        </p>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40247"></a>3.1.1.&nbsp;Sourceless Connection Manager</h3></div></div></div>
+            
+            <p>
+                The <code class="code">SourceLessConnectionManager</code> is used when all Reladomo objects are persisted in a single database.
+                In other words, if all objects come from a single source database, use a <code class="code">SourceLessConnectionManager</code>.
+            </p>
+            <p>
+                The snippet below shows a simple implementation that uses a direct host/port connection to the database.
+                It also uses a Reladomo utility class, <code class="code">XAConnectionManager</code> to acquire a transactional database connection.
+            </p>
+            <div class="example"><a name="N4025B"></a><p class="title"><b>Example&nbsp;3.1.&nbsp;tour-examples/simple-bank/BankConnectionManager.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> BankConnectionManager <strong class="hl-keyword"><span style="color: #000080">implements</span></strong> SourcelessConnectionManager
+{
+    <strong class="hl-keyword"><span style="color: #000080">private</span></strong> XAConnectionManager xaConnectionManager;
+
+    <strong class="hl-keyword"><span style="color: #000080">protected</span></strong> SimpleBankConnectionManager() {
+        <strong class="hl-keyword"><span style="color: #000080">this</span></strong>.createConnectionManager();
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> createConnectionManager() {
+        <strong class="hl-keyword"><span style="color: #000080">this</span></strong>.xaConnectionManager = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> XAConnectionManager();
+        xaConnectionManager.setDriverClassName(<strong class="hl-string"><span style="color: green">"com.ibm.db2.jcc.DB2Driver"</span></strong>);
+        xaConnectionManager.setHostName(<strong class="hl-string"><span style="color: green">"my.db.host"</span></strong>);
+        xaConnectionManager.setPort(<span style="color:blue" class="hl-number">12345</span>);
+        xaConnectionManager.setJdbcUser(<strong class="hl-string"><span style="color: green">"user1"</span></strong>);
+        xaConnectionManager.setJdbcPassword(<strong class="hl-string"><span style="color: green">"password1"</span></strong>);
+        xaConnectionManager.setMaxWait(<span style="color:blue" class="hl-number">500</span>);
+        xaConnectionManager.setPoolName(<strong class="hl-string"><span style="color: green">"pet store connection pool"</span></strong>);
+        xaConnectionManager.setPoolSize(<span style="color:blue" class="hl-number">10</span>);
+        xaConnectionManager.setInitialSize(<span style="color:blue" class="hl-number">1</span>);
+        xaConnectionManager.initialisePool();
+    }
+
+    <em><span style="color: gray" class="hl-annotation">@Override</span></em>
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> Connection getConnection() {
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> xaConnectionManager.getConnection();
+    }
+
+    <em><span style="color: gray" class="hl-annotation">@Override</span></em>
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> DatabaseType getDatabaseType() {
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> Udb82DatabaseType.getInstance();
+    }
+
+    <em><span style="color: gray" class="hl-annotation">@Override</span></em>
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> TimeZone getDatabaseTimeZone() {
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> TimeZone.getTimeZone(<strong class="hl-string"><span style="color: green">"America/New York"</span></strong>);
+    }
+
+    <em style="color: gray" class="hl-comment">//this uniquely identifies the database from which the connection is acquired</em>
+    <em><span style="color: gray" class="hl-annotation">@Override</span></em>
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> String getDatabaseIdentifier() {
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> xaConnectionManager.getHostName() + <strong class="hl-string"><span style="color: green">":"</span></strong> + xaConnectionManager.getPort();
+    }
+    <em style="color: gray" class="hl-comment">// elided for brevity</em>
+}</pre>
+            </div></div><br class="example-break">
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40266"></a>3.1.2.&nbsp;Source Connection Manager</h3></div></div></div>
+            
+            <p>
+                In some cases, Reladomo objects come from multiple source databases. One common case where this can happen is if the database is sharded.
+                In this case, the connection manager's job is to return a shard specific database connection.
+            </p>
+            <p>
+                Sharding is discussed in more detail in other Reladomo documentation.
+            </p>
+        </div>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40273"></a>3.2.&nbsp;Runtime Configuration</h2></div></div></div>
+        
+        <p>
+            Reladomo's runtime is configured via a <code class="code">MithraRuntime</code> XML file. This is similar to the <code class="code">MithraClassList</code> in that it lists all the <code class="code">MithraObject</code>s that
+            are being used by the application. It is different in that it specifies runtime concerns such as connection management and caching. The connection manager class to be used is indicated via the <code class="code">ConnectionManager</code> XML tag.
+        </p>
+        <p>
+            The following snippet shows a runtime configuration where all the objects are partially cached. This means that Reladomo will cache an object as long as there is sufficient memory. When there is a memory crunch, the cached objects will be garbage collected.
+        </p>
+        <div class="example"><a name="N4028A"></a><p class="title"><b>Example&nbsp;3.2.&nbsp;tour-examples/simple-bank/SimpleBankClassList.xml</b></p><div class="example-contents">
+            
+            <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraRuntime&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ConnectionManager</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"simplebank.util.BankConnectionManager"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;MithraObjectConfiguration</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"simplebank.domain.Customer"</span> <span style="color: blue" class="hl-attribute">cacheType</span>=<span style="color: green" class="hl-value">"partial"</span><strong style="color: navy" class="hl-tag"> /&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;MithraObjectConfiguration</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"simplebank.domain.CustomerAccount"</span> <span style="color: blue" class="hl-attribute">cacheType</span>=<span style="color: green" class="hl-value">"partial"</span><strong style="color: navy" class="hl-tag"> /&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;/ConnectionManager&gt;</strong>
+<strong style="color: navy" class="hl-tag">&lt;/MithraRuntime&gt;</strong></pre>
+        </div></div><br class="example-break">
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40295"></a>3.3.&nbsp;Wiring it all together</h2></div></div></div>
+        
+        <p>
+            With the connection manager and runtime configuration ready, we can initialize Reladomo by initializing the <code class="code">MithraManager</code>.
+            As the name suggests, this class manages all Reladomo operations.
+        </p>
+        <div class="example"><a name="N402A0"></a><p class="title"><b>Example&nbsp;3.3.&nbsp;tour-examples/simple-bank/SimpleBankApp.java</b></p><div class="example-contents">
+            
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> SimpleBankApp
+{
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">static</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> main(String[] args) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+    {
+        <strong class="hl-keyword"><span style="color: #000080">new</span></strong> SimpleBankApp().start();
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> SimpleBankApp() <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+    {
+        <strong class="hl-keyword"><span style="color: #000080">this</span></strong>.initReladomo();
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> initReladomo() <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+    {
+        MithraManager mithraManager = MithraManagerProvider.getMithraManager();
+        mithraManager.setTransactionTimeout(<span style="color:blue" class="hl-number">60</span> * <span style="color:blue" class="hl-number">1000</span>);
+        InputStream stream = loadReladomoXMLFromClasspath(<strong class="hl-string"><span style="color: green">"SimpleBankRuntimeConfiguration.xml"</span></strong>);
+        MithraManagerProvider.getMithraManager().readConfiguration(stream);
+        stream.close();
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> start()
+    {
+        <em style="color: gray" class="hl-comment">//implement app logic</em>
+    }
+    <em style="color: gray" class="hl-comment">// elided for brevity</em>
+}</pre>
+        </div></div><br class="example-break">
+        <p>
+            This simple application does not do anything useful other than initializing Reladomo. In the next chapter, we will extend this application to build a simple REST API for the bank.
+        </p>
+    </div>
+</div>
+    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N402B0"></a>Chapter&nbsp;4.&nbsp;CRUD Operations</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N402C6">4.1. Object Creation (C)</a></span></dt><dt><span class="sect1"><a href="#N40318">4.2. Object Read (R)</a></span></dt><dt><span class="sect1"><a href="#N403A3">4.3. Object Modification (U)</a></span></dt><dt><span class="sect1"><a href="#N403DE">4.4. Object Deletion (D)</a></span></dt></dl></div>
+    
+        <p>This chapter demonstrates basic CRUD (Create, Read, Update, Delete) operations using Reladomo.</p>
+        <p>
+            Imagine that we want to build a REST API for our bank. The API for <code class="code">Customer</code> could look like this. 
+        </p>
+        <pre class="programlisting">GET    /customer              Get all Customers
+GET    /customer/{id}         Get a Customer by id
+GET    /customer/{lastName}   Get all Customers by last name.
+POST   /customer              Create a Customer with the POST payload
+PUT    /customer/{id}         Update the details of a Customer
+DELETE /customer/{id}         Delete a Customer</pre>
+        <p>
+            To implement each of the above listed APIs, we need to use Reladomo to create, fetch and modify objects in the database.
+        </p>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N402C6"></a>4.1.&nbsp;Object Creation (C)</h2></div></div></div>
+            
+            <p>
+                Creating objects is straightfoward in Reladomo. For each <code class="code">MithraObject</code>, Reladomo generates a no-arg constructor.
+                Simply invoke the constructor and the generated setter methods. These methods correspond to the attributes defined in the <code class="code">MithraObject</code> XML.
+                Then insert the object by invoking the generated <code class="code">insert</code> method.
+                The implementation of the <code class="code">POST</code> API for the <code class="code">Customer</code>, will invoke the following code.
+            </p>
+            <pre class="programlisting">Customer mickey = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Customer();
+mickey.setCustomerId(<span style="color:blue" class="hl-number">123</span>);
+mickey.setFirstName(<strong class="hl-string"><span style="color: green">"Mickey"</span></strong>);
+mickey.setLastName(<strong class="hl-string"><span style="color: green">"Mouse"</span></strong>);
+</pre>
+            <p>
+                Invoking multiple setters is clunky. This can be improved by adding a custom constructor to the generated <code class="code">Customer</code> class.
+            </p>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> Customer(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> customerId, String firstName, String lastName)
+{
+    <strong class="hl-keyword"><span style="color: #000080">super</span></strong>();
+    <strong class="hl-keyword"><span style="color: #000080">this</span></strong>.setCustomerId(customerId);
+    <strong class="hl-keyword"><span style="color: #000080">this</span></strong>.setFirstName(firstName);
+    <strong class="hl-keyword"><span style="color: #000080">this</span></strong>.setLastName(lastName);
+}</pre>
+            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td valign="top" align="left">
+                The generated classes are meant to be modified. However, the default no-arg constructor has to be preserved as it is used internally by Reladomo.
+                When adding a custom constructor make sure to call the no-arg constructor.
+            </td></tr></table></div>
+            <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N402EE"></a>4.1.1.&nbsp;Cascaded Insert</h3></div></div></div>
+                
+                <p>
+                    Consider the case where we want to create (insert) a <code class="code">Customer</code> and his/her <code class="code">CustomerAccount</code>
+                    . The naive approach is to instantiate and insert each object individually.
+                    Another option is to wire up the object graph and let Reladomo cascade the inserts.
+                </p>
+                <pre class="programlisting">Customer mickey = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Customer();
+mickey.setCustomerId(<span style="color:blue" class="hl-number">123</span>);
+mickey.setFirstName(<strong class="hl-string"><span style="color: green">"Mickey"</span></strong>);
+mickey.setLastName(<strong class="hl-string"><span style="color: green">"Mouse"</span></strong>);
+
+CustomerAccount savingsAccount = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> CustomerAccount();
+savingsAccount.setAccountId(<span style="color:blue" class="hl-number">1000</span>);
+savingsAccount.setBalance(<span style="color:blue" class="hl-number">100</span>);
+savingsAccount.setAccountType(<strong class="hl-string"><span style="color: green">"savings"</span></strong>);
+
+mickey.getAccounts().add(savingsAccount);
+
+mickey.cascadeInsert();</pre>
+                <p>
+                    When using cascading inserts, make sure the <code class="code">relatedIsDependent="true"</code> attribute is enabled on the <code class="code">Relationship</code> definition in the <code class="code">MithraObject</code> XML.
+                </p>
+            </div>
+            <p>
+                In the snippet above, the <code class="code">cascadeInsert</code> inserts both the objects. However, the inserts are not atomic.
+                If atomic inserts are needed, simply wrap the insert in a transaction.
+            </p>
+            <pre class="programlisting">MithraManagerProvider.getMithraManager().executeTransactionalCommand((tx) -&gt; {
+    Customer mickey = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Customer();
+    mickey.setCustomerId(<span style="color:blue" class="hl-number">123</span>);
+    mickey.setFirstName(<strong class="hl-string"><span style="color: green">"Mickey"</span></strong>);
+    mickey.setLastName(<strong class="hl-string"><span style="color: green">"Mouse"</span></strong>);
+
+    CustomerAccount savingsAccount = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> CustomerAccount();
+    savingsAccount.setAccountId(<span style="color:blue" class="hl-number">1000</span>);
+    savingsAccount.setBalance(<span style="color:blue" class="hl-number">100</span>);
+    savingsAccount.setAccountType(<strong class="hl-string"><span style="color: green">"savings"</span></strong>);
+
+    mickey.getAccounts().add(savingsAccount);
+
+    mickey.cascadeInsert();
+    <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
+});</pre>
+        </div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40318"></a>4.2.&nbsp;Object Read (R)</h2></div></div></div>
+            
+            <p>
+                Objects are read using generated classes called <code class="code">Finder</code>s. There are two parts to a finder. The first is the <code class="code">Operation</code>. An operation corresponds to an expression in a SQL <code class="code">where</code> clause.
+                For each attribute in the <code class="code">MithraObject</code>, Reladomo generates a method
+                named after the attribute. These methods return <code class="code">Attribute</code> objects
+                which in turn expose methods that return <code class="code">Operation</code>s.
+            </p>
+            <pre class="programlisting">StringAttribute&lt;Customer&gt; firstNameAttribute = CustomerFinder.firstName();
+Operation firstNameOperation = firstNameAttribute.eq(<strong class="hl-string"><span style="color: green">"Mickey"</span></strong>);
+
+IntegerAttribute&lt;Customer&gt; idAttribute = CustomerFinder.customerId();
+Operation idOperation = idAttribute.in(IntSets.immutable.of(<span style="color:blue" class="hl-number">123</span>, <span style="color:blue" class="hl-number">456</span>, <span style="color:blue" class="hl-number">789</span>));
+</pre>
+            <p>
+                Operations can also be chained. Once an operation is built, one of the generated <code class="code">findMany</code>, <code class="code">findOne</code> methods is used to actually fetch the objects.
+            </p>
+            <pre class="programlisting">CustomerList mickeys = CustomerFinder.findMany(firstNameOperation);</pre>
+            <p>
+                Here are some snippets that are used to implement the <code class="code">GET</code> API for <code class="code">Customer</code>.
+            </p>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> Customer getCustomerById(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> customerId)
+{
+    <strong class="hl-keyword"><span style="color: #000080">return</span></strong> CustomerFinder.findByPrimaryKey(customerId);
+}
+
+<strong class="hl-keyword"><span style="color: #000080">public</span></strong> CustomerList getCustomersByLastName(String lastName)
+{
+    <strong class="hl-keyword"><span style="color: #000080">return</span></strong> CustomerFinder.findMany(CustomerFinder.lastName().eq(lastName));
+}</pre>
+            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Caching"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Caching</th></tr><tr><td valign="top" align="left">
+                
+                <p>When a <code class="code">Finder</code> is invoked, Reladomo normally constructs a SQL query and executes it against the database. However, this is not always the case. If the object has been cached in memory, Reladomo will return the cached object instead of hitting the database.</p>
+            </td></tr></table></div>
+            <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4035C"></a>4.2.1.&nbsp;Cursors</h3></div></div></div>
+                
+                <p>When a finder that returns a list is invoked, the entire list is forced into memory. This is not ideal if the list is huge. In such cases, it is better to iterate over the list with a cursor.
+                 The snippet below iterates over the first hundred Customers. The cursor is terminated when the <code class="code">DoWhileProcedure</code> lambda returns false.
+                </p>
+                <pre class="programlisting">CustomerList customers = ...;
+MutableIntSet ids = IntSets.mutable.empty();
+customers.forEachWithCursor(o -&gt; {
+    Customer p = (Customer)o;
+    ids.add(p.getCustomerId());
+    <strong class="hl-keyword"><span style="color: #000080">return</span></strong> ids.size() &lt; <span style="color:blue" class="hl-number">100</span>;
+});</pre>
+            </div>
+            <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4036C"></a>4.2.2.&nbsp;Deep Fetch</h3></div></div></div>
+                
+                <p>
+                    Consider the case of fetching related objects. Let's say we have a customer and are interested in all the accounts owned by this customer. A naive approach to implementing this looks as follows.
+                </p>
+                <pre class="programlisting">CustomerList customers = CustomerFinder.findMany(CustomerFinder.firstName().eq(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>));
+MutableList&lt;Object&gt; mickeysAccounts = Lists.mutable.empty();
+<strong class="hl-keyword"><span style="color: #000080">for</span></strong> (Customer customer : customers)
+{
+    <strong class="hl-keyword"><span style="color: #000080">for</span></strong> (CustomerAccount account : customer.getAccounts())
+    {
+        mickeysAccounts.add(account.getAccountId());
+    }
+}</pre>
+                <p>If there is a single customer with first name "mickey" and he has five accounts,
+                    the above snippet results in six database hits.
+                The first hit is to fetch the record for mickey (line 1). There are five more hits to the database,
+                    one per account (line 7). In ORM literature, this anti-pattern is referred to as the <span class="emphasis"><em>N+1 query problem</em></span>.
+                </p>
+                <p>
+                    Clearly this can be very inefficient for large lists. This problem is fixed by using a "deep fetch". When a deep fetch is performed, Reladomo will not only fetch the object in question, but will also traverse the relationship graph to fetch related objects. The above example using deep fetch is as follows.
+                </p>
+                <pre class="programlisting">CustomerList customers = CustomerFinder.findMany(CustomerFinder.firstName().eq(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>));
+
+customers.deepFetch(CustomerFinder.accounts());  <em style="color: gray" class="hl-comment">// configure deep fetch</em>
+
+MutableList&lt;Object&gt; mickeysAccounts = Lists.mutable.empty();
+<strong class="hl-keyword"><span style="color: #000080">for</span></strong> (Customer customer : customers)
+{
+    <strong class="hl-keyword"><span style="color: #000080">for</span></strong> (CustomerAccount account : customer.getAccounts())
+    {
+        mickeysAccounts.add(account.getAccountId());
+    }
+}</pre>
+                <p>
+                    All of the code remains the same except for line 2 where we configure the deep fetch. For each <code class="code">Relationship</code> defined in the <code class="code">MithraObject</code>, Reladomo generates a related finder instance which can be used to fetch related objects.
+                    In this case, the <code class="code">accounts</code> related finder is because of the <code class="code">accounts</code> relationship between <code class="code">Customer</code> and <code class="code">CustomerAccount</code>.
+                </p>
+                <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;Relationship</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accounts"</span>
+    <span style="color: blue" class="hl-attribute">relatedObject</span>=<span style="color: green" class="hl-value">"CustomerAccount"</span>
+    <span style="color: blue" class="hl-attribute">cardinality</span>=<span style="color: green" class="hl-value">"one-to-many"</span>
+    <span style="color: blue" class="hl-attribute">reverseRelationshipName</span>=<span style="color: green" class="hl-value">"customer"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+        this.customerId = CustomerAccount.customerId
+   <strong style="color: navy" class="hl-tag">&lt;/Relationship&gt;</strong>
+</pre>
+                <p>
+                    Now with the deep fetch configured, Reladomo issues a single query against the database.
+                </p>
+            </div>
+        </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N403A3"></a>4.3.&nbsp;Object Modification (U)</h2></div></div></div>
+        
+        <p>Objects retrieved via finders are "live" objects. Any changes made to these objects via the generated setters are reflected in the database immediately.</p>
+        <p>
+            In the following snippet, execution of the setter in line 2 results in a SQL update statement being executed against the database.
+        </p>
+        <pre class="programlisting">Customer mickey = CustomerFinder.findOne(CustomerFinder.firstName().eq(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>));
+mickey.setFirstName(<strong class="hl-string"><span style="color: green">"SuperMickey"</span></strong>);</pre>
+        <p>
+            In some cases this is not desirable. For example, you might want a set of updates to an object to be executed atomically. Or set a of updates to multiple objects be executed atomically.
+            In these cases, the solution is to wrap the updates in a transaction.
+        </p>
+        <pre class="programlisting">MithraManagerProvider.getMithraManager().executeTransactionalCommand((tx) -&gt; {
+    Customer mickey = CustomerFinder.findOne(CustomerFinder.firstName().eq(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>));
+    mickey.setFirstName(<strong class="hl-string"><span style="color: green">"Mickey"</span></strong>);
+    mickey.setLastName(<strong class="hl-string"><span style="color: green">"Mouse"</span></strong>);
+    <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
+});</pre>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N403B9"></a>4.3.1.&nbsp;Detached Objects</h3></div></div></div>
+            
+            <p>
+                As described previously, an objected fetched via a Finder is a "live" object ; changes to which are immediately flushed to the database.
+                To disable these flushes, simply detach the object from the database.
+            </p>
+            <p>
+                Imagine you are building a UI that allows users to change multiple attributes of an account.
+                In this case, you do not want each change to be flushed to the database, since the user could decide
+                not apply his changes. Detached objects are handy in use cases like this, where there is a good chance
+                that changes made to an object might have to be discarded.
+            </p>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">&nbsp;&nbsp;1 public</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> testDetached()
+&nbsp;&nbsp;2 {
+&nbsp;&nbsp;3     Customer mickey = CustomerFinder.findByPrimaryKey(<span class="hl-number" style="color:blue">1</span>);
+&nbsp;&nbsp;4     assertEquals(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>, mickey.getFirstName());
+&nbsp;&nbsp;5 
+&nbsp;&nbsp;6     p.setFirstName(<strong class="hl-string"><span style="color: green">"Mickey"</span></strong>);
+&nbsp;&nbsp;7     assertEquals(<strong class="hl-string"><span style="color: green">"Mickey"</span></strong>, CustomerFinder.findByPrimaryKey(<span class="hl-number" style="color:blue">1</span>).getFirstName());
+&nbsp;&nbsp;8 
+&nbsp;&nbsp;9     Customer detached = p.getDetachedCopy();
+&nbsp;10     detached.setFirstName(<strong class="hl-string"><span style="color: green">"SuperMickey"</span></strong>);
+&nbsp;11     assertEquals(<strong class="hl-string"><span style="color: green">"Mickey"</span></strong>, CustomerFinder.findByPrimaryKey(<span class="hl-number" style="color:blue">1</span>).getFirstName());
+&nbsp;12 }</pre>
+        </div>
+        <p>
+            In the above snippet, the set of the first name in line 6 is flushed to the database right away.
+            In line 9 the object is detached via the <code class="code">getDetachedCopy</code> method. After it has been detached, the set of the first name
+            in the subsequent line is not flushed to the database.
+        </p>
+        <p>
+            Detaching an object not only detaches that object, but the entire object graph attached to the object.
+        </p>
+        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Database flush"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Database flush</th></tr><tr><td valign="top" align="left">
+            
+            <p>
+                In general a setter invocation results in the change being flushed to the database. But this is not always the case.
+                When inside a transaction, all updates are flushed only when the transaction is committed.
+            </p>
+        </td></tr></table></div>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N403DE"></a>4.4.&nbsp;Object Deletion (D)</h2></div></div></div>
+        
+        <p>
+            Deleting an object involves invoking the generated delete method.
+            </p><pre class="programlisting">Operation idOp = CustomerAccountFinder.accountId().eq(100);
+CustomerAccount account = CustomerAccountFinder.findOne(idOp);
+account.delete();</pre><p>
+        </p>
+        <p>
+            Similar to insert a cascading delete operation is available as well.
+            </p><div class="example"><a name="N403EB"></a><p class="title"><b>Example&nbsp;4.1.&nbsp;simple-bank/CustomerResource.java</b></p><div class="example-contents">
+                
+            </div></div><p><br class="example-break">
+            </p><pre class="programlisting">@DELETE
+@Path("/{id}")
+public Response deleteCustomer(@PathParam("id") int customerId)
+{
+    Customer customer = CustomerFinder.findOne(CustomerFinder.customerId().eq(customerId));
+    customer.cascadeDelete();
+    return Response.ok().build();
+}</pre><p>
+        </p>
+        <p>
+            Similar to create and modification, deletes can be wrapped in a transaction as well.
+        </p>
+    </div>
+</div>
+    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N403FB"></a>Chapter&nbsp;5.&nbsp;A Complete Reladomo Application</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40407">5.1. Jersey Boilerplate</a></span></dt><dt><span class="sect1"><a href="#N40445">5.2. JSON Serialization</a></span></dt></dl></div>
+    
+    <p>
+        This chapter does not introduce any new Reladomo concepts. It uses all the concepts introduced
+        in the previous chapters to build a REST API for the bank domain model introduced in chapter 1.
+    </p>
+    <p>
+        It is assumed you have a basic familiarity with REST and building REST APIs with Jersey.
+    </p>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40407"></a>5.1.&nbsp;Jersey Boilerplate</h2></div></div></div>
+        
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4040C"></a>5.1.1.&nbsp;REST Resource</h3></div></div></div>
+            
+            <p>
+                The first step is to build a Jersey resource class that implements the REST API.
+                The implementation of the API uses the Reladomo CRUD APIs that were reviewed in the previous chapter.
+            </p>
+            <p>
+                The <code class="code">CustomerResource</code> class implements the <code class="code">Jersey</code> resource for <code class="code">Customer.</code>
+            </p>
+            <div class="example"><a name="N40420"></a><p class="title"><b>Example&nbsp;5.1.&nbsp;tour-examples/simple-bank/CustomerResource.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><em><span style="color: gray" class="hl-annotation">@Path("/api/customer")</span></em>
+<strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> CustomerResource
+{
+    <em><span style="color: gray" class="hl-annotation">@POST</span></em>
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> Response createCustomer(
+            <em><span style="color: gray" class="hl-annotation">@FormParam("customerId")</span></em> <strong class="hl-keyword"><span style="color: #000080">int</span></strong> customerId,
+            <em><span style="color: gray" class="hl-annotation">@FormParam("firstName")</span></em> String firstName,
+            <em><span style="color: gray" class="hl-annotation">@FormParam("lastName")</span></em> String lastName)
+    {
+        Customer customer = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Customer();
+        customer.setCustomerId(customerId);
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+        customer.insert();
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> Response.ok().build();
+    }
+
+    <em><span style="color: gray" class="hl-annotation">@GET</span></em>
+    <em><span style="color: gray" class="hl-annotation">@Path("/{id}")</span></em>
+    <em><span style="color: gray" class="hl-annotation">@Produces(MediaType.APPLICATION_JSON)</span></em>
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> Customer getCustomerById(<em><span style="color: gray" class="hl-annotation">@PathParam("id")</span></em> <strong class="hl-keyword"><span style="color: #000080">int</span></strong> customerId) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> JsonProcessingException
+    {
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> CustomerFinder.findByPrimaryKey(customerId);
+    }
+
+    <em style="color: gray" class="hl-comment">// elided for brevity</em>
+}</pre>
+            </div></div><br class="example-break">
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4042B"></a>5.1.2.&nbsp;REST Server Main Class</h3></div></div></div>
+            
+            <p>
+                The <code class="code">SimpleBankServer</code> class initializes Reladomo with the <code class="code">MithraRuntime</code>
+                XML and starts the web server with the Jersey resource class.
+            </p>
+            <div class="example"><a name="N40439"></a><p class="title"><b>Example&nbsp;5.2.&nbsp;tour-examples/simple-bank/SimpleBankServer.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> SimpleBankServer
+{
+    <strong class="hl-keyword"><span style="color: #000080">private</span></strong> ResourceConfig config;
+
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> SimpleBankServer(String runtimeConfigXML) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+    {
+        <strong class="hl-keyword"><span style="color: #000080">this</span></strong>.initReladomo(runtimeConfigXML);
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">protected</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> initReladomo(String runtimeConfigXML) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+    {
+        MithraManager mithraManager = MithraManagerProvider.getMithraManager();
+        mithraManager.setTransactionTimeout(<span style="color:blue" class="hl-number">60</span> * <span style="color:blue" class="hl-number">1000</span>);
+        InputStream stream = loadReladomoXMLFromClasspath(runtimeConfigXML);
+        MithraManagerProvider.getMithraManager().readConfiguration(stream);
+        stream.close();
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">private</span></strong> InputStream loadReladomoXMLFromClasspath(String fileName) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+    {
+        InputStream stream = SimpleBankServer.<strong class="hl-keyword"><span style="color: #000080">class</span></strong>
+                                .getClassLoader().getResourceAsStream(fileName);
+        <strong class="hl-keyword"><span style="color: #000080">if</span></strong> (stream == null)
+        {
+            <strong class="hl-keyword"><span style="color: #000080">throw</span></strong> <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Exception(<strong class="hl-string"><span style="color: green">"Failed to locate "</span></strong> + fileName + <strong class="hl-string"><span style="color: green">" in classpath"</span></strong>);
+        }
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> stream;
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">protected</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> initResources()
+    {
+        <strong class="hl-keyword"><span style="color: #000080">this</span></strong>.config = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> ResourceConfig(CustomerResource.<strong class="hl-keyword"><span style="color: #000080">class</span></strong>);
+        config.register(JacksonFeature.<strong class="hl-keyword"><span style="color: #000080">class</span></strong>);
+        config.register(SimpleBankJacksonObjectMapperProvider.<strong class="hl-keyword"><span style="color: #000080">class</span></strong>);
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> start() <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> IOException
+    {
+        initResources();
+        URI baseUri = UriBuilder.fromUri(<strong class="hl-string"><span style="color: green">"http://localhost/"</span></strong>).port(<span style="color:blue" class="hl-number">9998</span>).build();
+        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, config);
+        server.start();
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">static</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> main(String[] args) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+    {
+        String runtimeConfigXML = <strong class="hl-string"><span style="color: green">"reladomoxml/SimpleBankRuntimeConfiguration.xml"</span></strong>;
+        <strong class="hl-keyword"><span style="color: #000080">new</span></strong> SimpleBankServer(runtimeConfigXML).start();
+    }
+
+    <em style="color: gray" class="hl-comment">// elided for brevity</em>
+}</pre>
+            </div></div><br class="example-break">
+        </div>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40445"></a>5.2.&nbsp;JSON Serialization</h2></div></div></div>
+            
+            <p>
+                The REST API's endpoints consume JSON input and produce JSON output. In the <code class="code">CustomerResource</code> class,
+                we have used the Reladomo generated classes like <code class="code">Customer</code> as the data transfer POJOs.
+            </p>
+            <p>
+                But the generated classes are not pure POJOs (in the Java sense). Therefore we need to add some
+                extra plumbing to help with the JSON serialization and deserialization. This can be seen in the <code class="code">initResources</code>
+                method of the <code class="code">SimpleBankServer</code> class.
+            </p>
+            <p>
+                It should be pointed out thatReladomo has no opinion on how you choose to implement JSON serialization and deserialization.
+            </p>
+    </div>
+</div>
+    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40462"></a>Chapter&nbsp;6.&nbsp;Testing With Reladomo</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4046E">6.1. Test Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N40480">6.2. Test Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N404B5">6.3. Test Data</a></span></dt><dt><span class="sect1"><a href="#N404D2">6.4. Test Resource</a></span></dt><dt><span class="sect1"><a href="#N404EE">6.5. Debugging</a></span></dt><dt><span class="sect1"><a href="#N40519">6.6. References</a></span></dt></dl></div>
+    
+    <p>
+        One of the features that distinguishes Reladomo from other ORM frameworks is its first class
+        support for testing. This chapter demonstrates writing simple and fast tests for a Reladomo
+        application.
+    </p>
+    <p>
+        Reladomo's testing philosophy is very simple. You should be able to test your application
+        without the usual ceremony of mocks and other test helpers. Reladomo facilitates this
+        by starting and populating an in-memory H2 database with test data. All of you have to do is
+        to point your application against this in-memory database and exercise your
+        application's API/interface.
+    </p>
+    
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4046E"></a>6.1.&nbsp;Test Connection Manager</h2></div></div></div>
+            
+            <p>
+                Chapter 2 introduced the <code class="code">ConnectionManager</code> which is responsible for obtaining
+                a database connection. Since we are going to be connecting to an in-memory test database,
+                we cannot simply use the same connection manager as we would in production.
+            </p>
+            <p>
+                Instead we use the <code class="code">com.gs.fw.common.mithra.test.ConnectionManagerForTests</code> that
+                ships with the Reladomo test jars. This class is a convenience class with factory methods for
+                creating a connection manager. You don't have to do much other than use this class.
+            </p>
+        </div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40480"></a>6.2.&nbsp;Test Runtime Configuration</h2></div></div></div>
+            
+            <p>
+                Chapter 2 introduced the <code class="code">MithraRuntime</code> XML file. This file ties together the
+                various Reladomo domain model classes along with the <code class="code">ConnectionManager</code> to fetch
+                and persist these objects.
+            </p>
+            <p>
+                The <code class="code">MithraRuntime</code> XML for testing differs from production in two ways. First,
+                it uses <code class="code">com.gs.fw.common.mithra.test.ConnectionManagerForTests</code>. Second, it has
+                an extra <code class="code">Property</code> tag. This tag is used to simulate multiple databases in the same in-memory
+                H2 database server.
+            </p>
+            <p>
+                The snippet below shows a testing <code class="code">MithraRuntime</code> with entities being loaded from two
+                databases.
+            </p>
+            <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraRuntime&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ConnectionManager</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"com.gs.fw.common.mithra.test.ConnectionManagerForTests"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;Property</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"resourceName"</span> <span style="color: blue" class="hl-attribute">value</span>=<span style="color: green" class="hl-value">"test_db"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;MithraObjectConfiguration</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"com.gs.fw.myapp.Foo"</span> <span style="color: blue" class="hl-attribute">cacheType</span>=<span style="color: green" class="hl-value">"partial"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;MithraObjectConfiguration</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"com.gs.fw.myapp.Bar"</span> <span style="color: blue" class="hl-attribute">cacheType</span>=<span style="color: green" class="hl-value">"partial"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+        ...
+    <strong style="color: navy" class="hl-tag">&lt;/ConnectionManager&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ConnectionManager</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"com.gs.fw.common.mithra.test.ConnectionManagerForTests"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;Property</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"resourceName"</span> <span style="color: blue" class="hl-attribute">value</span>=<span style="color: green" class="hl-value">"desk_db"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;MithraObjectConfiguration</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"com.gs.fw.myapp.Product"</span> <span style="color: blue" class="hl-attribute">cacheType</span>=<span style="color: green" class="hl-value">"partial"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;MithraObjectConfiguration</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"com.gs.fw.myapp.Account"</span> <span style="color: blue" class="hl-attribute">cacheType</span>=<span style="color: green" class="hl-value">"partial"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+        ...
+    <strong style="color: navy" class="hl-tag">&lt;/ConnectionManager&gt;</strong>
+ <strong style="color: navy" class="hl-tag">&lt;/MithraRuntime&gt;</strong></pre>
+            <p>
+                The snippet below shows the <code class="code">SimpleBankTestRuntimeConfiguration</code> XML in its entirety.
+            </p>
+            <div class="example"><a name="N404AA"></a><p class="title"><b>Example&nbsp;6.1.&nbsp;tour-examples/simple-bank/SimpleBankTestRuntimeConfiguration.xml</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraRuntime</strong>
+      <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+      <span style="color: blue" class="hl-attribute">xsi:noNamespaceSchemaLocation</span>=<span style="color: green" class="hl-value">"mithraruntime.xsd"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ConnectionManager</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"com.gs.fw.common.mithra.test.ConnectionManagerForTests"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;Property</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"testResource"</span> <span style="color: blue" class="hl-attribute">value</span>=<span style="color: green" class="hl-value">"mithra_db"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;MithraObjectConfiguration</strong> <span style="color: blue" class="hl-attribute">cacheType</span>=<span style="color: green" class="hl-value">"partial"</span> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"simplebank.domain.Customer"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;MithraObjectConfiguration</strong> <span style="color: blue" class="hl-attribute">cacheType</span>=<span style="color: green" class="hl-value">"partial"</span> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"simplebank.domain.CustomerAccount"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;/ConnectionManager&gt;</strong>
+<strong style="color: navy" class="hl-tag">&lt;/MithraRuntime&gt;</strong></pre>
+            </div></div><br class="example-break">
+        </div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N404B5"></a>6.3.&nbsp;Test Data</h2></div></div></div>
+            
+            <p>
+                Reladomo will not only start a in-memory H2 database, but also populate it with data.
+                All you have to do is provide a test data file. The following snippet describes the data file's format.
+            </p>
+            <pre class="programlisting">class <strong style="color: navy" class="hl-tag">&lt;classname&gt;</strong>
+<strong style="color: navy" class="hl-tag">&lt;attribute</strong> <span style="color: blue" class="hl-attribute">name</span> <span style="color: blue" class="hl-attribute">1&gt;,</span> <span style="color: blue" class="hl-attribute">&lt;attribute</span> <span style="color: blue" class="hl-attribute">name</span> <span style="color: blue" class="hl-attribute">2&gt;...</span> <span style="color: blue" class="hl-attribute">&lt;attribute</span> <span style="color: blue" class="hl-attribute">name</span> <span style="color: blue" class="hl-attribute">N&gt;</span>
+<span style="color: blue" class="hl-attribute">&lt;value</span> <span style="color: blue" class="hl-attribute">1,</span> <span style="color: blue" class="hl-attribute">1&gt;,</span> <span style="color: blue" class="hl-attribute">&lt;value</span> <span style="color: blue" class="hl-attribute">1,</span> <span style="color: blue" class="hl-attribute">2&gt;</span> <span style="color: blue" class="hl-attribute">...</span> <span style="color: blue" class="hl-attribute">&lt;value</span> <span style="color: blue" class="hl-attribute">1,</span> <span style="color: blue" class="hl-attribute">N&gt;</span>
+<span style="color: blue" class="hl-attribute">&lt;value</span> <span style="color: blue" class="hl-attribute">2,</span> <span style="color: blue" class="hl-attribute">1&gt;,</span> <span style="color: blue" class="hl-attribute">&lt;value</span> <span style="color: blue" class="hl-attribute">2,</span> <span style="color: blue" class="hl-attribute">2&gt;</span> <span style="color: blue" class="hl-attribute">...</span> <span style="color: blue" class="hl-attribute">&lt;value</span> <span style="color: blue" class="hl-attribute">2,</span> <span style="color: blue" class="hl-attribute">N&gt;</span>
+<span style="color: blue" class="hl-attribute">...</span>
+<span style="color: blue" class="hl-attribute">...</span>
+<span style="color: blue" class="hl-attribute">&lt;value</span> <span style="color: blue" class="hl-attribute">M,</span> <span style="color: blue" class="hl-attribute">1&gt;,</span> <span style="color: blue" class="hl-attribute">&lt;value</span> <span style="color: blue" class="hl-attribute">M,</span> <span style="color: blue" class="hl-attribute">2&gt;</span> <span style="color: blue" class="hl-attribute">...</span> <span style="color: blue" class="hl-attribute">&lt;value</span> <span style="color: blue" class="hl-attribute">M,</span> <span style="color: blue" class="hl-attribute">N&gt;</span></pre>
+            <p>
+                The snippet below shows the <code class="code">SimpleBankTestData.txt</code> file that will be used
+                to test the REST API we built in chapter 4.
+            </p>
+            <div class="example"><a name="N404C7"></a><p class="title"><b>Example&nbsp;6.2.&nbsp;tour-examples/simple-bank/SimpleBankTestData.txt</b></p><div class="example-contents">
+                
+                <pre class="programlisting">class simplebank.domain.Customer
+customerId, firstName, lastName, country
+1, "mickey", "mouse", "USA"
+2, "minnie", "mouse", "USA"
+3, "peter", "pan", "Neverland"
+
+class simplebank.domain.CustomerAccount
+accountId, customerId, accountName, accountType, balance
+100, 1, "mickey mouse club", "savings", 5000
+101, 2, "retirement", "savings", 10000
+102, 3, "fun stuff", "checking", 3000</pre>
+            </div></div><br class="example-break">
+        </div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N404D2"></a>6.4.&nbsp;Test Resource</h2></div></div></div>
+            
+            <p>
+                The <code class="code">MithraTestResource</code> wires everything together. It is used  to load
+                the <code class="code">MithraClassList</code>, and initialize the test database with test data.
+                The following is a snippet from <code class="code">SimpleBankAPITest</code>, showing a complete test.
+            </p>
+            <div class="example"><a name="N404E3"></a><p class="title"><b>Example&nbsp;6.3.&nbsp;tour-examples/simple-bank/SimpleBankAPITest.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> SimpleBankAPITest
+{
+    <strong class="hl-keyword"><span style="color: #000080">private</span></strong> String testRuntimeConfigXML = <strong class="hl-string"><span style="color: green">"testconfig/SimpleBankTestRuntimeConfiguration.xml"</span></strong>;
+
+    <em><span style="color: gray" class="hl-annotation">@Before</span></em>
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> setup() <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+    {
+        intializeReladomoForTest();
+        initializeApp();
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> intializeReladomoForTest()
+    {
+        MithraTestResource testResource = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> MithraTestResource(testRuntimeConfigXML);
+        ConnectionManagerForTests connectionManager = ConnectionManagerForTests.getInstance(<strong class="hl-string"><span style="color: green">"test_db"</span></strong>);
+        testResource.createSingleDatabase(connectionManager, <strong class="hl-string"><span style="color: green">"testconfig/SimpleBankTestData.txt"</span></strong>);
+        testResource.setUp();
+    }
+
+    <strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> initializeApp() <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+    {
+        <strong class="hl-keyword"><span style="color: #000080">new</span></strong> SimpleBankServer(testRuntimeConfigXML).start();
+    }
+
+    <em><span style="color: gray" class="hl-annotation">@Test</span></em>
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> testGetCustomer()
+    {
+        WebTarget target = webTarget(<strong class="hl-string"><span style="color: green">"/api/customer/1"</span></strong>);
+        Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Customer mickey = response.readEntity(Customer.<strong class="hl-keyword"><span style="color: #000080">class</span></strong>);
+        assertEquals(<span style="color:blue" class="hl-number">1</span>, mickey.getCustomerId());
+        assertEquals(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>, mickey.getFirstName());
+        assertEquals(<strong class="hl-string"><span style="color: green">"mouse"</span></strong>, mickey.getLastName());
+
+        CustomerAccountList mickeysAccounts = mickey.getAccounts();
+        assertEquals(<span style="color:blue" class="hl-number">1</span>, mickeysAccounts.size());
+        CustomerAccount clubhouseAccount = mickeysAccounts.get(<span style="color:blue" class="hl-number">0</span>);
+        assertEquals(<span style="color:blue" class="hl-number">100</span>, clubhouseAccount.getAccountId());
+        assertEquals(<strong class="hl-string"><span style="color: green">"mickey mouse club"</span></strong>, clubhouseAccount.getAccountName());
+        assertEquals(<strong class="hl-string"><span style="color: green">"savings"</span></strong>, clubhouseAccount.getAccountType());
+        assertEquals(<span style="color:blue" class="hl-number">5000</span>, clubhouseAccount.getBalance(), <span style="color:blue" class="hl-number">0</span>);
+    }
+    <em style="color: gray" class="hl-comment">// elided for brevity</em>
+}</pre>
+            </div></div><br class="example-break">
+        </div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N404EE"></a>6.5.&nbsp;Debugging</h2></div></div></div>
+            
+            <p>
+                When using an ORM, it is useful to inspect the SQL that is being executed.
+                In Reladomo, SQL logging is enabled by setting the log level of the SQL loggers to DEBUG.
+            </p>
+            <p>
+                The following snippet shows a Logback configuration file that enables SQL logging.
+                The same can be implemented with other logging frameworks such as Log4j.
+                </p><div class="example"><a name="N404F8"></a><p class="title"><b>Example&nbsp;6.4.&nbsp;simple-bank/logback.xml</b></p><div class="example-contents">
+                    
+                    <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;configuration&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;appender</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"stdout"</span> <span style="color: blue" class="hl-attribute">class</span>=<span style="color: green" class="hl-value">"ch.qos.logback.core.ConsoleAppender"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;encoder&gt;</strong>
+            <strong style="color: navy" class="hl-tag">&lt;pattern&gt;</strong>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n<strong style="color: navy" class="hl-tag">&lt;/pattern&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;/encoder&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;/appender&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;logger</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"com.gs.fw.common.mithra.sqllogs"</span> <span style="color: blue" class="hl-attribute">level</span>=<span style="color: green" class="hl-value">"DEBUG"</span><strong style="color: navy" class="hl-tag">&gt;</strong><strong style="color: navy" class="hl-tag">&lt;/logger&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;logger</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"com.gs.fw.common.mithra.batch.sqllogs"</span> <span style="color: blue" class="hl-attribute">level</span>=<span style="color: green" class="hl-value">"DEBUG"</span><strong style="color: navy" class="hl-tag">&gt;</strong><strong style="color: navy" class="hl-tag">&lt;/logger&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;logger</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"com.gs.fw.common.mithra.test.sqllogs"</span> <span style="color: blue" class="hl-attribute">level</span>=<span style="color: green" class="hl-value">"DEBUG"</span><strong style="color: navy" class="hl-tag">&gt;</strong><strong style="color: navy" class="hl-tag">&lt;/logger&gt;</strong>
+    <em style="color: gray" class="hl-comment">&lt;!--
+    &lt;logger name="com.gs.fw.common.mithra.test.multivm.SlaveVm" level="DEBUG"&gt;&lt;/logger&gt;
+    --&gt;</em>
+
+    <strong style="color: navy" class="hl-tag">&lt;root</strong> <span style="color: blue" class="hl-attribute">level</span>=<span style="color: green" class="hl-value">"INFO"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+        <strong style="color: navy" class="hl-tag">&lt;appender-ref</strong> <span style="color: blue" class="hl-attribute">ref</span>=<span style="color: green" class="hl-value">"stdout"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;/root&gt;</strong>
+<strong style="color: navy" class="hl-tag">&lt;/configuration&gt;</strong></pre>
+                </div></div><p><br class="example-break">
+            </p>
+            <p>
+                The following is a snippet of running a test with SQL logging enabled.
+                Logs are generated not only for main code (i.e SQL executed by the generated Reladomo classes),
+                but also for test code like the <code class="code">MithraTestResource</code> when it populates the in-memory H2 database.
+            </p>
+            <p>
+                The logs also include the number of objects affected and timing information.
+                </p><pre class="programlisting">// in-memory database setup
+
+H2DbServer - Starting H2 database Server
+H2DbServer - H2 database Server Started
+Customer - executing statement drop table CUSTOMER
+Customer - executing statement create table CUSTOMER ( CUSTOMER_ID integer not null,FIRST_NAME varchar(64) not null,LAST_NAME varchar(64) not null,COUNTRY varchar(48) not null )
+Customer - executing statement CREATE UNIQUE INDEX I_CUSTOMER_PK ON CUSTOMER (CUSTOMER_ID)
+CustomerAccount - executing statement drop table CUSTOMER_ACCOUNT
+CustomerAccount - executing statement create table CUSTOMER_ACCOUNT ( ACCOUNT_ID integer not null,CUSTOMER_ID integer not null,ACCOUNT_NAME varchar(48) not null,ACCOUNT_TYPE varchar(16) not null,BALANCE double )
+CustomerAccount - executing statement CREATE UNIQUE INDEX I_CUSTOMER_ACCOUNT_PK ON CUSTOMER_ACCOUNT (ACCOUNT_ID)
+Customer - executing statement truncate table CUSTOMER
+CustomerAccount - executing statement truncate table CUSTOMER_ACCOUNT
+
+// inserting test data into the in-memory database
+
+Customer - executing statement INSERT INTO CUSTOMER (CUSTOMER_ID,FIRST_NAME,LAST_NAME,COUNTRY) values (1,'mickey','mouse','USA')
+Customer - executing statement INSERT INTO CUSTOMER (CUSTOMER_ID,FIRST_NAME,LAST_NAME,COUNTRY) values (2,'minnie','mouse','USA')
+Customer - executing statement INSERT INTO CUSTOMER (CUSTOMER_ID,FIRST_NAME,LAST_NAME,COUNTRY) values (3,'peter','pan','Neverland')
+CustomerAccount - executing statement INSERT INTO CUSTOMER_ACCOUNT (ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE) values (100,1,'mickey mouse club','savings',5000.0)
+CustomerAccount - executing statement INSERT INTO CUSTOMER_ACCOUNT (ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE) values (101,2,'retirement','savings',10000.0)
+CustomerAccount - executing statement INSERT INTO CUSTOMER_ACCOUNT (ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE) values (102,3,'fun stuff','checking',3000.0)
+
+// SQL executed to satisfy a finder query
+
+Customer - connection:1690573857 find with: select t0.CUSTOMER_ID,t0.FIRST_NAME,t0.LAST_NAME,t0.COUNTRY from CUSTOMER t0 where  t0.CUSTOMER_ID = 1
+Customer - retrieved 1 objects, 13.0 ms per
+CustomerAccount - connection:1690573857 find with: select t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE from CUSTOMER_ACCOUNT t0 where  t0.CUSTOMER_ID = 1
+CustomerAccount - retrieved 1 objects, 1.0 ms per
+                </pre><p>
+            </p>
+            <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Too much logs!!"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Too much logs!!</th></tr><tr><td valign="top" align="left">
+                
+                <p>
+                    Depending on your application, SQL logging can be very verbose and spam
+                    your logs. In general, SQL logging should not be enabled by default in production.
+                </p>
+            </td></tr></table></div>
+        </div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40519"></a>6.6.&nbsp;References</h2></div></div></div>
+            
+            <p>
+                </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                        <p>
+                            <span class="emphasis"><em>
+                                <a class="ulink" href="https://goldmansachs.github.io/reladomo/mithraTestResource/ReladomoTestResource.html" target="_top">Reladomo Test Resource</a>
+                            </em></span>
+                        </p>
+                    </li></ul></div><p>
+            </p>
+        </div>
+</div>
+    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40534"></a>Chapter&nbsp;7.&nbsp;Bitemporal Chaining</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4053D">7.1. Motivating Example - The SlowBank</a></span></dt><dt><span class="sect1"><a href="#N4054C">7.2. 
+            Bitemporal Chaining
+        </a></span></dt><dt><span class="sect1"><a href="#N40564">7.3. Bitemporal Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N4069F">7.4. References</a></span></dt></dl></div>
+    
+    <p>
+        This chapter introduces the concept of bitemporal chaining for
+        relational databases. Continuing the bank example, it shows
+        how by using bitemporal chaining, it is easy to make corrections to historical data without losing
+        any history.
+    </p>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4053D"></a>7.1.&nbsp;Motivating Example - The SlowBank</h2></div></div></div>
+        
+        <p>
+            Consider the case of the "SlowBank".
+            The bank has several ATMs but the ATM's connectivity to the bank's backend systems is flaky.
+            When an ATM is not able to communicate with the bank's backend, ATM transactions are recorded
+            locally. Later someone is sent to fetch these local transactions which are manually applied to the
+            bank's database.
+        </p>
+        <p>
+            This delay in updating the bank's database means that your bank balance is not always upto date.
+            Sometimes the bank says you have less money than you actually have ; sometimes it says you have more money than you actually have!
+            All of this is very frustrating. But the bank happily adjusts your balance everytime you report a discrepancy.
+        </p>
+        <p>
+            However, the bank has a new problem. They have been manually adjusting the balance so many times, that they are completely unable to reason about your account's history.
+            Lucikly, they have learnt about bitemporal chaining that will help them fix these problems.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4054C"></a>7.2.&nbsp;
+            Bitemporal Chaining
+        </h2></div></div></div>
+        
+        <p>
+            In bitemporal chaining, all changes to a database are tracked along two dimensions.
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>
+                        Business Time - This is when the change actually occurred in the world
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        Processing Time - This is when the change actually was recorded in the database
+                    </p>
+                </li></ul></div><p>
+            While these two times are often the same, they can be different.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40564"></a>7.3.&nbsp;Bitemporal Updates To An Account</h2></div></div></div>
+        
+        <p>
+            In this section we look at a sequence of transactions to an account and demonstrate how bitemporal chaining is used to capture history.
+        </p>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4056C"></a>7.3.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
+            
+            <p>
+                On Jan 1 you open a new bank account with a balance of $100. The bank updates it's database (table) with an entry for your account.
+                Since bitemporal chaining is being used, each row in the table has four timestamp columns:
+                </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                        <p>
+                            FROM_Z and THRU_Z track the validity of the row along the business time dimension
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            IN_Z and OUT_Z track the validity of the row along the processing time dimension
+                        </p>
+                    </li></ul></div><p>
+                The table looks as follows. (The number to the right of every row provides an easy way to refer to rows in this document.)
+                </p><div class="figure"><a name="bitemporal1.fig"></a><p class="title"><b>Figure&nbsp;7.1.&nbsp;Bank Account On Jan 1</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-1.png" alt="Bank Account On Jan 1"></div>
+                </div></div><p><br class="figure-break">
+                Row 1 records the following facts:
+                </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                        <p>
+                            The account was created on today (Jan 1). So FROM_Z = Jan 1. This example will use dates (formatted as 'Jan 1' for simplicity) instead of timestamps.
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            The account was added to the database today (Jan 1). So IN_Z = Jan 1
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            This is the only row for this account. And we mark these rows as valid by setting the THRU_Z and OUT_Z to Infinity. Infinity is a magic timestamp chosen such that it cannot possibly be a valid date in the system e.g. 9999/1/1.
+                        </p>
+                    </li></ul></div><p>
+            </p>
+            <p>
+                The chart on the right (which is not drawn to scale), is a handy tool to visualize the progression of
+                the chaining. The chart visualizes each row as a rectangle. In this case, there is only one row that extends
+                to infinity along both the time dimensions.
+            </p>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N405AD"></a>7.3.2.&nbsp;Jan 17 - Deposit $50</h3></div></div></div>
+            
+            <p>
+                A few days later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
+                the ATM does not send your deposit to the bank right away. While you walk away thinking your account has $150, your account actually has only $100.
+            </p>
+            <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Missed Deposit !!"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Missed Deposit !!</th></tr><tr><td valign="top" align="left">
+                
+                <p>
+                    The table remains unchanged as the deposit was never posted to the account.
+                </p>
+            </td></tr></table></div>
+            <div class="figure"><a name="bitemporal2.fig"></a><p class="title"><b>Figure&nbsp;7.2.&nbsp;Bank Account On Jan 17</b></p><div class="figure-contents">
+                
+                <div class="mediaobject"><img src="bitemporal-intro/bitemporal-2.png" alt="Bank Account On Jan 17"></div>
+            </div></div><br class="figure-break">
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N405D0"></a>7.3.3.&nbsp;Jan 20 - Deposit $200</h3></div></div></div>
+            
+            <p>
+                A few days later, on Jan 20 you deposit $200 at one of the ATMs.
+            </p>
+            <p>
+                The goal of bitemporal milestoning is to track changes along both dimensions. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either as that loses history.
+            </p>
+            <p>
+                In general, making changes to a bitemporally chained database is a two step process :
+                </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                        <p>Invalidate rows whose view of the world is incorrect
+                        </p>
+                    </li><li class="listitem">
+                        <p>Add new rows to reflect the new view of the world
+                        </p>
+                    </li></ul></div><p>
+            </p>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N405ED"></a>7.3.3.1.&nbsp;Invalidating Rows</h4></div></div></div>
+                
+                <p>
+                    Row 1 currently states that the balance is $0 from Jan 1 to Infinity. This is not true anymore as the bank just accepted a $200 deposit on Jan 20. So we invalidate Row 1 by setting its OUT_Z to today (Jan 20).
+                </p>
+                <div class="figure"><a name="bitemporal31.fig"></a><p class="title"><b>Figure&nbsp;7.3.&nbsp;Bank Account On Jan 20 - After invalidating existing rows</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-31.png" alt="Bank Account On Jan 20 - After invalidating existing rows"></div>
+                </div></div><br class="figure-break">
+            </div>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N40607"></a>7.3.3.2.&nbsp;Adding new rows</h4></div></div></div>
+                
+                <p>
+                    Our new view of the world is as follows :
+                    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                            <p>
+                                From Jan 1 to Jan 20, balance = $100 (opening balance)
+                            </p>
+                        </li><li class="listitem">
+                            <p>
+                                From Jan 20 to Infinity, balance = $300 (opening balance + $200 deposit)
+                            </p>
+                        </li></ul></div><p>
+                    So we add Rows 2 and 3 to capture these facts. The IN_Z and OUT_Z of these rows captures the fact that these changes were made today and that these rows represent the latest state of the account (i.e OUT_Z is Infinity)
+                </p>
+                <div class="figure"><a name="bitemporal32.fig"></a><p class="title"><b>Figure&nbsp;7.4.&nbsp;Bank Account On Jan 20 - After adding new rows</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-32.png" alt="Bank Account On Jan 20 - After adding new rows"></div>
+                </div></div><br class="figure-break">
+            </div>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40631"></a>7.3.4.&nbsp;Jan 25 - Correct the missing $50</h3></div></div></div>
+            
+            <p>
+                On Jan 25 you check your bank account and realize that the $50 deposit on Jan 17 has not been posted to the account.
+                Furious, you call the bank to complain. They are apologetic and are willing to update the account.
+            </p>
+            <p>
+                Just as before, the bank wants to preserve history in both dimensions. They follow the same approach :
+                </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                        <p>
+                            Invalidate rows whose view of the world is incorrect
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            Add new rows to reflect the new view of the world
+                        </p>
+                    </li></ul></div><p>
+            </p>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N4064B"></a>7.3.4.1.&nbsp;Invalidate rows</h4></div></div></div>
+                
+                <p>
+                    Row 1 is already invalid. It does not need to be updated.
+                </p>
+                <p>
+                    Rows 2 and 3 are invalid along the business time dimension. However, we want to preserve the fact that they are invalid. So we invalidate them by setting their OUT_Z to today (Jan 25).
+                </p>
+                <div class="figure"><a name="bitemporal41.fig"></a><p class="title"><b>Figure&nbsp;7.5.&nbsp;Bank Account On Jan 25 - After invalidating existing rows</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-41.png" alt="Bank Account On Jan 25 - After invalidating existing rows"></div>
+                </div></div><br class="figure-break">
+            </div>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N40668"></a>7.3.4.2.&nbsp;
+                    Add new rows
+                </h4></div></div></div>
+                
+                <p>
+                    Our new view of the world is as follows :
+                    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                            <p>
+                                From Jan 1 to Jan 17, balance = $100 (opening balance)
+                            </p>
+                        </li><li class="listitem">
+                            <p>
+                                From Jan 17 to Jan 20, balance = $150 (opening balance + deposit of $50 on Jan 17)
+                            </p>
+                        </li><li class="listitem">
+                            <p>
+                                From Jan 20 to Jan Infinity, balance = $1350 (opening balance + deposit of $50 on Jan 17 + deposit of $200 on Jan 20)
+                            </p>
+                        </li></ul></div><p>
+                    Since we are adding these rows today (Jan 25), the IN_Z of these newly added rows = Jan 25.
+                </p>
+                <div class="figure"><a name="bitemporal42.fig"></a><p class="title"><b>Figure&nbsp;7.6.&nbsp;Bank Account On Jan 25 - After adding new rows</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-42.png" alt="Bank Account On Jan 25 - After adding new rows"></div>
+                </div></div><br class="figure-break">
+            </div>
+            <p>
+                To be more explicit about what we just did, we were able to go back in time and
+                record an update for Jan 17 (business time), along with recording the fact that this update was made today on Jan 25 (processing time).
+                This is the beauty of bitemporal chaining.
+            </p>
+            <p>
+                As you can see the visualization now shows a rectangle for each of the rows in the table. It should be clear that since rows are never deleted, we never lose history.
+            </p>
+        </div>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4069F"></a>7.4.&nbsp;References</h2></div></div></div>
+        
+        <p>
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>
+                        <span class="emphasis"><em>
+                            <a class="ulink" href="http://www2.cs.arizona.edu/~rts/tdbbook.pdf" target="_top">Developing Time-Oriented Database Applications in SQL, Richard T. Snodgrass</a>
+                        </em></span>
+                    </p>
+                </li></ul></div><p>
+        </p>
+    </div>
+</div>
+    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N406BA"></a>Chapter&nbsp;8.&nbsp;Bitemporal Chaining API</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N406C3">8.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40748">8.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N4076B">8.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N40849">8.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N4087A">8.5. Next steps</a></span></dt></dl></div>
+    
+    <p>
+        This chapter introduces various Reladomo APIs that are used to update a bitemporally chained table.
+        We will use the SlowBank example from the previous chapter and write code for each of the updates.
+    </p>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N406C3"></a>8.1.&nbsp;Domain Model</h2></div></div></div>
+        
+        <p>
+            Bitemporal chaining requires four additional timestamp columns. Also, Reladomo needs to be told
+            that the domain objects are bitemporal. All of this means that we need to update the <code class="code">MithraObject</code>
+            XML definitions.
+        </p>
+        <p>
+            When temporal chaining is used, the entire object graph is temporally chained. In this case, it means
+            that both the <code class="code">Customer</code> and <code class="code">CustomerAccount</code> objects are chained. It is very unusual
+            to have only parts of an object graph chained.
+        </p>
+        <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: 
+                Mixing temporal and non temporal objects
+            "><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">
+                Mixing temporal and non temporal objects
+            </th></tr><tr><td valign="top" align="left">
+            
+            <p>
+                In some cases temporal and non temporal objects can be mixed. For example, a temporal object could refer
+                to a non-temporal object. But a non-temporal object cannot refer to a temporal one (as there can be
+                multiple versions of the object).
+            </p>
+        </td></tr></table></div>
+        <p>
+            The snippet below shows the <code class="code">Customer</code> <code class="code">MithraObject</code> with the new attributes
+            to enable bitemporal chaining.
+            </p><div class="example"><a name="N406E8"></a><p class="title"><b>Example&nbsp;8.1.&nbsp;tour-examples/bitemporal-bank/Customer.xml</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><span style="color: maroon" class="hl-directive">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;</span>
+
+<strong style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
+        <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+        <span style="color: blue" class="hl-attribute">xsi:noNamespaceSchemaLocation</span>=<span style="color: green" class="hl-value">"mithraobject.xsd"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;PackageName&gt;</strong>bitemporalbank.domain<strong style="color: navy" class="hl-tag">&lt;/PackageName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ClassName&gt;</strong>Customer<strong style="color: navy" class="hl-tag">&lt;/ClassName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;DefaultTable&gt;</strong>CUSTOMER<strong style="color: navy" class="hl-tag">&lt;/DefaultTable&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;AsOfAttribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"businessDate"</span> <span style="color: blue" class="hl-attribute">fromColumnName</span>=<span style="color: green" class="hl-value">"FROM_Z"</span> <span style="color: blue" class="hl-attribute">toColumnName</span>=<span style="color: green" class="hl-value">"THRU_Z"</span>
+                   <span style="color: blue" class="hl-attribute">toIsInclusive</span>=<span style="color: green" class="hl-value">"false"</span>
+                   <span style="color: blue" class="hl-attribute">isProcessingDate</span>=<span style="color: green" class="hl-value">"false"</span>
+                   <span style="color: blue" class="hl-attribute">infinityDate</span>=<span style="color: green" class="hl-value">"[bitemporalbank.util.TimestampProvider.getInfinityDate()]"</span>
+                   <span style="color: blue" class="hl-attribute">futureExpiringRowsExist</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">
+    /&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;AsOfAttribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"processingDate"</span> <span style="color: blue" class="hl-attribute">fromColumnName</span>=<span style="color: green" class="hl-value">"IN_Z"</span> <span style="color: blue" class="hl-attribute">toColumnName</span>=<span style="color: green" class="hl-value">"OUT_Z"</span>
+                   <span style="color: blue" class="hl-attribute">toIsInclusive</span>=<span style="color: green" class="hl-value">"false"</span>
+                   <span style="color: blue" class="hl-attribute">isProcessingDate</span>=<span style="color: green" class="hl-value">"true"</span>
+                   <span style="color: blue" class="hl-attribute">infinityDate</span>=<span style="color: green" class="hl-value">"[bitemporalbank.util.TimestampProvider.getInfinityDate()]"</span>
+                   <span style="color: blue" class="hl-attribute">defaultIfNotSpecified</span>=<span style="color: green" class="hl-value">"[bitemporalbank.util.TimestampProvider.getInfinityDate()]"</span><strong style="color: navy" class="hl-tag">
+    /&gt;</strong>
+
+    // elided for brevity
+<strong style="color: navy" class="hl-tag">&lt;/MithraObject&gt;</strong></pre>
+            </div></div><p><br class="example-break">
+        </p>
+        <p>
+            Bitemporal chaining is enabled by adding two <code class="code">AsOfAttribute</code> elements to the object.
+            The first <code class="code">AsOfAttribute</code> declares business date.
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>
+                        The name of the attribute is <code class="code">businessDate</code> and that Reladomo should call the corresponding columns <code class="code">FROM_Z</code> and <code class="code">THRU_Z</code>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        This attribute is for the business date (<code class="code">isProcessing=false</code>)
+                    </p>
+                </li></ul></div><p>
+        </p>
+        <p>
+            The second <code class="code">AsOfAttribute</code> declares the transaction date.
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>
+                        The name of the attribute is <code class="code">processingDate</code> and that Reladomo should call the corresponding columns <code class="code">IN_Z</code> and <code class="code">OUT_Z</code>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        This attribute is for the processing date (<code class="code">isProcessing=true</code>)
+                    </p>
+                </li></ul></div><p>
+        </p>
+        <p>
+            For both these attributes, Reladomo needs to be told what is the value of Infinity. To recap, infinity can
+            be any date that can be reasonably expected to not be part of normal chaining history. The
+            <code class="code">infinityDate</code> attribute points to a simple helper class which returns a <code class="code">java.sql.Timestamp</code> object
+            to be used as Infinity.
+        </p>
+        <p>
+            Other than these two attributes, the rest of the <code class="code">MithraObject</code> definition remains the same as before.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40748"></a>8.2.&nbsp;Generated Code</h2></div></div></div>
+        
+        <p>
+            Code generation is the same as before. But since the <code class="code">MithraObjects</code> are bitemporally chained,
+            the generated classes have a few additions.
+        </p>
+        <p>
+            First, each generated class's constructor accepts two timestamps.
+        </p>
+        <div class="example"><a name="N40756"></a><p class="title"><b>Example&nbsp;8.2.&nbsp;tour-examples/bitemporal-bank/Customer.java</b></p><div class="example-contents">
+            
+            <pre class="programlisting">
+<strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> Customer <strong class="hl-keyword"><span style="color: #000080">extends</span></strong> CustomerAbstract
+{
+	<strong class="hl-keyword"><span style="color: #000080">public</span></strong> Customer(Timestamp businessDate, Timestamp processingDate)
+	{
+		<strong class="hl-keyword"><span style="color: #000080">super</span></strong>(businessDate ,processingDate);
+		<em style="color: gray" class="hl-comment">// You must not modify this constructor. Mithra calls this internally.</em>
+		<em style="color: gray" class="hl-comment">// You can call this constructor. You can also add new constructors.</em>
+	}
+
+	<strong class="hl-keyword"><span style="color: #000080">public</span></strong> Customer(Timestamp businessDate)
+	{
+		<strong class="hl-keyword"><span style="color: #000080">super</span></strong>(businessDate);
+	}
+}</pre>
+        </div></div><br class="example-break">
+        <p>
+            Second, the generated <code class="code">Finder</code> classes expose attribute methods
+            which are used to set the business and processing date when working with the objects.
+            </p><pre class="programlisting">CustomerFinder.businessDate();
+CustomerFinder.processingDate();</pre><p>
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4076B"></a>8.3.&nbsp;Putting It All Together</h2></div></div></div>
+        
+        <p>
+            This section will demonstrate chaining in action by implementing each of the events from the previous chapter's motivating example.
+        </p>
+        <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Gotcha!"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Gotcha!</th></tr><tr><td valign="top" align="left">
+            
+            <p>
+                The following sections map the code in <code class="code">BitemporalChainingInAction.java</code> to the motivating example
+                discussed before. But running the code as is will result in different results than
+                what is described in this section.
+            </p>
+            <p>
+                This is because the example uses timestamps in Jan 2017. If you happen to run this example
+                in say March 2017, the IN_Z and OUT_Z values will be that of March 2017 and will differ
+                from what is presented here.
+            </p>
+            <p>
+                If you want to practice querying the table but with the example's test data,
+                you can initialize a <code class="code">MithraTestResource</code> with the data from <code class="code">BitemporalChainingInActionTestData.txt</code>.
+            </p>
+        </td></tr></table></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4078B"></a>8.3.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
+            
+            <p>
+                To open an account, we create the <code class="code">Customer</code> and <code class="code">CustomerAccount</code> and insert them.
+                However, since the objects are bitemporal, the constructor needs to be supplied with a business and processing date.
+                In this case, we are using the overloaded constructor which sets both the dates to Jan 1.
+            </p>
+            <div class="example"><a name="N40799"></a><p class="title"><b>Example&nbsp;8.3.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> createAccountOnJan1(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+{
+    Timestamp jan1 = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-01"</span></strong>);
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt;
+    {
+        Customer customer = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Customer(jan1);
+        customer.setFirstName(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>);
+        customer.setLastName(<strong class="hl-string"><span style="color: green">"mouse"</span></strong>);
+        customer.setCustomerId(<span style="color:blue" class="hl-number">1</span>);
+        customer.setCountry(<strong class="hl-string"><span style="color: green">"usa"</span></strong>);
+
+        CustomerAccount account = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> CustomerAccount(jan1);
+        account.setAccountId(accountId);
+        account.setBalance(<span style="color:blue" class="hl-number">100</span>);
+        account.setAccountType(<strong class="hl-string"><span style="color: green">"savings"</span></strong>);
+        account.setAccountName(<strong class="hl-string"><span style="color: green">"retirement"</span></strong>);
+        customer.getAccounts().add(account);
+        customer.cascadeInsert();
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
+    });
+}</pre>
+            </div></div><br class="example-break">
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407A4"></a>8.3.2.&nbsp;Jan 1 - Fetch the account</h3></div></div></div>
+            
+            <p>
+                Here we use the generated <code class="code">Finder</code> but have to specify an additional operation
+                for the business date.
+            </p>
+            <div class="example"><a name="N407AF"></a><p class="title"><b>Example&nbsp;8.4.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> fetchAccountWithBusinessDateJan1(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+{
+    Timestamp jan1 = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-01"</span></strong>);
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    Operation jan1Op = CustomerAccountFinder.businessDate().eq(jan1);
+    CustomerAccount account = CustomerAccountFinder.findOne(idOp.and(jan1Op));
+    assertEquals(<span style="color:blue" class="hl-number">100</span>, (<strong class="hl-keyword"><span style="color: #000080">int</span></strong>)account.getBalance());
+}</pre>
+            </div></div><br class="example-break">
+            <p>
+                When the above code is run, Reladomo generates the following SQL.
+            </p>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">select</span></strong> t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,
+            t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
+    <strong class="hl-keyword"><span style="color: #000080">from</span></strong> CUSTOMER_ACCOUNT t0
+    <strong class="hl-keyword"><span style="color: #000080">where</span></strong>
+    t0.CUSTOMER_ID = <span style="color:blue" class="hl-number">1</span> <strong class="hl-keyword"><span style="color: #000080">and</span></strong>
+    t0.FROM_Z &lt;= <strong class="hl-string"><span style="color: green">'2017-01-01 00:00:00.000'</span></strong> <strong class="hl-keyword"><span style="color: #000080">and</span></strong> t0.THRU_Z &gt; <strong class="hl-string"><span style="color: green">'2017-01-01 00:00:00.000'</span></strong> <strong class="hl-keyword"><span style="color: #000080">and</span></strong>
+    t0.OUT_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong></pre>
+            <p>In other words, Reladomo is looking for the latest state of the account (i.e OUT_Z=Infinity) and where the business date is &gt;= Jan 1.</p>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407C4"></a>8.3.3.&nbsp;Jan 17 - Deposit $50</h3></div></div></div>
+            
+            <p>
+                In the narrative of the SlowBank, this deposit is lost. So we simulate it by not updating the account on Jan 17.
+            </p>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407CD"></a>8.3.4.&nbsp;Jan 20 - Deposit $200</h3></div></div></div>
+            
+            <p>
+                To deposit $200, we have to fetch the account and increment its balance by 200.
+                However, updating a row in bitemporal table can result in the creation of new rows. Therefore the update
+                has to be wrapped in a transaction for atomicity.
+            </p>
+            <div class="example"><a name="N407D5"></a><p class="title"><b>Example&nbsp;8.5.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> deposit200onJan2<span style="color:blue" class="hl-number">0</span>(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+{
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt; {
+
+        Timestamp jan20TS = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-20"</span></strong>);
+        Operation ts = CustomerAccountFinder.businessDate().eq(jan20TS);
+        Operation id = CustomerAccountFinder.accountId().eq(accountId);
+        CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
+        account.incrementBalance(<span style="color:blue" class="hl-number">200</span>);
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
+    });
+}</pre>
+            </div></div><br class="example-break">
+            <p>
+                Running this method results in the following SQL statements being executed. Reladomo is invalidating the row (update OUT_Z) with business date (Jan 1 to Infinity) and adding new rows for business date (Jan 1 to Jan 20) and (Jan 20 to Infinity).
+            </p>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">update</span></strong> CUSTOMER_ACCOUNT <strong class="hl-keyword"><span style="color: #000080">set</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'2017-02-27 15:16:53.550'</span></strong>
+<strong class="hl-keyword"><span style="color: #000080">where</span></strong> ACCOUNT_ID = <span style="color:blue" class="hl-number">100</span> <strong class="hl-keyword"><span style="color: #000080">AND</span></strong> THRU_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong> <strong class="hl-keyword"><span style="color: #000080">AND</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>
+
+<strong class="hl-keyword"><span style="color: #000080">insert</span></strong> <strong class="hl-keyword"><span style="color: #000080">into</span></strong> CUSTOMER_ACCOUNT (...) <strong class="hl-keyword"><span style="color: #000080">values</span></strong> (?,?,?,?,?,?,?,?,?) <strong class="hl-keyword"><span style="color: #000080">for</span></strong> <span style="color:blue" class="hl-number">2</span> objects
+
+<strong class="hl-keyword"><span style="color: #000080">insert</span></strong> <strong class="hl-keyword"><span style="color: #000080">into</span></strong> CUSTOMER_ACCOUNT (...)
+    <strong class="hl-keyword"><span style="color: #000080">values</span></strong> (<span style="color:blue" class="hl-number">12345</span>,<span style="color:blue" class="hl-number">1</span>,<strong class="hl-string"><span style="color: green">'retirement'</span></strong>,<strong class="hl-string"><span style="color: green">'savings'</span></strong>,<span style="color:blue" class="hl-number">300.0</span>,
+        <strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>,
+        <strong class="hl-string"><span style="color: green">'2017-02-27 15:16:53.550'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)
+
+<strong class="hl-keyword"><span style="color: #000080">insert</span></strong> <strong class="hl-keyword"><span style="color: #000080">into</span></strong> CUSTOMER_ACCOUNT (...)
+    <strong class="hl-keyword"><span style="color: #000080">values</span></strong> (<span style="color:blue" class="hl-number">12345</span>,<span style="color:blue" class="hl-number">1</span>,<strong class="hl-string"><span style="color: green">'retirement'</span></strong>,<strong class="hl-string"><span style="color: green">'savings'</span></strong>,<span style="color:blue" class="hl-number">100.0</span>,
+        <strong class="hl-string"><span style="color: green">'2017-01-01 00:00:00.000'</span></strong>,<strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>,
+        <strong class="hl-string"><span style="color: green">'2017-02-27 15:16:53.550'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)</pre>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407E7"></a>8.3.5.&nbsp;Jan 20 - Fetch the account (dump history)</h3></div></div></div>
+            
+            <p>
+                This fetch is no different than the fetch on Jan 1. Simply set the <code class="code">businessDate</code> on the finder
+                to be Jan 20. Sometimes it is useful to be able to fetch the entire history of an object. Example use cases
+                include debugging, generating reports etc.
+            </p>
+            <p>
+                History along a time dimension can be fetched by using the <code class="code">equalsEdgePoint()</code> operation. e.g <code class="code">businessDate().equalsEdgePoint()</code>.
+                In this case we will use the <code class="code">equalsEdgePoint</code> operation on both dimensions to get the full history.
+            </p>
+            <div class="example"><a name="N407FE"></a><p class="title"><b>Example&nbsp;8.6.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> Operation computeHistoryOperation(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+{
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    Operation processingDateOp = CustomerAccountFinder
+            .processingDate().equalsEdgePoint();
+    Operation businessDateOp = CustomerAccountFinder
+            .businessDate().equalsEdgePoint();
+    <strong class="hl-keyword"><span style="color: #000080">return</span></strong> idOp.and(processingDateOp).and(businessDateOp);
+}</pre>
+            </div></div><br class="example-break">
+            <p>
+                The <code class="code">edgePoint</code> operations instruct Reladomo to generate the following query. As you can see, the where clause
+                does not include any of the temporal columns, resulting in a full dump of the database.
+            </p>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">select</span></strong> t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,
+t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
+<strong class="hl-keyword"><span style="color: #000080">from</span></strong> CUSTOMER_ACCOUNT t0
+<strong class="hl-keyword"><span style="color: #000080">where</span></strong> t0.ACCOUNT_ID = <span style="color:blue" class="hl-number">100</span>
+            </pre>
+            <p>
+                This <code class="code">Operation</code> can now be used with the <code class="code">Finder</code>. To make this more interestig,
+                let's use Reladomo's <code class="code">DbExtractor</code> which can extract the data from a table and among other things dump it to
+                a file.
+            </p>
+            <div class="example"><a name="N4081E"></a><p class="title"><b>Example&nbsp;8.7.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> String dumpCustomerAccount(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+{
+    Operation historyOperation = computeHistoryOperation(accountId);
+    Path tempFile = Files.createTempFile(System.nanoTime() + <strong class="hl-string"><span style="color: green">""</span></strong>, <strong class="hl-string"><span style="color: green">""</span></strong>);
+    DbExtractor dbExtractor = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> DbExtractor(tempFile.toFile().getAbsolutePath(), false);
+    dbExtractor.addClassToFile(CustomerAccountFinder.getFinderInstance(), historyOperation);
+
+    String data = Files.readAllLines(tempFile).stream().collect(Collectors.joining(<strong class="hl-string"><span style="color: green">"\n"</span></strong>));
+    System.out.println(data);
+    <strong class="hl-keyword"><span style="color: #000080">return</span></strong> data;
+}</pre>
+            </div></div><br class="example-break">
+            <p>
+                The <code class="code">DbExtractor</code>'s output is not only a listing of all the rows in the table.
+                 The output is also formatted to be copy/pasteable into a Reladomo <code class="code">MithraTestResource</code> file for use in
+                tests. See <code class="code">BitemporalChainingInActionTestData.txt</code>.
+            </p>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40835"></a>8.3.6.&nbsp;Jan 25 - Correct the missing $50</h3></div></div></div>
+            
+            <p>
+                Here we need to adjust the balance for Jan 17. All we have to do is fetch the account with a business date
+                of Jan 17 and update the balance. As before Reladomo takes care of invalidating existing rows and adding new rows.
+            </p>
+            <div class="example"><a name="N4083D"></a><p class="title"><b>Example&nbsp;8.8.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalanceForJan17OnJan2<span style="color:blue" class="hl-number">5</span>(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+{
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt; {
+        Timestamp jan17TS = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-17"</span></strong>);
+        Operation ts = CustomerAccountFinder.businessDate().eq(jan17TS);
+        Operation id = CustomerAccountFinder.accountId().eq(accountId);
+        CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
+        account.incrementBalance(<span style="color:blue" class="hl-number">50</span>);
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
+    });
+}</pre>
+            </div></div><br class="example-break">
+        </div>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40849"></a>8.4.&nbsp;Querying a chained table</h2></div></div></div>
+        
+        <p>
+            Consider the visualization from chapter 6. Each colored rectangle corresponds to row in the table.
+            </p><div class="figure"><a name="bitemporal7.fig"></a><p class="title"><b>Figure&nbsp;8.1.&nbsp;Bank Account On Jan 1</b></p><div class="figure-contents">
+                
+                <div class="mediaobject"><img src="bitemporal-intro/bitemporal42.png" alt="Bank Account On Jan 1"></div>
+            </div></div><p><br class="figure-break">
+        </p>
+        <p>
+            Each of these rows can be queried by setting the business date and processing date as required.
+            The following snippet shows querying for the account balance for business date Jan 12 but on processing date Jan 23.
+        </p>
+        <div class="example"><a name="N40865"></a><p class="title"><b>Example&nbsp;8.9.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            
+            <pre class="programlisting"><em><span style="color: gray" class="hl-annotation">@Test</span></em>
+<strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> balanceAsOfJan1<span style="color:blue" class="hl-number">2</span>_OnJan2<span style="color:blue" class="hl-number">3</span>()
+{
+    Timestamp jan12TS = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-12"</span></strong>);
+    Timestamp jan23TS = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-23"</span></strong>);
+
+    Operation id = CustomerAccountFinder.accountId().eq(<span style="color:blue" class="hl-number">100</span>);
+    Operation businessDate = CustomerAccountFinder.businessDate().eq(jan12TS);
+    Operation processingDate = CustomerAccountFinder.processingDate().eq(jan23TS);
+    CustomerAccount account = CustomerAccountFinder
+                                    .findOne(id.and(businessDate).and(processingDate));
+    assertEquals(<span style="color:blue" class="hl-number">100</span>, (<strong class="hl-keyword"><span style="color: #000080">int</span></strong>)account.getBalance());
+}</pre>
+        </div></div><br class="example-break">
+        <p>
+            Running the above code results in Reladomo executuing the following query.
+        </p>
+        <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">select</span></strong> t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,
+        t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
+<strong class="hl-keyword"><span style="color: #000080">from</span></strong> CUSTOMER_ACCOUNT t0
+<strong class="hl-keyword"><span style="color: #000080">where</span></strong> t0.ACCOUNT_ID = <span style="color:blue" class="hl-number">12345</span>
+<strong class="hl-keyword"><span style="color: #000080">and</span></strong> t0.FROM_Z &lt;= <strong class="hl-string"><span style="color: green">'2017-01-12 00:00:00.000'</span></strong> <strong class="hl-keyword"><span style="color: #000080">and</span></strong> t0.THRU_Z &gt; <strong class="hl-string"><span style="color: green">'2017-01-12 00:00:00.000'</span></strong>
+<strong class="hl-keyword"><span style="color: #000080">and</span></strong> t0.IN_Z &lt;= <strong class="hl-string"><span style="color: green">'2017-01-23 00:00:00.000'</span></strong> <strong class="hl-keyword"><span style="color: #000080">and</span></strong> t0.OUT_Z &gt; <strong class="hl-string"><span style="color: green">'2017-01-23 00:00:00.000'</span></strong>
+        </pre>
+        <p>
+            The beauty of bitemporal chaining is that the above query can be run at any point in time as long
+            as the rows exist in the database. For example, five years from now, you could run the above query
+            to determine what we thought the balance was for business date Jan 12 but five years ago (Jan 23 2017).
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4087A"></a>8.5.&nbsp;Next steps</h2></div></div></div>
+        
+        <p>
+            This section has barely scratched the surface of the what is possible with bitemporal chaining and
+            other APIs that are relevant to chaining. Some interesting questions to consider :
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>What happens if <code class="code">futureExpiringRowsExist</code>is set to false in <code class="code">MithraObject</code> XML ?</p>
+                </li><li class="listitem">
+                    <p>
+                        What if you have to update a non numeric column ? i.e we cannot use <code class="code">incrementBalance</code>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        When we use <code class="code">incrementBalance</code>, Reladomo automatically cascades the update to cover the active history. (TODO : rephrase this sentence)
+                        What if you want to increment the balance for a few specific dates ?
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        What if you really really want to delete history ?
+                    </p>
+                </li></ul></div><p>
+        </p>
+        <p>
+            To answer these questions, consider completing one of the Reladomo Katas.
+            You might also want to complete the REST API in the <code class="code">bitemporal-bank</code> Maven module.
+        </p>
+    </div>
+</div>
+</div></body></html>
