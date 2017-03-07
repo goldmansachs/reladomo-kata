@@ -30,7 +30,6 @@
     <name>Reladomo Tour Docs</name>
 
     <build>
-
         <!--This is required only to support running in Eclipse IDE. It does not impact the build for other IDEs-->
         <!--
         <pluginManagement>
