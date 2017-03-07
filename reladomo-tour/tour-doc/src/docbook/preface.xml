@@ -36,11 +36,35 @@
         <title>How to read this book</title>
         <para>
             This book is intentionally light on commentary and heavy on Java code examples and snippets. The reader is encouraged to consult and run the complete
-            examples which are distributed with this book.
+            examples.
         </para>
-        <para>
-            The examples are structured as multiple Maven modules.
-        </para>
+        <sect2>
+            <title>Examples</title>
+            <para>
+                The examples are structured as multiple Maven modules. These modules are referenced in
+                various chapters in the book.
+            </para>
+            <para>
+                To run the examples :
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Clone <code>https://github.com/goldmansachs/reladomo-kata</code>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Import the top level <code>reladomo-tour</code> as a Maven module
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Explore and run the main classes and tests in the various child Maven modules.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </para>
+        </sect2>
     </sect1>
     <sect1>
         <title>Conventions</title>

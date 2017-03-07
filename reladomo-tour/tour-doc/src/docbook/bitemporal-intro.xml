@@ -25,25 +25,6 @@
         any history.
     </para>
     <sect1>
-        <title>Motivating Example - The SlowBank</title>
-        <para>
-            Consider the case of the "SlowBank".
-            The bank has several ATMs but the ATM's connectivity to the bank's backend systems is flaky.
-            When an ATM is not able to communicate with the bank's backend, ATM transactions are recorded
-            locally. Later someone is sent to fetch these local transactions which are manually applied to the
-            bank's database.
-        </para>
-        <para>
-            This delay in updating the bank's database means that your bank balance is not always upto date.
-            Sometimes the bank says you have less money than you actually have ; sometimes it says you have more money than you actually have!
-            All of this is very frustrating. But the bank happily adjusts your balance everytime you report a discrepancy.
-        </para>
-        <para>
-            However, the bank has a new problem. They have been manually adjusting the balance so many times, that they are completely unable to reason about your account's history.
-            Lucikly, they have learnt about bitemporal chaining that will help them fix these problems.
-        </para>
-    </sect1>
-    <sect1>
         <title>
             Bitemporal Chaining
         </title>

@@ -31,11 +31,17 @@
     <toc></toc>
 
     <xi:include href="preface.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <xi:include href="domain-modeling.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <xi:include href="wiring.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <xi:include href="crud.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <xi:include href="complete-app.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <xi:include href="testing.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <xi:include href="bitemporal-intro.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <xi:include href="bitemporal-api.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+    <part label="I">
+        <xi:include href="domain-modeling.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="wiring.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="crud.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="complete-app.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="testing.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    </part>
+    <part label="II">
+        <xi:include href="chaining-motivation.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="bitemporal-intro.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="bitemporal-api.xml" xml:base="./" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    </part>
 </book>
