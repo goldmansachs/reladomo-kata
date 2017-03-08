@@ -145,4 +145,9 @@
         <xsl:attribute name="space-after.maximum">0.8em</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--- http://www.sagehill.net/docbookxsl/PrintToc.html#TocTitle -->
+    <xsl:attribute-set name="toc.line.properties">
+        <xsl:attribute name="color">#020AA7</xsl:attribute>
+    </xsl:attribute-set>
+
 </xsl:stylesheet>

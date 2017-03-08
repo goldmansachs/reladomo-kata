@@ -18,6 +18,7 @@
 
     <modules>
         <module>simple-bank</module>
+        <module>auditonly-bank</module>
         <module>bitemporal-bank</module>
     </modules>
 

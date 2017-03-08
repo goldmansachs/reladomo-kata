@@ -1,0 +1,394 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2016 Goldman Sachs.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  -->
+
+<chapter >
+    <title>Audit-Only Chaining API</title>
+    <para>
+        This chapter introduces various Reladomo APIs that are used to update a audit-only chained table.
+        We will use the SlowBank example from the previous chapter and write code for each of the updates.
+    </para>
+    <sect1>
+        <title>Domain Model</title>
+        <para>
+            Audit-only chaining requires two additional timestamp columns. Also, Reladomo needs to be told
+            that the domain objects are audit-only chained. All of this means that we need to update the <code>MithraObject</code>
+            XML definitions.
+        </para>
+        <para>
+            When temporal chaining is used, the entire object graph is temporally chained. In this case, it means
+            that both the <code>Customer</code> and <code>CustomerAccount</code> objects are chained. It is very unusual
+            to have only parts of an object graph chained.
+        </para>
+        <warning>
+            <title>
+                Mixing temporal and non temporal objects
+            </title>
+            <para>
+                In some cases temporal and non temporal objects can be mixed. For example, a temporal object could refer
+                to a non-temporal object. But a non-temporal object cannot refer to a temporal one (as there can be
+                multiple versions of the object).
+            </para>
+        </warning>
+        <para>
+            The snippet below shows the <code>Customer</code> <code>MithraObject</code> with the new attribute
+            to enable audit-only chaining.
+            <example>
+                <title>tour-examples/auditonly-bank/Customer.xml</title>
+                <programlisting language="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<MithraObject objectType="transactional"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="mithraobject.xsd">
+
+    <PackageName>auditonlybank.domain</PackageName>
+    <ClassName>Customer</ClassName>
+    <DefaultTable>CUSTOMER</DefaultTable>
+
+    <AsOfAttribute name="processingDate" fromColumnName="IN_Z" toColumnName="OUT_Z"
+                   toIsInclusive="false"
+                   isProcessingDate="true"
+                   infinityDate="[com.gs.fw.common.mithra.util.DefaultInfinityTimestamp.getDefaultInfinity()]"
+                   defaultIfNotSpecified="[com.gs.fw.common.mithra.util.DefaultInfinityTimestamp.getDefaultInfinity()]"
+    />
+
+    // elided for brevity
+</MithraObject>]]></programlisting>
+            </example>
+        </para>
+        <para>
+            Audit-only chaining is enabled by adding a <code>AsOfAttribute</code> element to the object.
+            The <code>AsOfAttribute</code> declares that
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        The name of the attribute is <code>processingDate</code> and that Reladomo should call the corresponding columns <code>IN_Z</code> and <code>OUT_Z</code>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        This attribute is for the processing date (<code>isProcessing=true</code>)
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            Reladomo needs to be told what is the value of Infinity. To recap, infinity can
+            be any date that can be reasonably expected to not be part of normal chaining history. The
+            <code>infinityDate</code> attribute points to a simple helper class which returns a <code>java.sql.Timestamp</code> object
+            to be used as Infinity.
+        </para>
+        <para>
+            Other than this attribute, the rest of the <code>MithraObject</code> definition remains the same as before.
+        </para>
+    </sect1>
+    <sect1>
+        <title>Generated Code</title>
+        <para>
+            Code generation is the same as before. But since the <code>MithraObjects</code> are audit-only chained,
+            the generated classes have a few additions.
+        </para>
+        <para>
+            First, each generated class's constructor accepts a processing date timestamp.
+        </para>
+        <example>
+            <title>tour-examples/auditonly-bank/Customer.java</title>
+            <programlisting language="java"><![CDATA[
+public class Customer extends CustomerAbstract
+{
+    public Customer(Timestamp processingDate)
+	{
+		super(processingDate);
+		// You must not modify this constructor. Mithra calls this internally.
+		// You can call this constructor. You can also add new constructors.
+	}
+
+	public Customer()
+	{
+		this(auditonlybank.util.TimestampProvider.getInfinityDate());
+	}
+}]]></programlisting>
+        </example>
+        <para>
+            Second, the generated <code>Finder</code> classes expose attribute methods
+            which are used to set the processing date when working with the objects.
+            <programlisting language="java"><![CDATA[CustomerFinder.processingDate();]]></programlisting>
+        </para>
+    </sect1>
+    <sect1>
+        <title>Putting It All Together</title>
+        <para>
+            This section will demonstrate chaining in action by implementing each of the events from the previous chapter's motivating example.
+        </para>
+        <warning>
+            <title>Note</title>
+            <para>
+                The following sections map the code in <code>AuditOnlyChainingInAction.java</code> to the motivating example
+                discussed before. But running the code as is will result in different results than
+                what is described in this section.
+            </para>
+            <para>
+                This is because the example uses timestamps in Jan 2017. If you happen to run this example
+                in say March 2017, the IN_Z and OUT_Z values will be that of March 2017 and will differ
+                from what is presented here.
+            </para>
+            <para>
+                If you want to practice querying the table but with the example's test data,
+                you can initialize a <code>MithraTestResource</code> with the data from <code>AuditOnlyChainingInActionTestData.txt</code>.
+            </para>
+        </warning>
+        <sect2>
+            <title>Jan 1 - Open an account with $100</title>
+            <para>
+                To open an account, we create the <code>Customer</code> and <code>CustomerAccount</code> and insert them.
+                However, since the objects are audit-only chained, the constructor needs to be supplied with a processing date.
+                In this case, we are using the overloaded constructor which sets the date to Infinity.
+            </para>
+            <example>
+                <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private void createAccountOnJan1(int accountId)
+{
+    Customer customer = new Customer();
+    customer.setFirstName("mickey");
+    customer.setLastName("mouse");
+    customer.setCustomerId(1);
+    customer.setCountry("usa");
+
+    CustomerAccount account = new CustomerAccount();
+    account.setAccountId(accountId);
+    account.setBalance(100);
+    account.setAccountType("savings");
+    account.setAccountName("retirement");
+    customer.getAccounts().add(account);
+    customer.cascadeInsert();
+}]]></programlisting>
+            </example>
+        </sect2>
+        <sect2>
+            <title>Jan 1 - Fetch the account</title>
+            <para>
+                Here we use the generated <code>Finder</code> but have to specify an additional operation
+                for the business date.
+            </para>
+            <example>
+                <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private void fetchLatestAccount(int accountId)
+{
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    CustomerAccount account = CustomerAccountFinder.findOne(idOp);
+    assertEquals(100, (int) account.getBalance());
+}]]></programlisting>
+            </example>
+            <para>
+                When the above code is run, Reladomo generates the following SQL.
+            </para>
+            <programlisting language="sql"><![CDATA[select t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,t0.IN_Z,t0.OUT_Z
+    from CUSTOMER_ACCOUNT t0
+    where  t0.ACCOUNT_ID = 12345 and
+    t0.OUT_Z = '9999-12-01 23:59:00.000']]></programlisting>
+            <para>In other words, Reladomo is looking for the latest state of the account (i.e OUT_Z=Infinity).</para>
+        </sect2>
+        <sect2>
+            <title>Jan 17 - Deposit $50</title>
+            <para>
+                In the narrative of the SlowBank, this deposit is lost. So we simulate it by not updating the account on Jan 17.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Jan 20 - Deposit $200</title>
+            <para>
+                To deposit $200, we have to fetch the account and increment its balance by 200.
+                However, updating a row in chained table can result in the creation of new rows. Therefore the update
+                has to be wrapped in a transaction for atomicity.
+            </para>
+            <example>
+                <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private void updateBalance(int accountId, int deposit)
+{
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
+    {
+        Operation id = CustomerAccountFinder.accountId().eq(accountId);
+        CustomerAccount account = CustomerAccountFinder.findOne(id);
+        account.setBalance(account.getBalance() + deposit);
+        return null;
+    });
+}]]></programlisting>
+            </example>
+            <para>
+                Running this method results in the following SQL statements being executed. Reladomo is invalidating the row (update OUT_Z) with business date (Jan 1 to Infinity) and adding new rows for business date (Jan 1 to Jan 20) and (Jan 20 to Infinity).
+            </para>
+            <programlisting language="sql"><![CDATA[update CUSTOMER_ACCOUNT
+            set OUT_Z = '2017-03-08 15:51:47.450'
+            where ACCOUNT_ID = 12345 AND OUT_Z = '9999-12-01 23:59:00.000'
+
+insert into CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE,IN_Z,OUT_Z)
+    values (12345,1,'retirement','savings',300.0,
+        '2017-03-08 15:51:47.450','9999-12-01 23:59:00.000')
+]]></programlisting>
+        </sect2>
+        <sect2>
+            <title>Jan 20 - Fetch the account (dump history)</title>
+            <para>
+                This fetch is no different than the fetch on Jan 1. Simply set the <code>processingDate</code> on the finder
+                to be Jan 20. Sometimes it is useful to be able to fetch the entire history of an object. Example use cases
+                include debugging, generating reports etc.
+            </para>
+            <para>
+                History along a time dimension can be fetched by using the <code>equalsEdgePoint()</code> operation.
+            </para>
+            <example>
+                <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private Operation computeHistoryOperation(int accountId)
+{
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    Operation processingDateOp = CustomerAccountFinder
+            .processingDate()
+            .equalsEdgePoint();
+    return idOp.and(processingDateOp);
+}]]></programlisting>
+            </example>
+            <para>
+                The <code>edgePoint</code> operations instruct Reladomo to generate the following query. As you can see, the where clause
+                does not include any of the temporal columns, resulting in a full dump of the database.
+            </para>
+            <programlisting language="sql"><![CDATA[select t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,t0.IN_Z,t0.OUT_Z
+    from CUSTOMER_ACCOUNT t0 where  t0.ACCOUNT_ID = 12345]]>
+            </programlisting>
+            <para>
+                This <code>Operation</code> can now be used with the <code>Finder</code>. To make this more interestig,
+                let's use Reladomo's <code>DbExtractor</code> which can extract the data from a table and among other things dump it to
+                a file.
+            </para>
+            <example>
+                <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private String dumpCustomerAccount(int accountId) throws Exception
+{
+    Operation historyOperation = computeHistoryOperation(accountId);
+    Path tempFile = Files.createTempFile(System.nanoTime() + "", "");
+    DbExtractor dbExtractor = new DbExtractor(tempFile.toFile().getAbsolutePath(), false);
+    dbExtractor.addClassToFile(CustomerAccountFinder.getFinderInstance(), historyOperation);
+
+    String data = Files.readAllLines(tempFile).stream().collect(Collectors.joining("\n"));
+    System.out.println(data);
+    return data;
+}]]></programlisting>
+            </example>
+            <para>
+                The <code>DbExtractor</code>'s output is not only a listing of all the rows in the table.
+                 The output is also formatted to be copy/pasteable into a Reladomo <code>MithraTestResource</code> file for use in
+                tests. See <code>AuditOnlyChainingInActionTestData.txt</code>.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Jan 25 - Correct the missing $50</title>
+            <para>
+                Here we need to adjust the balance for Jan 17.
+                Since we are not tracking business time, we cannot update the balance for Jan 17.
+                The best we can do is fetch the latest state of the account and adjust for the missing $50.
+                As before Reladomo takes care of invalidating existing rows and adding new rows.
+            </para>
+            <example>
+                <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
+                <programlisting language="java"><![CDATA[private void updateBalance(int accountId, int deposit)
+{
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
+    {
+        Operation id = CustomerAccountFinder.accountId().eq(accountId);
+        CustomerAccount account = CustomerAccountFinder.findOne(id);
+        account.setBalance(account.getBalance() + deposit);
+        return null;
+    });
+}]]></programlisting>
+            </example>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Querying a chained table</title>
+        <para>
+            Consider the visualization from chapter 7. Each colored rectangle corresponds to row in the table.
+            <figure id="auditonly71.fig">
+                <title>Bank Account On Jan 1</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="auditonly-intro/auditonly-42.png" scale="80" />
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>
+        <para>
+            Each of these rows can be queried by setting the processing date as required.
+            The following snippet shows querying for the account balance for processing date of Jan 17.
+        </para>
+        <example>
+            <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
+            <programlisting language="java"><![CDATA[@Test
+private void balanceAsOfJan17(int accountId)
+{
+    Timestamp date = DateUtils.parse("2017-01-17");
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    Operation dateOp = CustomerAccountFinder.processingDate().eq(date);
+    CustomerAccount account = CustomerAccountFinder.findOne(idOp.and(dateOp));
+
+    /*
+        This balance is incorrect !!
+        Even though we adjusted for the missed deposit on Jan 17, there is no way to query for the balance as of Jan 17
+    */
+    assertEquals(100, (int) account.getBalance());
+}]]></programlisting>
+        </example>
+        <para>
+            Running the above code results in Reladomo executuing the following query.
+        </para>
+        <programlisting language="sql"><![CDATA[select t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,t0.IN_Z,t0.OUT_Z
+    from CUSTOMER_ACCOUNT t0
+    where  t0.ACCOUNT_ID = 5678
+    and t0.IN_Z <= '2017-01-17 00:00:00.000' and t0.OUT_Z > '2017-01-17 00:00:00.000'
+]]></programlisting>
+        <para>
+            The drawback of audit-only chaining is that the above query cannot be used to query what balance
+            as of a business date.
+        </para>
+    </sect1>
+    <sect1>
+        <title>Changing history</title>
+        <para>
+            Say on March 1, we fetch the account with a processing date of Jan 17 and update it's balance.
+            Will this add a new row for Jan 17 ?
+        </para>
+        <para>
+            No. There is no way to change history in audit-only chaining. Reladomo will just add a new row
+            to the new change from March 1 to Infinity.
+        </para>
+        <programlisting><![CDATA[# Before update on March 1
+
+class auditonlybank.domain.CustomerAccount
+accountId,customerId,accountName,accountType,balance,processingDateFrom,processingDateTo
+5678,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+5678,1,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+5678,1,"retirement","savings",350,"2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"
+
+# After updating on March1, the account that was fetched with a processing date of Jan 17
+# Account balance was increased by $150
+
+class auditonlybank.domain.CustomerAccount
+accountId,customerId,accountName,accountType,balance,processingDateFrom,processingDateTo
+5678,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+5678,1,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+5678,1,"retirement","savings",350,"2017-01-25 00:00:00.000","2017-03-01 00:00:00.000"
+5678,1,"retirement","savings",500,"2017-03-01 00:00:00.000","9999-12-01 23:59:00.000"]]></programlisting>
+    </sect1>
+</chapter>

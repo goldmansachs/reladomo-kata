@@ -157,7 +157,7 @@ CustomerFinder.processingDate();]]></programlisting>
             This section will demonstrate chaining in action by implementing each of the events from the previous chapter's motivating example.
         </para>
         <warning>
-            <title>Gotcha!</title>
+            <title>Note</title>
             <para>
                 The following sections map the code in <code>BitemporalChainingInAction.java</code> to the motivating example
                 discussed before. But running the code as is will result in different results than

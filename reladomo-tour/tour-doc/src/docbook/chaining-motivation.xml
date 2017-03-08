@@ -43,6 +43,15 @@
                     </para>
                 </listitem>
             </itemizedlist>
+            <note>
+                <title>Note</title>
+                <para>
+                    Business time need not always be the time when the change actually occurred.
+                    It can also be the time we want it to be. For example, a bank might balance
+                    its books every day at 6.30 PM even though some banking activity might happen after
+                    6.30 PM.
+                </para>
+            </note>
             There are three types of chaining :
             <itemizedlist>
                 <listitem>
@@ -73,7 +82,7 @@
             bank's database.
         </para>
         <para>
-            This delay in updating the bank's database means that your bank balance is not always upto date.
+            This delay in updating the bank's database means that your bank balance is not always up-to-date.
             Sometimes the bank says you have less money than you actually have ; sometimes it says you have more money than you actually have!
             All of this is very frustrating. But the bank happily adjusts your balance everytime you report a discrepancy.
         </para>

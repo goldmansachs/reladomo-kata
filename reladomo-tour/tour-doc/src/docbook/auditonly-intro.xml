@@ -1,0 +1,254 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2016 Goldman Sachs.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+  -->
+
+<chapter >
+    <title>Audit-Only Chaining</title>
+    <para>
+        This chapter introduces the concept of audit-only chaining for relational databases.
+    </para>
+    <sect1>
+        <title>
+            Audit-Only Chaining
+        </title>
+        <para>
+            In audit-only chaining, all changes to a database are tracked along the processing time dimension.
+            This is the time at which a change is actually recorded in the database, irrespective of the time
+            the change occurred in the world.
+        </para>
+    </sect1>
+    <sect1>
+        <title>Audit-Only Updates To An Account</title>
+        <para>
+            In this section we look at a sequence of transactions to an account and demonstrate how audit-only chaining is used to capture history.
+        </para>
+        <sect2>
+            <title>Jan 1 - Open an account with $100</title>
+            <para>
+                On Jan 1 you open a new bank account with a balance of $100. The bank updates it's database (table) with an entry for your account.
+                Since audit-only chaining is being used, each row in the table has two timestamp columns:
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            IN_Z - This is the time when the row was added to the table
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            OUT_Z - Along with IN_Z, this defines the range in which this row is valid
+                        </para>
+                    </listitem>
+                </itemizedlist>
+                The table looks as follows. (The number to the right of every row provides an easy way to refer to rows in this document.)
+                <figure id="auditonly1.fig">
+                    <title>Bank Account On Jan 1</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="auditonly-intro/auditonly-1.png" scale="80"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                Row 1 records the following facts:
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            The account was created today (Jan 1). So IN_Z = Jan 1. This example will use dates (formatted as 'Jan 1' for simplicity) instead of timestamps.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            This is the only row for this account. And we mark this row as valid by setting OUT_Z to Infinity. Infinity is a magic timestamp chosen such that it cannot possibly be a valid date in the system e.g. 9999/1/1.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                The chart on the right (which is not drawn to scale), is a handy tool to visualize the progression of
+                the chaining. The chart visualizes each row as a rectangle. In this case, there is only one row that extends
+                to infinity along the processing time dimension.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Jan 17 - Deposit $50</title>
+            <para>
+                A few days later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
+                the ATM does not send your deposit to the bank right away. While you walk away thinking your account has $150, your account actually has only $100.
+            </para>
+            <warning>
+                <title>Missed Deposit !!</title>
+                <para>
+                    The table remains unchanged as the deposit was never posted to the account.
+                </para>
+            </warning>
+            <figure id="auditonly2.fig">
+                <title>Bank Account On Jan 17</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="auditonly-intro/auditonly-2.png" scale="80"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </sect2>
+        <sect2>
+            <title>Jan 20 - Deposit $200</title>
+            <para>
+                A few days later, on Jan 20 you deposit $200 at one of the ATMs.
+            </para>
+            <para>
+                The goal is to track changes along processing time. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either, as that loses history.
+            </para>
+            <para>
+                In general, making changes to a audit-only chained database is a two step process :
+                <itemizedlist>
+                    <listitem>
+                        <para>Invalidate the row whose view of the world is incorrect
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>Add a new row to reflect the new view of the world
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <sect3>
+                <title>Invalidate row</title>
+                <para>
+                    Row 1 currently states that the balance is $0 from Jan 1 to Infinity. This is not true anymore as the bank just accepted a $200 deposit on Jan 20. So we invalidate Row 1 by setting its OUT_Z to today (Jan 20).
+                </para>
+                <figure id="auditonly31.fig">
+                    <title>Bank Account On Jan 20 - After invalidating existing rows</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="auditonly-intro/auditonly-31.png" scale="80" />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect3>
+            <sect3>
+                <title>Adding new rows</title>
+                <para>
+                    Our new view of the world is as follows :
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                From Jan 20 to Infinity, balance = $300 (opening balance + $200 deposit)
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    So we add Row 2 to capture this fact. The IN_Z and OUT_Z of this row captures the fact that this change was made today and that this row represents the latest state of the account (i.e OUT_Z is Infinity)
+                </para>
+                <figure id="auditonly32.fig">
+                    <title>Bank Account On Jan 20 - After adding new rows</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="auditonly-intro/auditonly-32.png" scale="80" />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Jan 25 - Correct the missing $50</title>
+            <para>
+                On Jan 25 you check your bank account and realize that the $50 deposit on Jan 17 has not been posted to the account.
+                Furious, you call the bank to complain. They are apologetic and are willing to update the account.
+            </para>
+            <para>
+                Just as before, the bank follows this approach :
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            Invalidate rows whose view of the world is incorrect
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Add new rows to reflect the new view of the world
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <sect3>
+                <title>Invalidate row</title>
+                <para>
+                    Row 1 is already invalid. It does not need to be updated.
+                </para>
+                <para>
+                    Row 2 is invalid . So we invalidate it by setting its OUT_Z to today (Jan 25).
+                </para>
+                <figure id="auditonly41.fig">
+                    <title>Bank Account On Jan 25 - After invalidating existing rows</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="auditonly-intro/auditonly-41.png" scale="80"  />
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect3>
+            <sect3>
+                <title>
+                    Add new row
+                </title>
+                <para>
+                    Our new view of the world is as follows :
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                From Jan 25 to Infinity, balance = $350 (opening balance + deposit of $200 on Jan 20 + correction deposit of $50 on Jan 25)
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    Since we are adding this row today (Jan 25), the IN_Z of the newly added row = Jan 25.
+                </para>
+                <figure id="auditonly42.fig">
+                    <title>Bank Account On Jan 25 - After adding new row</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="auditonly-intro/auditonly-42.png" scale="80"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect3>
+            <para>
+                To be more explicit, the table as it stands now, simply states that the latest balance is $350.
+                While this is true, we have also lost history.
+                In particular, the table does not tell us that the $50 adjustment made on Jan 25 (processing date) was really an adjustment for Jan 17 (business date).
+            </para>
+            <para>
+                This is a fundamental limitation of audit-only chaining. Since it only tracks when changes were made
+                (processing time), there is no information about when these changes actually occurred in the world.
+            </para>
+            <para>
+                If all you are trying to to is implement an audit trail of changes, audit-only chaining is sufficient.
+            </para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>References</title>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis>
+                            <ulink url="http://www2.cs.arizona.edu/~rts/tdbbook.pdf">Developing Time-Oriented Database Applications in SQL, Richard T. Snodgrass</ulink>
+                        </emphasis>
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </sect1>
+</chapter>
