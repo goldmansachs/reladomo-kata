@@ -29,9 +29,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
 
-/**
- * Created by stanle on 11/28/16.
- */
 @Path("/api/customer")
 public class CustomerResource
 {

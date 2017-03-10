@@ -18,13 +18,6 @@ package bitemporalbank.domain;
 
 import java.sql.Timestamp;
 
-/********************************************************************************
- * File        : $Source:  $
- * Version     : $Revision:  $
- * Date        : $Date:  $
- * Modified by : $Author:  $
- * ******************************************************************************
- */
 public class Customer extends CustomerAbstract
 {
     public Customer(Timestamp businessDate, Timestamp processingDate)

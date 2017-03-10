@@ -28,9 +28,6 @@ import simplebank.domain.CustomerAccount;
 
 import java.io.IOException;
 
-/**
- * Created by stanle on 12/5/16.
- */
 public class CustomerAccountSerde
 {
 

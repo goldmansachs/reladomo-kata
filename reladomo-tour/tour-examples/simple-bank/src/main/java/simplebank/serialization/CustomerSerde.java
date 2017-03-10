@@ -31,9 +31,6 @@ import simplebank.domain.CustomerAccountList;
 
 import java.io.IOException;
 
-/**
- * Created by stanle on 12/5/16.
- */
 public class CustomerSerde
 {
     public static class Serializer extends StdSerializer<Customer>

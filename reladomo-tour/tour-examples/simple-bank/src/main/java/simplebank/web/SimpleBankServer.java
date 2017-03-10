@@ -29,9 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
-/**
- * Created by stanle on 11/29/16.
- */
 public class SimpleBankServer
 {
     private ResourceConfig config;

@@ -21,9 +21,6 @@ import com.gs.fw.common.mithra.MithraManagerProvider;
 
 import java.io.InputStream;
 
-/**
- * Created by stanle on 11/23/16.
- */
 public class BitemporalBankApp
 {
     public BitemporalBankApp() throws Exception

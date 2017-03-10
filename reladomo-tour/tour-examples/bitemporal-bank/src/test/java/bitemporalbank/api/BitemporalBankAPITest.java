@@ -35,9 +35,6 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by stanle on 2/18/17.
- */
 public class BitemporalBankAPITest
 {
     private String testRuntimeConfigXML = "testconfig/BitemporalBankTestRuntimeConfiguration.xml";
