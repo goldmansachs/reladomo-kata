@@ -133,6 +133,10 @@
                                     <fileset dir="${project.basedir}/src/docbook/bitemporal-intro">
                                     </fileset>
                                 </copy>
+                                <copy todir="${project.build.directory}/tour-doc/auditonly-intro">
+                                    <fileset dir="${project.basedir}/src/docbook/auditonly-intro">
+                                    </fileset>
+                                </copy>
                                 <copy todir="${project.build.directory}/tour-doc">
                                     <fileset dir="${project.basedir}/src/customization">
                                         <include name="*.css"/>

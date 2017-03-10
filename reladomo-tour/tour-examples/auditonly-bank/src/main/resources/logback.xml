@@ -1,0 +1,19 @@
+<configuration>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+    <logger name="com.gs.fw.common.mithra.sqllogs" level="DEBUG"></logger>
+    <logger name="com.gs.fw.common.mithra.batch.sqllogs" level="DEBUG"></logger>
+    <logger name="com.gs.fw.common.mithra.test.sqllogs" level="DEBUG"></logger>
+    <logger name="com.gs.fw.common.mithra.test.multivm.SlaveVm" level="DEBUG"></logger>
+    -->
+
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+    </root>
+</configuration>
