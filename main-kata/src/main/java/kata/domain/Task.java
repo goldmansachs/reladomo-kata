@@ -14,21 +14,18 @@
  under the License.
  */
 
-/* GOLDMAN SACHS & CO.
- * $Id: Task.java 19 2012-05-10 22:55:20Z beevma $
- */
 package kata.domain;
 
 import java.sql.Timestamp;
 
 public class Task extends TaskAbstract
 {
-	public Task(Timestamp processingDate)
-	{
-		super(processingDate);
-		// You must not modify this constructor. Mithra calls this internally.
-		// You can call this constructor. You can also add new constructors.
-	}
+    public Task(Timestamp processingDate)
+    {
+        super(processingDate);
+        // You must not modify this constructor. Mithra calls this internally.
+        // You can call this constructor. You can also add new constructors.
+    }
 
     @Override
     public String toString()

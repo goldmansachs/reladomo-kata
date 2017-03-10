@@ -14,9 +14,6 @@
  under the License.
  */
 
-/* GOLDMAN SACHS & CO.
- * $Id: TaskDatabaseObject.java 19 2012-05-10 22:55:20Z beevma $
- */
 package kata.domain;
 
 public class TaskDatabaseObject

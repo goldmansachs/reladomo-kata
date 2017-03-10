@@ -18,13 +18,6 @@ package kata.domain;
 
 import java.sql.Timestamp;
 
-/********************************************************************************
- * File        : $Source:  $
- * Version     : $Revision:  $
- * Date        : $Date:  $
- * Modified by : $Author:  $
- * ******************************************************************************
- */
 public class Employee extends EmployeeAbstract
 {
     public Employee(Timestamp businessDate, Timestamp processingDate)
