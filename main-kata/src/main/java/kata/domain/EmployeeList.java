@@ -16,17 +16,10 @@
 
 package kata.domain;
 
-import java.util.Collection;
-
 import com.gs.fw.finder.Operation;
 
-/********************************************************************************
- * File        : $Source:  $
- * Version     : $Revision:  $
- * Date        : $Date:  $
- * Modified by : $Author:  $
- * ******************************************************************************
- */
+import java.util.Collection;
+
 public class EmployeeList extends EmployeeListAbstract
 {
     public EmployeeList()

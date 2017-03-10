@@ -14,13 +14,6 @@
  under the License.
  */
 
-/********************************************************************************
- * File        : $Source:  $
- * Version     : $Revision:  $
- * Date        : $Date:  $
- * Modified by : $Author:  $
- * ******************************************************************************
- */
 package kata.domain;
 
 public class EmployeeDatabaseObject extends EmployeeDatabaseObjectAbstract

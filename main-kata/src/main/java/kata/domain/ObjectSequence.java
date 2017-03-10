@@ -14,9 +14,6 @@
  under the License.
  */
 
-/* GOLDMAN SACHS & CO.
- * $Id: ObjectSequence.java 19 2012-05-10 22:55:20Z beevma $
- */
 package kata.domain;
 
 import com.gs.fw.common.mithra.MithraSequence;
@@ -26,9 +23,9 @@ public class ObjectSequence
         implements MithraSequence
 {
     public ObjectSequence()
-	{
-		super();
-	}
+    {
+        super();
+    }
 
     public void setSequenceName(String sequenceName)
     {
