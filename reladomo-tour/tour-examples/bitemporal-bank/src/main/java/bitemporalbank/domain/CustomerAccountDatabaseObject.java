@@ -14,13 +14,6 @@ specific language governing permissions and limitations
 under the License.
 */
 
-/********************************************************************************
- * File        : $Source:  $
- * Version     : $Revision:  $
- * Date        : $Date:  $
- * Modified by : $Author:  $
- * ******************************************************************************
- */
 package bitemporalbank.domain;
 
 public class CustomerAccountDatabaseObject extends CustomerAccountDatabaseObjectAbstract

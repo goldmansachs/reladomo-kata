@@ -20,13 +20,6 @@ import com.gs.fw.finder.Operation;
 
 import java.util.Collection;
 
-/********************************************************************************
- * File        : $Source:  $
- * Version     : $Revision:  $
- * Date        : $Date:  $
- * Modified by : $Author:  $
- * ******************************************************************************
- */
 public class CustomerList extends CustomerListAbstract
 {
     public CustomerList()

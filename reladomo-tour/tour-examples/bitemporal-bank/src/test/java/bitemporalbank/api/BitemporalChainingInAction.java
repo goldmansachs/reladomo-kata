@@ -36,9 +36,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by stanle on 2/24/17.
- */
 public class BitemporalChainingInAction
 {
     private String testRuntimeConfigXML = "testconfig/BitemporalBankTestRuntimeConfiguration.xml";

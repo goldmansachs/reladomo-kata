@@ -22,9 +22,6 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.sql.Timestamp;
 
-/**
- * Created by stanle on 2/24/17.
- */
 public class DateUtils
 {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("YYY-MM-dd");

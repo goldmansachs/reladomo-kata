@@ -16,13 +16,6 @@ under the License.
 
 package simplebank.domain;
 
-/********************************************************************************
- * File        : $Source:  $
- * Version     : $Revision:  $
- * Date        : $Date:  $
- * Modified by : $Author:  $
- * ******************************************************************************
- */
 public class CustomerAccount extends CustomerAccountAbstract
 {
     public CustomerAccount()

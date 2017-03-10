@@ -30,9 +30,6 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.sql.Timestamp;
 
-/**
- * Created by stanle on 12/5/16.
- */
 public class CustomerAccountSerde
 {
 

@@ -26,10 +26,6 @@ import com.gs.fw.common.mithra.databasetype.Udb82DatabaseType;
 import java.sql.Connection;
 import java.util.TimeZone;
 
-/**
- * Created by stanle on 11/23/16.
- */
-
 public class BankConnectionManager implements SourcelessConnectionManager
 {
     protected static BankConnectionManager instance;

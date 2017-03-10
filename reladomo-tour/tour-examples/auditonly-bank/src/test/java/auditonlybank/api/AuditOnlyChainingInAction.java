@@ -35,9 +35,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by stanle on 2/24/17.
- */
 public class AuditOnlyChainingInAction
 {
     private String testRuntimeConfigXML = "testconfig/AuditOnlyBankTestRuntimeConfiguration.xml";
@@ -115,7 +112,6 @@ public class AuditOnlyChainingInAction
                 .equalsEdgePoint();
         return idOp.and(processingDateOp);
     }
-
 
     private void updateBalance(int accountId, int deposit)
     {
