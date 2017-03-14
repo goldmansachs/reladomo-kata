@@ -1,5 +1,8 @@
 Reladomo Kata 
 =============
+[![][travis img]][travis]
+[![][license-apache img]][license-apache]
+
 A [kata](https://en.wikipedia.org/wiki/Kata) is an exercise in martial arts. 
 A [code kata](http://codekata.com/) is an exercise in programming which helps hone your skills through practice and repetition. 
 The Reladomo Kata is a fun way to help you learn idiomatic Reladomo usage. 
@@ -85,3 +88,9 @@ Navigate to main-kata/target/presentation/reladomokata and open the ReladomoKata
 
 It should generate the presentation.
 Navigate to main-kata/target/presentation/reladomokata and open the ReladomoKata.xhtml in your favorite browser.
+
+[travis]:https://travis-ci.org/goldmansachs/reladomo-kata
+[travis img]:https://travis-ci.org/goldmansachs/reladomo-kata.svg?branch=master
+
+[license-apache]:LICENSE.txt
+[license-apache img]:https://img.shields.io/badge/License-Apache%202-blue.svg
