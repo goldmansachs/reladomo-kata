@@ -4,6 +4,12 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/main-kata" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mini-kata" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/reladomo-tour" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/reladomo-tour/tour-doc" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/reladomo-tour/tour-examples" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/reladomo-tour/tour-examples/auditonly-bank" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/reladomo-tour/tour-examples/bitemporal-bank" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/reladomo-tour/tour-examples/simple-bank" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
