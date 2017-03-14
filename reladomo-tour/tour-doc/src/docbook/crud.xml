@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 
 <!--
-  Copyright 2016 Goldman Sachs.
+  Copyright 2017 Goldman Sachs.
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+      http://www.apache.org/licenses/LICENSE-2.0
 
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, either express or implied.  See the License for the
+  KIND, either express or implied. See the License for the
   specific language governing permissions and limitations
   under the License.
   -->
@@ -20,7 +20,7 @@
     <title>CRUD Operations</title>
         <para>This chapter demonstrates basic CRUD (Create, Read, Update, Delete) operations using Reladomo.</para>
         <para>
-            Imagine that we want to build a REST API for our bank. The API for <code>Customer</code> could look like this. 
+            Imagine that we want to build a REST API for our bank. The API for <code>Customer</code> could look like this.
         </para>
         <programlisting language="java"><![CDATA[GET    /customer              Get all Customers
 GET    /customer/{id}         Get a Customer by id
