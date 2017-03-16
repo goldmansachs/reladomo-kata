@@ -58,12 +58,12 @@
                 <itemizedlist>
                     <listitem>
                         <para>
-                            FROM_Z and THRU_Z track the validity of the row along the business time dimension
+                            FROM_Z and THRU_Z track the validity of the row along the business-time dimension
                         </para>
                     </listitem>
                     <listitem>
                         <para>
-                            IN_Z and OUT_Z track the validity of the row along the processing time dimension
+                            IN_Z and OUT_Z track the validity of the row along the processing-time dimension
                         </para>
                     </listitem>
                 </itemizedlist>
@@ -90,7 +90,7 @@
                     </listitem>
                     <listitem>
                         <para>
-                            This is the only row for this account. And we mark these rows as valid by setting the THRU_Z and OUT_Z to Infinity. Infinity is a magic timestamp chosen such that it cannot possibly be a valid date in the system e.g. 9999/1/1.
+                            This is the only row for this account. And we mark these rows as valid by setting the THRU_Z and OUT_Z to Infinity. Infinity is a magic timestamp, in the sense that it cannot possibly be a valid date in the system e.g. 9999/1/1.
                         </para>
                     </listitem>
                 </itemizedlist>
@@ -104,7 +104,7 @@
         <sect2>
             <title>Jan 17 - Deposit $50</title>
             <para>
-                A few days later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
+                A couple of weeks later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
                 the ATM does not send your deposit to the bank right away. While you walk away thinking your account has $150, your account actually has only $100.
             </para>
             <warning>
@@ -128,10 +128,10 @@
                 A few days later, on Jan 20 you deposit $200 at one of the ATMs.
             </para>
             <para>
-                The goal of bitemporal milestoning is to track changes along both dimensions. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either as that loses history.
+                The goal of bitemporal milestoning is to track changes along both dimensions. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either, because that loses history.
             </para>
             <para>
-                In general, making changes to a bitemporally chained database is a two step process :
+                In general, making changes to a bitemporally-chained database is a two step process :
                 <itemizedlist>
                     <listitem>
                         <para>Invalidate rows whose view of the world is incorrect
@@ -146,7 +146,7 @@
             <sect3>
                 <title>Invalidating Rows</title>
                 <para>
-                    Row 1 currently states that the balance is $0 from Jan 1 to Infinity. This is not true anymore as the bank just accepted a $200 deposit on Jan 20. So we invalidate Row 1 by setting its OUT_Z to today (Jan 20).
+                    Row 1 currently states that the balance is $100 from Jan 1 to Infinity. This is not true anymore as the bank just accepted a $200 deposit on Jan 20. So we invalidate Row 1 by setting its OUT_Z to today (Jan 20).
                 </para>
                 <figure id="bitemporal31.fig">
                     <title>Bank Account On Jan 20 - After invalidating existing rows</title>
@@ -212,7 +212,7 @@
                     Row 1 is already invalid. It does not need to be updated.
                 </para>
                 <para>
-                    Rows 2 and 3 are invalid along the business time dimension. However, we want to preserve the fact that they are invalid. So we invalidate them by setting their OUT_Z to today (Jan 25).
+                    Rows 2 and 3 are invalid along the business-time dimension. However, we want to preserve the fact that they are invalid. So we invalidate them by setting their OUT_Z to today (Jan 25).
                 </para>
                 <figure id="bitemporal41.fig">
                     <title>Bank Account On Jan 25 - After invalidating existing rows</title>
@@ -246,7 +246,7 @@
                             </para>
                         </listitem>
                     </itemizedlist>
-                    Since we are adding these rows today (Jan 25), the IN_Z of these newly added rows = Jan 25.
+                    Because we are adding these rows today (Jan 25), the IN_Z of these newly added rows = Jan 25.
                 </para>
                 <figure id="bitemporal42.fig">
                     <title>Bank Account On Jan 25 - After adding new rows</title>
@@ -259,11 +259,11 @@
             </sect3>
             <para>
                 To be more explicit about what we just did, we were able to go back in time and
-                record an update for Jan 17 (business time), along with recording the fact that this update was made today on Jan 25 (processing time).
+                record an update for Jan 17 (business-time), along with recording the fact that this update was made today on Jan 25 (processing-time).
                 This is the beauty of bitemporal chaining.
             </para>
             <para>
-                As you can see the visualization now shows a rectangle for each of the rows in the table. It should be clear that since rows are never deleted, we never lose history.
+                As you can see the visualization now shows a rectangle for each of the rows in the table. It should be clear that because rows are never deleted, we never lose history.
             </para>
         </sect2>
     </sect1>

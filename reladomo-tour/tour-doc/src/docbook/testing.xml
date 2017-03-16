@@ -39,9 +39,9 @@
                 we cannot simply use the same connection manager as we would in production.
             </para>
             <para>
-                Instead we use the <code>com.gs.fw.common.mithra.test.ConnectionManagerForTests</code> that
-                ships with the Reladomo test jars. This class is a convenience class with factory methods for
-                creating a connection manager. You don't have to do much other than use this class.
+                Instead we use <code>com.gs.fw.common.mithra.test.ConnectionManagerForTests</code>, which is included
+                in the Reladomo test jars. This class is a convenience class with factory methods for
+                creating a connection manager. You don't have to do much other than to simply use this class.
             </para>
         </sect1>
         <sect1>
@@ -183,7 +183,7 @@ accountId, customerId, accountName, accountType, balance
         <sect1>
             <title>Debugging</title>
             <para>
-                When using an ORM, it is useful to inspect the SQL that is being executed.
+                When using an ORM, it is useful to inspect the SQL statements that are being executed.
                 In Reladomo, SQL logging is enabled by setting the log level of the SQL loggers to DEBUG.
             </para>
             <para>
@@ -249,7 +249,7 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                 ]]></programlisting>
             </para>
             <warning>
-                <title>Too much logs!!</title>
+                <title>Too much logs!</title>
                 <para>
                     Depending on your application, SQL logging can be very verbose and spam
                     your logs. In general, SQL logging should not be enabled by default in production.

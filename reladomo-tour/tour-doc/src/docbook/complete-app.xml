@@ -20,7 +20,7 @@
     <title>A Complete Reladomo Application</title>
     <para>
         This chapter does not introduce any new Reladomo concepts. It uses all the concepts introduced
-        in the previous chapters to build a REST API for the bank domain model introduced in chapter 1.
+        in the previous chapters to build a REST API for the bank domain model introduced in Chapter 1.
     </para>
     <para>
         It is assumed you have a basic familiarity with REST and building REST APIs with Jersey.
@@ -142,7 +142,7 @@ public class CustomerResource
                 method of the <code>SimpleBankServer</code> class.
             </para>
             <para>
-                It should be pointed out thatReladomo has no opinion on how you choose to implement JSON serialization and deserialization.
+                Note that in Reladomo it doesn't matter how you choose to implement JSON serialization and deserialization.
             </para>
     </sect1>
 </chapter>

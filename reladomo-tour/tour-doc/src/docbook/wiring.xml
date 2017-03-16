@@ -23,7 +23,7 @@
         <title>Connection Manager</title>
         <para>
             Clearly, an application that persists to a database needs a mechanism to acquire a database connection.
-            The job of acquiring a connection is delegated to a connection manager class. Reladomo is not opinionated about how the connection is obtained as long as the connection is associated with a database transaction.
+            The job of acquiring a connection is delegated to a connection manager class. How the connection is obtained is immaterial, as long as the connection is associated with a database transaction.
         </para>
         <sect2>
             <title>Sourceless Connection Manager</title>
@@ -87,7 +87,7 @@
             <title>Source Connection Manager</title>
             <para>
                 In some cases, Reladomo objects come from multiple source databases. One common case where this can happen is if the database is sharded.
-                In this case, the connection manager's job is to return a shard specific database connection.
+                In this case, the connection manager's job is to return a shard-specific database connection.
             </para>
             <para>
                 Sharding is discussed in more detail in other Reladomo documentation.
@@ -101,7 +101,7 @@
             are being used by the application. It is different in that it specifies runtime concerns such as connection management and caching. The connection manager class to be used is indicated via the <code>ConnectionManager</code> XML tag.
         </para>
         <para>
-            The following snippet shows a runtime configuration where all the objects are partially cached. This means that Reladomo will cache an object as long as there is sufficient memory. When there is a memory crunch, the cached objects will be garbage collected.
+            The following snippet shows a runtime configuration where all the objects are partially cached. This means that Reladomo will cache an object as long as there is sufficient memory. When there is a memory crunch, the cached objects will be garbage-collected.
         </para>
         <example>
             <title>tour-examples/simple-bank/SimpleBankClassList.xml</title>

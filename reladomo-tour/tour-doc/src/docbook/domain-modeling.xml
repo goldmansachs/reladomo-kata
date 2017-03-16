@@ -21,7 +21,7 @@
     <para>
         This chapter introduces domain modeling in Reladomo.
         We start by building a domain model of an application and then
-        use Reladomo to generate classes and DDL statements off of the domain model.
+        use Reladomo to generate classes and DDL statements from the domain model.
     </para>
     <sect1>
         <title>Domain Model</title>
@@ -42,8 +42,8 @@
             </mediaobject>
         </figure>
         <para>
-            We have two entities : <code>Customer</code> and <code>CustomerAccount</code>.
-            We start by defining the attributes of each entity and some metadata in a <code>MithraObject</code> XML file.
+            We have two entities: <code>Customer</code> and <code>CustomerAccount</code>.
+            We start by defining the attributes of each entity, along with some metadata in a <code>MithraObject</code> XML file.
         </para>
         <example>
             <title>tour-examples/simple-bank/Customer.xml</title>
@@ -98,12 +98,12 @@
             <para>
                 In Reladomo, each object requires a primary key.
                 A primary key might be composed of a single attribute or multiple attributes.
-                For the <code>Customer</code> object, the <code>customerId</code> attribute is unique. So we simply include a <code>primaryKey</code> tag.
+                For the <code>Customer</code> object, the <code>customerId</code> attribute is unique. So we simply include a <code>primaryKey</code> in the <code>Attribute</code> tag.
             </para>
             <programlisting language="xml"><![CDATA[<Attribute name="customerId" javaType="int" columnName="CUSTOMER_ID" primaryKey="true"/>]]></programlisting>
             <para>
-                A primary key can also be composed of multiple attributes. If the full name (first name and last name) of a <code>Customer</code> where unique,
-                we can create a primary key by adding the <code>primaryKey</code> attribute to both these attributes.
+                A primary key can also be composed of multiple attributes. If the full name (first name and last name) of a <code>Customer</code> are unique,
+                we can create a primary key by adding a <code>primaryKey</code> to both these attributes.
             </para>
                 <programlisting language="xml"><![CDATA[
 <Attribute name="firstName" javaType="String"
@@ -111,13 +111,13 @@
 <Attribute name="lastName" javaType="String"
         columnName="LAST_NAME" maxLength="24" primaryKey="true"/>]]></programlisting>
             <para>
-                In some cases, a natural primary key does not exist. We can ask Reladomo to generate a primary key by using the <code>primaryKeyGeneratorStrategy</code>. Primary key generation is discussed in other Reladomo documentation.
+                In some cases, a natural primary key does not exist. We can ask Reladomo to generate a primary key by using a <code>primaryKeyGeneratorStrategy</code>. Primary key generation is discussed in other Reladomo documentation.
             </para>
         </sect2>
         <sect2>
             <title>Relationships</title>
             <para>
-                In the bank a <code>Customer</code> is related to <code>CustomerAccount</code>s. More specifically a customer can have one or more accounts.
+                In the bank, a <code>Customer</code> is related to <code>CustomerAccount</code>s. More specifically, a customer can have one or more accounts.
             </para>
             <programlisting language="xml"><![CDATA[<Relationship name="accounts"
             relatedObject="CustomerAccount"
@@ -133,8 +133,8 @@
             </para>
 
             <para>
-                Sometimes it is desirable to navigate relationships in the reverse direction. e.g. given a <code>CustomerAccount</code>
-                navigate to the <code>Customer</code> that owns it. This can be implemented by adding another
+                Sometimes it is desirable to navigate relationships in the reverse direction. For example, given a <code>CustomerAccount</code>,
+                 we may want to navigate to the <code>Customer</code> that owns it. We can implement this by adding another
                 <code>Relationship</code> in the XML for <code>CustomerAccount</code> linking it to <code>Customer</code>.
                 A better approach is to use a single <code>Relationship</code> in <code>Customer</code>, but add the <code>reverseRelationshipName</code> attribute.
             </para>
@@ -232,13 +232,13 @@
         </example>
         <para>
             The code generator generates two sets of classes.
-            These are sent to different source directores via the <code>generatedDir</code> and <code>nonGeneratedDir</code>
-            attributes. The classes in <code>generatedDir</code> (below figure on the left) are Reladomo framework classes which are always generated. (i.e on every run of the code generator).
+            These are sent to different source directories via the <code>generatedDir</code> and <code>nonGeneratedDir</code>
+            attributes. The classes in <code>generatedDir</code> (below figure on the left) are Reladomo framework classes, which are always generated. (i.e on every run of the code generator).
             These should never be committed to a version control system.
         </para>
         <para>
             The classes under <code>nonGeneratedDir</code> (below figure on the right) are the main domain classes.
-            Your business logic can be added to these classes and they can be committed to a version control system.
+            Your can add your business logic to these classes and committ them to a version control system.
             Because you could have custom business logic in these classes, the code generator will not re-generate these classes if they already exist in the target directory.
         </para>
         <para>
@@ -256,7 +256,7 @@
         <title>Database DDL Generation</title>
         <para>
             Reladomo not only generates Java classes but can also generate DDL statements for bootstrapping the application database.
-            These include scripts to create tables, indices and foreign keys. DDL generation is an optional feature of Reladomo. You can always choose to manually create database tables that map to the various <code>MithraObject</code>s.
+            These include scripts to create tables, indices, and foreign keys. DDL generation is an optional feature of Reladomo. You can always choose to manually create database tables that map to the various <code>MithraObject</code>s.
         </para>
         <para>
             Similar to code generation, the DDL generator is invoked with the <code>MithraClassList</code> containing the

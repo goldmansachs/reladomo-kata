@@ -99,7 +99,7 @@
     <sect1>
         <title>Generated Code</title>
         <para>
-            Code generation is the same as before. But since the <code>MithraObjects</code> are audit-only chained,
+            Code generation is the same with non-temporal objects. But because the <code>MithraObjects</code> are audit-only chained,
             the generated classes have a few additions.
         </para>
         <para>
@@ -125,7 +125,7 @@ public class Customer extends CustomerAbstract
         </example>
         <para>
             Second, the generated <code>Finder</code> classes expose attribute methods
-            which are used to set the processing date when working with the objects.
+            that are used to set the processing date when working with the objects.
             <programlisting language="java"><![CDATA[CustomerFinder.processingDate();]]></programlisting>
         </para>
     </sect1>
@@ -155,7 +155,7 @@ public class Customer extends CustomerAbstract
             <title>Jan 1 - Open an account with $100</title>
             <para>
                 To open an account, we create the <code>Customer</code> and <code>CustomerAccount</code> and insert them.
-                However, since the objects are audit-only chained, the constructor needs to be supplied with a processing date.
+                However, because the objects are audit-only chained, the constructor must be supplied with a processing date.
                 In this case, we are using the overloaded constructor which sets the date to Infinity.
             </para>
             <example>
@@ -181,7 +181,7 @@ public class Customer extends CustomerAbstract
         <sect2>
             <title>Jan 1 - Fetch the account</title>
             <para>
-                Here we use the generated <code>Finder</code> but have to specify an additional operation
+                Here we use the generated <code>Finder</code> but we have to specify an additional operation
                 for the business date.
             </para>
             <example>
@@ -194,7 +194,7 @@ public class Customer extends CustomerAbstract
 }]]></programlisting>
             </example>
             <para>
-                When the above code is run, Reladomo generates the following SQL.
+                When the code above is run, Reladomo generates the following SQL.
             </para>
             <programlisting language="sql"><![CDATA[select t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,t0.IN_Z,t0.OUT_Z
     from CUSTOMER_ACCOUNT t0
@@ -205,7 +205,7 @@ public class Customer extends CustomerAbstract
         <sect2>
             <title>Jan 17 - Deposit $50</title>
             <para>
-                In the narrative of the SlowBank, this deposit is lost. So we simulate it by not updating the account on Jan 17.
+                In the narrative of the SlowBank, this deposit is lost. So we simulate that by not updating the account on Jan 17.
             </para>
         </sect2>
         <sect2>
@@ -213,7 +213,7 @@ public class Customer extends CustomerAbstract
             <para>
                 To deposit $200, we have to fetch the account and increment its balance by 200.
                 However, updating a row in chained table can result in the creation of new rows. Therefore the update
-                has to be wrapped in a transaction for atomicity.
+                must be wrapped in a transaction for atomicity.
             </para>
             <example>
                 <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
@@ -243,8 +243,8 @@ insert into CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BA
         <sect2>
             <title>Jan 20 - Fetch the account (dump history)</title>
             <para>
-                This fetch is no different than the fetch on Jan 1. Simply set the <code>processingDate</code> on the finder
-                to be Jan 20. Sometimes it is useful to be able to fetch the entire history of an object. Example use cases
+                This fetch is identical to the fetch on Jan 1. We simply set the <code>processingDate</code> on the finder
+                to Jan 20. Sometimes it is useful to be able to fetch the entire history of an object. Example use cases
                 include debugging, generating reports etc.
             </para>
             <para>
@@ -289,7 +289,7 @@ insert into CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BA
             </example>
             <para>
                 The <code>DbExtractor</code>'s output is not only a listing of all the rows in the table.
-                 The output is also formatted to be copy/pasteable into a Reladomo <code>MithraTestResource</code> file for use in
+                 The output is also formatted for copying and pasting into a Reladomo <code>MithraTestResource</code> file for use in
                 tests. See <code>AuditOnlyChainingInActionTestData.txt</code>.
             </para>
         </sect2>
@@ -297,7 +297,7 @@ insert into CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BA
             <title>Jan 25 - Correct the missing $50</title>
             <para>
                 Here we need to adjust the balance for Jan 17.
-                Since we are not tracking business time, we cannot update the balance for Jan 17.
+                Since we are not tracking business-time, we cannot update the balance for Jan 17.
                 The best we can do is fetch the latest state of the account and adjust for the missing $50.
                 As before Reladomo takes care of invalidating existing rows and adding new rows.
             </para>
@@ -319,7 +319,7 @@ insert into CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BA
     <sect1>
         <title>Querying a chained table</title>
         <para>
-            Consider the visualization from chapter 7. Each colored rectangle corresponds to row in the table.
+            Consider the visualization from Chapter 7. Each colored rectangle corresponds to a row in the table.
             <figure id="auditonly71.fig">
                 <title>Bank Account On Jan 1</title>
                 <mediaobject>

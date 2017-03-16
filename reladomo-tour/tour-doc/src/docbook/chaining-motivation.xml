@@ -56,17 +56,17 @@
             <itemizedlist>
                 <listitem>
                     <para>
-                        Audit-Only - In this type of chaining, changes are recorded with <emphasis role="italics">only the processing time</emphasis>
+                        Audit-Only - In this type of chaining, changes are recorded with <emphasis role="italics">only the processing-time</emphasis>
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        Business-Only - In this type of chaining, changes are recorded with <emphasis role="italics">only the business time</emphasis>
+                        Business-Only - In this type of chaining, changes are recorded with <emphasis role="italics">only the business-time</emphasis>
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        Bitemporal - In this type of chaining, changes are recorded with <emphasis role="italics">both the business time and processing time</emphasis>
+                        Bitemporal - In this type of chaining, changes are recorded with <emphasis role="italics">both the business-time and processing-time</emphasis>
                     </para>
                 </listitem>
             </itemizedlist>
