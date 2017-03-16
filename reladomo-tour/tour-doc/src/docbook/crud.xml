@@ -55,7 +55,7 @@ mickey.setLastName("Mouse");
     this.setLastName(lastName);
 }]]></programlisting>
             <note>
-                The generated classes are meant to be modified. However, the default no-arg constructor has to be preserved as it is used internally by Reladomo.
+                The generated classes are meant to be modified. However, the default no-arg constructor has to be preserved because it is used internally by Reladomo.
                 When adding a custom constructor make sure to call the no-arg constructor.
             </note>
             <sect2>
@@ -209,8 +209,8 @@ for (Customer customer : customers)
         <programlisting language="java"><![CDATA[Customer mickey = CustomerFinder.findOne(CustomerFinder.firstName().eq("mickey"));
 mickey.setFirstName("SuperMickey");]]></programlisting>
         <para>
-            In some cases this is not desirable. For example, you might want a set of updates to an object to be executed atomically. Or set a of updates to multiple objects be executed atomically.
-            In these cases, the solution is to wrap the updates in a transaction.
+            In some cases this is not desirable. For example, you might want a set of updates to
+            one or more objects to be executed atomically. In such cases, the solution is to wrap the updates in a transaction.
         </para>
         <programlisting language="java"><![CDATA[MithraManagerProvider.getMithraManager().executeTransactionalCommand((tx) -> {
     Customer mickey = CustomerFinder.findOne(CustomerFinder.firstName().eq("mickey"));
@@ -221,12 +221,12 @@ mickey.setFirstName("SuperMickey");]]></programlisting>
         <sect2>
             <title>Detached Objects</title>
             <para>
-                As described previously, an objected fetched via a Finder is a "live" object ; changes to which are immediately flushed to the database.
+                As described previously, an object fetched via a Finder is a "live" object ; changes to it are immediately flushed to the database.
                 To disable these flushes, simply detach the object from the database.
             </para>
             <para>
                 Imagine you are building a UI that allows users to change multiple attributes of an account.
-                In this case, you do not want each change to be flushed to the database, since the user could decide
+                In this case, you do not want each change to be flushed to the database, because the user could decide
                 not apply his changes. Detached objects are handy in use cases like this, where there is a good chance
                 that changes made to an object might have to be discarded.
             </para>
@@ -268,7 +268,7 @@ CustomerAccount account = CustomerAccountFinder.findOne(idOp);
 account.delete();]]></programlisting>
         </para>
         <para>
-            Similar to insert a cascading delete operation is available as well.
+            As with the insert operation, a cascading delete operation is available as well.
             <example>
                 <title>simple-bank/CustomerResource.java</title>
             </example>
@@ -282,7 +282,7 @@ public Response deleteCustomer(@PathParam("id") int customerId)
 }]]></programlisting>
         </para>
         <para>
-            Similar to create and modification, deletes can be wrapped in a transaction as well.
+            And, as with create and modification operations, deletes can be wrapped in a transaction as well.
         </para>
     </sect1>
 </chapter>

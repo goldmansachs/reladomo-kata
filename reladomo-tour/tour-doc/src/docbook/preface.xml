@@ -21,22 +21,22 @@
     <sect1>
         <title>Introduction</title>
         <para>
-            The goal of this book is to introduce you to object relational mapping using Reladomo.
+            The goal of this book is to introduce you to object-relational mapping using Reladomo.
             It provides a broad overview of various Reladomo features. The goal is to provide a feel and flavor for what is possible with Reladomo.
         </para>
     </sect1>
     <sect1>
         <title>Audience</title>
         <para>
-            This book is written for Java programmers who want to use Reladomo for object relational mapping.
-            This book assumes that the reader is familiar with the basic concepts behind object relational mapping (such as domain modeling) and SQL.
+            This book is written for Java programmers who want to use Reladomo for object-relational mapping.
+            This book assumes that the reader is familiar with the basic concepts behind object-relational mapping (such as domain modeling) and SQL.
         </para>
     </sect1>
     <sect1>
         <title>How to read this book</title>
         <para>
             This book is intentionally light on commentary and heavy on Java code examples and snippets. The reader is encouraged to consult and run the complete
-            examples.
+            examples, which are distributed with this book.
         </para>
         <sect2>
             <title>Examples</title>
@@ -68,11 +68,11 @@
     </sect1>
     <sect1>
         <title>Conventions</title>
-        <para>The following conventions have been used :
+        <para>The following conventions have been used:
             <itemizedlist>
                 <listitem>
                     <para>Example references - When a program/example listing refers to a source file, the title
-                    of the listing is formattted as <code>&lt;name of maven module&gt;/&lt;name source file&gt;</code>.</para>
+                    of the listing is formatted as <code>&lt;name of maven module&gt;/&lt;name source file&gt;</code>.</para>
                 </listitem>
                 <listitem>
                     <para>
@@ -86,8 +86,7 @@
     <sect1>
         <title>Additional Documentation</title>
         <para>
-            This book is meant to be a practical guide. It is not reference documentation. Documentation that explores various Reladomo features in more detail,
-            can be found at the <emphasis><ulink url="https://github.com/goldmansachs/reladomo">Reladomo Github project page</ulink></emphasis>. Some of these documents
+            This book is meant to be a practical guide. It is not reference documentation. Documentation that explores various Reladomo features in more detailcan be found at the <emphasis><ulink url="https://github.com/goldmansachs/reladomo">Reladomo Github project page</ulink></emphasis>. Some of these documents
             have also been linked in various chapters in this book.
         </para>
     </sect1>

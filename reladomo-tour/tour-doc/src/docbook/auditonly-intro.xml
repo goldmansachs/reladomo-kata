@@ -26,7 +26,7 @@
             Audit-Only Chaining
         </title>
         <para>
-            In audit-only chaining, all changes to a database are tracked along the processing time dimension.
+            In audit-only chaining, all changes to a database are tracked along the processing-time dimension.
             This is the time at which a change is actually recorded in the database, irrespective of the time
             the change occurred in the world.
         </para>
@@ -71,7 +71,7 @@
                     </listitem>
                     <listitem>
                         <para>
-                            This is the only row for this account. And we mark this row as valid by setting OUT_Z to Infinity. Infinity is a magic timestamp chosen such that it cannot possibly be a valid date in the system e.g. 9999/1/1.
+                            This is the only row for this account. And we mark this row as valid by setting OUT_Z to Infinity. Infinity is a magic timestamp, in the sense that it cannot possibly be a valid date in the system e.g. 9999/1/1.
                         </para>
                     </listitem>
                 </itemizedlist>
@@ -79,13 +79,13 @@
             <para>
                 The chart on the right (which is not drawn to scale), is a handy tool to visualize the progression of
                 the chaining. The chart visualizes each row as a rectangle. In this case, there is only one row that extends
-                to infinity along the processing time dimension.
+                to infinity along the processing-time dimension.
             </para>
         </sect2>
         <sect2>
             <title>Jan 17 - Deposit $50</title>
             <para>
-                A few days later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
+                A couple of weeks later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
                 the ATM does not send your deposit to the bank right away. While you walk away thinking your account has $150, your account actually has only $100.
             </para>
             <warning>
@@ -109,7 +109,7 @@
                 A few days later, on Jan 20 you deposit $200 at one of the ATMs.
             </para>
             <para>
-                The goal is to track changes along processing time. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either, as that loses history.
+                The goal is to track changes along processing-time. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either, as that loses history.
             </para>
             <para>
                 In general, making changes to a audit-only chained database is a two step process :
@@ -230,7 +230,7 @@
             </para>
             <para>
                 This is a fundamental limitation of audit-only chaining. Since it only tracks when changes were made
-                (processing time), there is no information about when these changes actually occurred in the world.
+                (processing-time), there is no information about when these changes actually occurred in the world.
             </para>
             <para>
                 If all you are trying to to is implement an audit trail of changes, audit-only chaining is sufficient.
