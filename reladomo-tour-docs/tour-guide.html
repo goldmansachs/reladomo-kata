@@ -1,42 +1,64 @@
-<html><head><META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Guided Tour Of Reladomo</title><link href="tourdoc.css" type="text/css" rel="stylesheet"><meta content="DocBook XSL Stylesheets V1.79.1" name="generator"><!-- (c) 2016 Copyright Goldman Sachs, Inc. --></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div lang="en" class="book"><div class="titlepage"><div><div><h1 class="title"><a name="N40003"></a>Guided Tour Of Reladomo</h1></div><div><h2 class="subtitle">A hands-on guide for developers</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#N40015">1. Preface</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4001B">1.1. Introduction</a></span></dt><dt><span class="sect1"><a href="#N40024">1.2. Audience</a></span></dt><dt><span class="sect1"><a href="#N4002D">1.3. How to read this book</a></span></dt><dt><span class="sect1"><a href="#N40039">1.4. Conventions</a></span></dt><dt><span class="sect1"><a href="#N40057">1.5. Additional Documentation</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40067">2. Domain Modeling</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40070">2.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40153">2.2. Code Generation</a></span></dt><dt><span class="sect1"><a href="#N401A0">2.3. Database DDL Generation</a></span></dt><dt><span class="sect1"><a href="#N401E7">2.4. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40236">3. Wiring A Reladomo Application</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4023F">3.1. Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N40273">3.2. Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N40295">3.3. Wiring it all together</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N402B0">4. CRUD Operations</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N402C6">4.1. Object Creation (C)</a></span></dt><dt><span class="sect1"><a href="#N40318">4.2. Object Read (R)</a></span></dt><dt><span class="sect1"><a href="#N403A3">4.3. Object Modification (U)</a></span></dt><dt><span class="sect1"><a href="#N403DE">4.4. Object Deletion (D)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N403FB">5. A Complete Reladomo Application</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40407">5.1. Jersey Boilerplate</a></span></dt><dt><span class="sect1"><a href="#N40445">5.2. JSON Serialization</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40462">6. Testing With Reladomo</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4046E">6.1. Test Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N40480">6.2. Test Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N404B5">6.3. Test Data</a></span></dt><dt><span class="sect1"><a href="#N404D2">6.4. Test Resource</a></span></dt><dt><span class="sect1"><a href="#N404EE">6.5. Debugging</a></span></dt><dt><span class="sect1"><a href="#N40519">6.6. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40534">7. Bitemporal Chaining</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4053D">7.1. Motivating Example - The SlowBank</a></span></dt><dt><span class="sect1"><a href="#N4054C">7.2. 
+<html><head><META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Guided Tour Of Reladomo</title><link href="tourdoc.css" type="text/css" rel="stylesheet"><meta content="DocBook XSL Stylesheets V1.79.1" name="generator"><!-- (c) 2016 Copyright Goldman Sachs, Inc. --></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div lang="en" class="book"><div class="titlepage"><div><div><h1 class="title"><a name="N40003"></a>Guided Tour Of Reladomo</h1></div><div><h2 class="subtitle">A hands-on guide for developers</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#N40015">1. Preface</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4001B">1.1. Introduction</a></span></dt><dt><span class="sect1"><a href="#N40024">1.2. Audience</a></span></dt><dt><span class="sect1"><a href="#N4002D">1.3. How to read this book</a></span></dt><dt><span class="sect1"><a href="#N4005D">1.4. Conventions</a></span></dt><dt><span class="sect1"><a href="#N4007B">1.5. Additional Documentation</a></span></dt></dl></dd><dt><span class="part"><a href="#N4008A">I. </a></span></dt><dd><dl><dt><span class="chapter"><a href="#N4008E">2. Domain Modeling</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40097">2.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N4017D">2.2. Code Generation</a></span></dt><dt><span class="sect1"><a href="#N401CA">2.3. Database DDL Generation</a></span></dt><dt><span class="sect1"><a href="#N40211">2.4. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40260">3. Wiring A Reladomo Application</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40269">3.1. Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N4029D">3.2. Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N402BF">3.3. Wiring it all together</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N402DA">4. CRUD Operations</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N402F0">4.1. Object Creation (C)</a></span></dt><dt><span class="sect1"><a href="#N40342">4.2. Object Read (R)</a></span></dt><dt><span class="sect1"><a href="#N403CD">4.3. Object Modification (U)</a></span></dt><dt><span class="sect1"><a href="#N40408">4.4. Object Deletion (D)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40425">5. A Complete Reladomo Application</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40431">5.1. Jersey Boilerplate</a></span></dt><dt><span class="sect1"><a href="#N4046F">5.2. JSON Serialization</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N4048C">6. Testing With Reladomo</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40498">6.1. Test Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N404AA">6.2. Test Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N404DF">6.3. Test Data</a></span></dt><dt><span class="sect1"><a href="#N404FC">6.4. Test Resource</a></span></dt><dt><span class="sect1"><a href="#N40518">6.5. Debugging</a></span></dt><dt><span class="sect1"><a href="#N40543">6.6. References</a></span></dt></dl></dd></dl></dd><dt><span class="part"><a href="#N4055E">II. </a></span></dt><dd><dl><dt><span class="chapter"><a href="#N40562">7. Chaining</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4056B">7.1. Types of Chaining</a></span></dt><dt><span class="sect1"><a href="#N405B0">7.2. Motivating Example - The SlowBank</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N405C4">8. Audit-Only Chaining</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N405CD">8.1. 
+            Audit-Only Chaining
+        </a></span></dt><dt><span class="sect1"><a href="#N405D6">8.2. Audit-Only Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N406FC">8.3. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40717">9. Audit-Only Chaining API</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40720">9.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40784">9.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N407A7">9.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N4087F">9.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N408B0">9.5. Changing history</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N408C1">10. Bitemporal Chaining</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N408CA">10.1. 
             Bitemporal Chaining
-        </a></span></dt><dt><span class="sect1"><a href="#N40564">7.3. Bitemporal Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N4069F">7.4. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N406BA">8. Bitemporal Chaining API</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N406C3">8.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40748">8.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N4076B">8.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N40849">8.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N4087A">8.5. Next steps</a></span></dt></dl></dd></dl></div>
+        </a></span></dt><dt><span class="sect1"><a href="#N408E2">10.2. Bitemporal Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N40A1D">10.3. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40A38">11. Bitemporal Chaining API</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40A41">11.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40AC6">11.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N40AE9">11.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N40BC7">11.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N40BF8">11.5. Next steps</a></span></dt></dl></dd></dl></dd></dl></div>
     
 
     
 
-    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40015"></a>Chapter&nbsp;1.&nbsp;Preface</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4001B">1.1. Introduction</a></span></dt><dt><span class="sect1"><a href="#N40024">1.2. Audience</a></span></dt><dt><span class="sect1"><a href="#N4002D">1.3. How to read this book</a></span></dt><dt><span class="sect1"><a href="#N40039">1.4. Conventions</a></span></dt><dt><span class="sect1"><a href="#N40057">1.5. Additional Documentation</a></span></dt></dl></div>
+    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40015"></a>Chapter&nbsp;1.&nbsp;Preface</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4001B">1.1. Introduction</a></span></dt><dt><span class="sect1"><a href="#N40024">1.2. Audience</a></span></dt><dt><span class="sect1"><a href="#N4002D">1.3. How to read this book</a></span></dt><dt><span class="sect1"><a href="#N4005D">1.4. Conventions</a></span></dt><dt><span class="sect1"><a href="#N4007B">1.5. Additional Documentation</a></span></dt></dl></div>
     
     <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4001B"></a>1.1.&nbsp;Introduction</h2></div></div></div>
         
         <p>
-            The goal of this book is to introduce you to object relational mapping using Reladomo.
+            The goal of this book is to introduce you to object-relational mapping using Reladomo.
             It provides a broad overview of various Reladomo features. The goal is to provide a feel and flavor for what is possible with Reladomo.
         </p>
     </div>
     <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40024"></a>1.2.&nbsp;Audience</h2></div></div></div>
         
         <p>
-            This book is written for Java programmers who want to use Reladomo for object relational mapping.
-            This book assumes that the reader is familiar with the basic concepts behind object relational mapping (such as domain modeling) and SQL.
+            This book is written for Java programmers who want to use Reladomo for object-relational mapping.
+            This book assumes that the reader is familiar with the basic concepts behind object-relational mapping (such as domain modeling) and SQL.
         </p>
     </div>
     <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4002D"></a>1.3.&nbsp;How to read this book</h2></div></div></div>
         
         <p>
             This book is intentionally light on commentary and heavy on Java code examples and snippets. The reader is encouraged to consult and run the complete
-            examples which are distributed with this book.
+            examples, which are distributed with this book.
         </p>
-        <p>
-            The examples are structured as multiple Maven modules.
-        </p>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40035"></a>1.3.1.&nbsp;Examples</h3></div></div></div>
+            
+            <p>
+                The examples are structured as multiple Maven modules. These modules are referenced in
+                various chapters in the book.
+            </p>
+            <p>
+                To run the examples :
+                </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+                        <p>
+                            Clone <code class="code">https://github.com/goldmansachs/reladomo-kata</code>
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            Import the top level <code class="code">reladomo-tour</code> as a Maven module
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            Explore and run the main classes and tests in the various child Maven modules.
+                        </p>
+                    </li></ol></div><p>
+            </p>
+        </div>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40039"></a>1.4.&nbsp;Conventions</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4005D"></a>1.4.&nbsp;Conventions</h2></div></div></div>
         
-        <p>The following conventions have been used :
+        <p>The following conventions have been used:
             </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
                     <p>Example references - When a program/example listing refers to a source file, the title
-                    of the listing is formattted as <code class="code">&lt;name of maven module&gt;/&lt;name source file&gt;</code>.</p>
+                    of the listing is formatted as <code class="code">&lt;name of maven module&gt;/&lt;name source file&gt;</code>.</p>
                 </li><li class="listitem">
                     <p>
                         Elided examples - Elided examples contain the text <code class="code">// elided for brevity</code>. For the full example,
@@ -45,23 +67,24 @@
                 </li></ul></div><p>
         </p>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40057"></a>1.5.&nbsp;Additional Documentation</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4007B"></a>1.5.&nbsp;Additional Documentation</h2></div></div></div>
         
         <p>
-            This book is meant to be a practical guide. It is not reference documentation. Documentation that explores various Reladomo features in more detail,
-            can be found at the <span class="emphasis"><em><a class="ulink" href="https://github.com/goldmansachs/reladomo" target="_top">Reladomo Github project page</a></em></span>. Some of these documents
+            This book is meant to be a practical guide. It is not reference documentation. Documentation that explores various Reladomo features in more detailcan be found at the <span class="emphasis"><em><a class="ulink" href="https://github.com/goldmansachs/reladomo" target="_top">Reladomo Github project page</a></em></span>. Some of these documents
             have also been linked in various chapters in this book.
         </p>
     </div>
 </div>
-    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40067"></a>Chapter&nbsp;2.&nbsp;Domain Modeling</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40070">2.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40153">2.2. Code Generation</a></span></dt><dt><span class="sect1"><a href="#N401A0">2.3. Database DDL Generation</a></span></dt><dt><span class="sect1"><a href="#N401E7">2.4. References</a></span></dt></dl></div>
+
+    <div class="part"><div class="titlepage"><div><div><h1 class="title"><a name="N4008A"></a>Part&nbsp;I.&nbsp;</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#N4008E">2. Domain Modeling</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40097">2.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N4017D">2.2. Code Generation</a></span></dt><dt><span class="sect1"><a href="#N401CA">2.3. Database DDL Generation</a></span></dt><dt><span class="sect1"><a href="#N40211">2.4. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40260">3. Wiring A Reladomo Application</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40269">3.1. Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N4029D">3.2. Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N402BF">3.3. Wiring it all together</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N402DA">4. CRUD Operations</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N402F0">4.1. Object Creation (C)</a></span></dt><dt><span class="sect1"><a href="#N40342">4.2. Object Read (R)</a></span></dt><dt><span class="sect1"><a href="#N403CD">4.3. Object Modification (U)</a></span></dt><dt><span class="sect1"><a href="#N40408">4.4. Object Deletion (D)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40425">5. A Complete Reladomo Application</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40431">5.1. Jersey Boilerplate</a></span></dt><dt><span class="sect1"><a href="#N4046F">5.2. JSON Serialization</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N4048C">6. Testing With Reladomo</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40498">6.1. Test Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N404AA">6.2. Test Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N404DF">6.3. Test Data</a></span></dt><dt><span class="sect1"><a href="#N404FC">6.4. Test Resource</a></span></dt><dt><span class="sect1"><a href="#N40518">6.5. Debugging</a></span></dt><dt><span class="sect1"><a href="#N40543">6.6. References</a></span></dt></dl></dd></dl></div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N4008E"></a>Chapter&nbsp;2.&nbsp;Domain Modeling</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40097">2.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N4017D">2.2. Code Generation</a></span></dt><dt><span class="sect1"><a href="#N401CA">2.3. Database DDL Generation</a></span></dt><dt><span class="sect1"><a href="#N40211">2.4. References</a></span></dt></dl></div>
     
     <p>
         This chapter introduces domain modeling in Reladomo.
         We start by building a domain model of an application and then
-        use Reladomo to generate classes and DDL statements off of the domain model.
+        use Reladomo to generate classes and DDL statements from the domain model.
     </p>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40070"></a>2.1.&nbsp;Domain Model</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40097"></a>2.1.&nbsp;Domain Model</h2></div></div></div>
         
         <p>
             A domain model represents the various entities in a system and their relationships.
@@ -73,10 +96,10 @@
             <div class="mediaobject"><img src="domain-modeling/simplebank-domain.png" alt="Bank Domain Model"></div>
         </div></div><br class="figure-break"></div>
         <p>
-            We have two entities : <code class="code">Customer</code> and <code class="code">CustomerAccount</code>.
-            We start by defining the attributes of each entity and some metadata in a <code class="code">MithraObject</code> XML file.
+            We have two entities: <code class="code">Customer</code> and <code class="code">CustomerAccount</code>.
+            We start by defining the attributes of each entity, along with some metadata in a <code class="code">MithraObject</code> XML file.
         </p>
-        <div class="example"><a name="N4009C"></a><p class="title"><b>Example&nbsp;2.1.&nbsp;tour-examples/simple-bank/Customer.xml</b></p><div class="example-contents">
+        <div class="example"><a name="N400C3"></a><p class="title"><b>Example&nbsp;2.1.&nbsp;tour-examples/simple-bank/Customer.xml</b></p><div class="example-contents">
             
             <pre class="programlisting">
 <strong xmlns:xslthl="http://xslthl.sf.net" style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
@@ -98,7 +121,7 @@
 
 <strong style="color: navy" class="hl-tag">&lt;/MithraObject&gt;</strong></pre>
         </div></div><br class="example-break">
-        <div class="example"><a name="N400A6"></a><p class="title"><b>Example&nbsp;2.2.&nbsp;tour-examples/simple-bank/CustomerAccount.xml</b></p><div class="example-contents">
+        <div class="example"><a name="N400CD"></a><p class="title"><b>Example&nbsp;2.2.&nbsp;tour-examples/simple-bank/CustomerAccount.xml</b></p><div class="example-contents">
         
             <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
         <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
@@ -124,17 +147,17 @@
         <p>
             These XML files contain metadata that allows Reladomo to map entities to Java classes (e.g. <code class="code">ClassName</code>, <code class="code">javaType</code>) and to database tables (e.g. <code class="code">DefaultTable</code>, <code class="code">columName</code>). The XML schema definition (<code class="code">mithraobject.xsd</code>) explains the various components in detail.
         </p>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N400C2"></a>2.1.1.&nbsp;Primary Keys</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N400E9"></a>2.1.1.&nbsp;Primary Keys</h3></div></div></div>
             
             <p>
                 In Reladomo, each object requires a primary key.
                 A primary key might be composed of a single attribute or multiple attributes.
-                For the <code class="code">Customer</code> object, the <code class="code">customerId</code> attribute is unique. So we simply include a <code class="code">primaryKey</code> tag.
+                For the <code class="code">Customer</code> object, the <code class="code">customerId</code> attribute is unique. So we simply include a <code class="code">primaryKey</code> in the <code class="code">Attribute</code> tag.
             </p>
             <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"customerId"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"int"</span> <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"CUSTOMER_ID"</span> <span style="color: blue" class="hl-attribute">primaryKey</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">/&gt;</strong></pre>
             <p>
-                A primary key can also be composed of multiple attributes. If the full name (first name and last name) of a <code class="code">Customer</code> where unique,
-                we can create a primary key by adding the <code class="code">primaryKey</code> attribute to both these attributes.
+                A primary key can also be composed of multiple attributes. If the full name (first name and last name) of a <code class="code">Customer</code> are unique,
+                we can create a primary key by adding a <code class="code">primaryKey</code> to both these attributes.
             </p>
                 <pre class="programlisting">
 <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"firstName"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
@@ -142,13 +165,13 @@
 <strong style="color: navy" class="hl-tag">&lt;Attribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"lastName"</span> <span style="color: blue" class="hl-attribute">javaType</span>=<span style="color: green" class="hl-value">"String"</span>
         <span style="color: blue" class="hl-attribute">columnName</span>=<span style="color: green" class="hl-value">"LAST_NAME"</span> <span style="color: blue" class="hl-attribute">maxLength</span>=<span style="color: green" class="hl-value">"24"</span> <span style="color: blue" class="hl-attribute">primaryKey</span>=<span style="color: green" class="hl-value">"true"</span><strong style="color: navy" class="hl-tag">/&gt;</strong></pre>
             <p>
-                In some cases, a natural primary key does not exist. We can ask Reladomo to generate a primary key by using the <code class="code">primaryKeyGeneratorStrategy</code>. Primary key generation is discussed in other Reladomo documentation.
+                In some cases, a natural primary key does not exist. We can ask Reladomo to generate a primary key by using a <code class="code">primaryKeyGeneratorStrategy</code>. Primary key generation is discussed in other Reladomo documentation.
             </p>
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N400EB"></a>2.1.2.&nbsp;Relationships</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40115"></a>2.1.2.&nbsp;Relationships</h3></div></div></div>
             
             <p>
-                In the bank a <code class="code">Customer</code> is related to <code class="code">CustomerAccount</code>s. More specifically a customer can have one or more accounts.
+                In the bank, a <code class="code">Customer</code> is related to <code class="code">CustomerAccount</code>s. More specifically, a customer can have one or more accounts.
             </p>
             <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;Relationship</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"accounts"</span>
             <span style="color: blue" class="hl-attribute">relatedObject</span>=<span style="color: green" class="hl-value">"CustomerAccount"</span>
@@ -164,8 +187,8 @@
             </p>
 
             <p>
-                Sometimes it is desirable to navigate relationships in the reverse direction. e.g. given a <code class="code">CustomerAccount</code>
-                navigate to the <code class="code">Customer</code> that owns it. This can be implemented by adding another
+                Sometimes it is desirable to navigate relationships in the reverse direction. For example, given a <code class="code">CustomerAccount</code>,
+                 we may want to navigate to the <code class="code">Customer</code> that owns it. We can implement this by adding another
                 <code class="code">Relationship</code> in the XML for <code class="code">CustomerAccount</code> linking it to <code class="code">Customer</code>.
                 A better approach is to use a single <code class="code">Relationship</code> in <code class="code">Customer</code>, but add the <code class="code">reverseRelationshipName</code> attribute.
             </p>
@@ -182,7 +205,7 @@
             <p>
                 Here is the full listing of all the <code class="code">MithraObject</code>s.
             </p>
-            <div class="example"><a name="N4013D"></a><p class="title"><b>Example&nbsp;2.3.&nbsp;tour-examples/simple-bank/Customer.xml</b></p><div class="example-contents">
+            <div class="example"><a name="N40167"></a><p class="title"><b>Example&nbsp;2.3.&nbsp;tour-examples/simple-bank/Customer.xml</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
     <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
@@ -208,7 +231,7 @@
 <strong style="color: navy" class="hl-tag">&lt;/MithraObject&gt;</strong>
 </pre>
             </div></div><br class="example-break">
-            <div class="example"><a name="N40147"></a><p class="title"><b>Example&nbsp;2.4.&nbsp;tour-examples/simple-bank/CustomerAccount.xml</b></p><div class="example-contents">
+            <div class="example"><a name="N40171"></a><p class="title"><b>Example&nbsp;2.4.&nbsp;tour-examples/simple-bank/CustomerAccount.xml</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
     <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
@@ -232,13 +255,13 @@
             </div></div><br class="example-break">
         </div>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40153"></a>2.2.&nbsp;Code Generation</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4017D"></a>2.2.&nbsp;Code Generation</h2></div></div></div>
         
         <p>
             To generate classes, Reladomo has to be told about the <code class="code">MithraObject</code>s that it should generate code for.
             This is done via a <code class="code">MithraClassList</code>.
         </p>
-        <div class="example"><a name="N40161"></a><p class="title"><b>Example&nbsp;2.5.&nbsp;tour-examples/simple-bank/SimpleBankClassList.xml</b></p><div class="example-contents">
+        <div class="example"><a name="N4018B"></a><p class="title"><b>Example&nbsp;2.5.&nbsp;tour-examples/simple-bank/SimpleBankClassList.xml</b></p><div class="example-contents">
             
             <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;Mithra&gt;</strong>
     <strong style="color: navy" class="hl-tag">&lt;MithraObjectResource</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"Customer"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
@@ -248,7 +271,7 @@
         <p>
             With the class list created, we can generate classes by invoking an Ant task with the class list as input. Here is a snippet showing the Ant task being invoked from Maven.
         </p>
-        <div class="example"><a name="N4016E"></a><p class="title"><b>Example&nbsp;2.6.&nbsp;tour-examples/simple-bank/pom.xml</b></p><div class="example-contents">
+        <div class="example"><a name="N40198"></a><p class="title"><b>Example&nbsp;2.6.&nbsp;tour-examples/simple-bank/pom.xml</b></p><div class="example-contents">
             
             <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;taskdef</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"gen-reladomo"</span> <span style="color: blue" class="hl-attribute">classpath</span>=<span style="color: green" class="hl-value">"plugin_classpath"</span>
             <span style="color: blue" class="hl-attribute">classname</span>=<span style="color: green" class="hl-value">"com.gs.fw.common.mithra.generator.MithraGenerator"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
@@ -263,13 +286,13 @@
         </div></div><br class="example-break">
         <p>
             The code generator generates two sets of classes.
-            These are sent to different source directores via the <code class="code">generatedDir</code> and <code class="code">nonGeneratedDir</code>
-            attributes. The classes in <code class="code">generatedDir</code> (below figure on the left) are Reladomo framework classes which are always generated. (i.e on every run of the code generator).
+            These are sent to different source directories via the <code class="code">generatedDir</code> and <code class="code">nonGeneratedDir</code>
+            attributes. The classes in <code class="code">generatedDir</code> (below figure on the left) are Reladomo framework classes, which are always generated. (i.e on every run of the code generator).
             These should never be committed to a version control system.
         </p>
         <p>
             The classes under <code class="code">nonGeneratedDir</code> (below figure on the right) are the main domain classes.
-            Your business logic can be added to these classes and they can be committed to a version control system.
+            Your can add your business logic to these classes and committ them to a version control system.
             Because you could have custom business logic in these classes, the code generator will not re-generate these classes if they already exist in the target directory.
         </p>
         <p>
@@ -279,18 +302,18 @@
             </div></div><br class="figure-break"></div><p>
         </p>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N401A0"></a>2.3.&nbsp;Database DDL Generation</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N401CA"></a>2.3.&nbsp;Database DDL Generation</h2></div></div></div>
         
         <p>
             Reladomo not only generates Java classes but can also generate DDL statements for bootstrapping the application database.
-            These include scripts to create tables, indices and foreign keys. DDL generation is an optional feature of Reladomo. You can always choose to manually create database tables that map to the various <code class="code">MithraObject</code>s.
+            These include scripts to create tables, indices, and foreign keys. DDL generation is an optional feature of Reladomo. You can always choose to manually create database tables that map to the various <code class="code">MithraObject</code>s.
         </p>
         <p>
             Similar to code generation, the DDL generator is invoked with the <code class="code">MithraClassList</code> containing the
             <code class="code">MithraObject</code>s for which you want DDLs generated. It also has to be told the type of database for which DDLs have to be generated.
         </p>
         <p>Here is a snippet showing the DDL generator Ant task being invoked from Maven.</p>
-        <div class="example"><a name="N401B7"></a><p class="title"><b>Example&nbsp;2.7.&nbsp;tour-examples/simple-bank/pom.xml</b></p><div class="example-contents">
+        <div class="example"><a name="N401E1"></a><p class="title"><b>Example&nbsp;2.7.&nbsp;tour-examples/simple-bank/pom.xml</b></p><div class="example-contents">
             
             <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;tasks&gt;</strong><strong style="color: navy" class="hl-tag">&lt;property</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"plugin_classpath"</span> <span style="color: blue" class="hl-attribute">refid</span>=<span style="color: green" class="hl-value">"maven.plugin.classpath"</span><strong style="color: navy" class="hl-tag">/&gt;</strong>
     <strong style="color: navy" class="hl-tag">&lt;taskdef</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"gen-reladomo-db"</span> <span style="color: blue" class="hl-attribute">classpath</span>=<span style="color: green" class="hl-value">"plugin_classpath"</span>
@@ -321,7 +344,7 @@
             </p>
         </td></tr></table></div>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N401E7"></a>2.4.&nbsp;References</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40211"></a>2.4.&nbsp;References</h2></div></div></div>
         
         <p>
             </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
@@ -358,16 +381,16 @@
         </p>
     </div>
 </div>
-    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40236"></a>Chapter&nbsp;3.&nbsp;Wiring A Reladomo Application</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4023F">3.1. Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N40273">3.2. Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N40295">3.3. Wiring it all together</a></span></dt></dl></div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N40260"></a>Chapter&nbsp;3.&nbsp;Wiring A Reladomo Application</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40269">3.1. Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N4029D">3.2. Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N402BF">3.3. Wiring it all together</a></span></dt></dl></div>
     
     <p>This chapter demonstrates the basic template for initializing Reladomo for use in an application.</p>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4023F"></a>3.1.&nbsp;Connection Manager</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40269"></a>3.1.&nbsp;Connection Manager</h2></div></div></div>
         
         <p>
             Clearly, an application that persists to a database needs a mechanism to acquire a database connection.
-            The job of acquiring a connection is delegated to a connection manager class. Reladomo is not opinionated about how the connection is obtained as long as the connection is associated with a database transaction.
+            The job of acquiring a connection is delegated to a connection manager class. How the connection is obtained is immaterial, as long as the connection is associated with a database transaction.
         </p>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40247"></a>3.1.1.&nbsp;Sourceless Connection Manager</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40271"></a>3.1.1.&nbsp;Sourceless Connection Manager</h3></div></div></div>
             
             <p>
                 The <code class="code">SourceLessConnectionManager</code> is used when all Reladomo objects are persisted in a single database.
@@ -377,7 +400,7 @@
                 The snippet below shows a simple implementation that uses a direct host/port connection to the database.
                 It also uses a Reladomo utility class, <code class="code">XAConnectionManager</code> to acquire a transactional database connection.
             </p>
-            <div class="example"><a name="N4025B"></a><p class="title"><b>Example&nbsp;3.1.&nbsp;tour-examples/simple-bank/BankConnectionManager.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40285"></a><p class="title"><b>Example&nbsp;3.1.&nbsp;tour-examples/simple-bank/BankConnectionManager.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> BankConnectionManager <strong class="hl-keyword"><span style="color: #000080">implements</span></strong> SourcelessConnectionManager
 {
@@ -425,27 +448,27 @@
 }</pre>
             </div></div><br class="example-break">
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40266"></a>3.1.2.&nbsp;Source Connection Manager</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40290"></a>3.1.2.&nbsp;Source Connection Manager</h3></div></div></div>
             
             <p>
                 In some cases, Reladomo objects come from multiple source databases. One common case where this can happen is if the database is sharded.
-                In this case, the connection manager's job is to return a shard specific database connection.
+                In this case, the connection manager's job is to return a shard-specific database connection.
             </p>
             <p>
                 Sharding is discussed in more detail in other Reladomo documentation.
             </p>
         </div>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40273"></a>3.2.&nbsp;Runtime Configuration</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4029D"></a>3.2.&nbsp;Runtime Configuration</h2></div></div></div>
         
         <p>
             Reladomo's runtime is configured via a <code class="code">MithraRuntime</code> XML file. This is similar to the <code class="code">MithraClassList</code> in that it lists all the <code class="code">MithraObject</code>s that
             are being used by the application. It is different in that it specifies runtime concerns such as connection management and caching. The connection manager class to be used is indicated via the <code class="code">ConnectionManager</code> XML tag.
         </p>
         <p>
-            The following snippet shows a runtime configuration where all the objects are partially cached. This means that Reladomo will cache an object as long as there is sufficient memory. When there is a memory crunch, the cached objects will be garbage collected.
+            The following snippet shows a runtime configuration where all the objects are partially cached. This means that Reladomo will cache an object as long as there is sufficient memory. When there is a memory crunch, the cached objects will be garbage-collected.
         </p>
-        <div class="example"><a name="N4028A"></a><p class="title"><b>Example&nbsp;3.2.&nbsp;tour-examples/simple-bank/SimpleBankClassList.xml</b></p><div class="example-contents">
+        <div class="example"><a name="N402B4"></a><p class="title"><b>Example&nbsp;3.2.&nbsp;tour-examples/simple-bank/SimpleBankClassList.xml</b></p><div class="example-contents">
             
             <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraRuntime&gt;</strong>
     <strong style="color: navy" class="hl-tag">&lt;ConnectionManager</strong> <span style="color: blue" class="hl-attribute">className</span>=<span style="color: green" class="hl-value">"simplebank.util.BankConnectionManager"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
@@ -455,13 +478,13 @@
 <strong style="color: navy" class="hl-tag">&lt;/MithraRuntime&gt;</strong></pre>
         </div></div><br class="example-break">
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40295"></a>3.3.&nbsp;Wiring it all together</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N402BF"></a>3.3.&nbsp;Wiring it all together</h2></div></div></div>
         
         <p>
             With the connection manager and runtime configuration ready, we can initialize Reladomo by initializing the <code class="code">MithraManager</code>.
             As the name suggests, this class manages all Reladomo operations.
         </p>
-        <div class="example"><a name="N402A0"></a><p class="title"><b>Example&nbsp;3.3.&nbsp;tour-examples/simple-bank/SimpleBankApp.java</b></p><div class="example-contents">
+        <div class="example"><a name="N402CA"></a><p class="title"><b>Example&nbsp;3.3.&nbsp;tour-examples/simple-bank/SimpleBankApp.java</b></p><div class="example-contents">
             
             <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> SimpleBankApp
 {
@@ -496,11 +519,11 @@
         </p>
     </div>
 </div>
-    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N402B0"></a>Chapter&nbsp;4.&nbsp;CRUD Operations</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N402C6">4.1. Object Creation (C)</a></span></dt><dt><span class="sect1"><a href="#N40318">4.2. Object Read (R)</a></span></dt><dt><span class="sect1"><a href="#N403A3">4.3. Object Modification (U)</a></span></dt><dt><span class="sect1"><a href="#N403DE">4.4. Object Deletion (D)</a></span></dt></dl></div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N402DA"></a>Chapter&nbsp;4.&nbsp;CRUD Operations</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N402F0">4.1. Object Creation (C)</a></span></dt><dt><span class="sect1"><a href="#N40342">4.2. Object Read (R)</a></span></dt><dt><span class="sect1"><a href="#N403CD">4.3. Object Modification (U)</a></span></dt><dt><span class="sect1"><a href="#N40408">4.4. Object Deletion (D)</a></span></dt></dl></div>
     
         <p>This chapter demonstrates basic CRUD (Create, Read, Update, Delete) operations using Reladomo.</p>
         <p>
-            Imagine that we want to build a REST API for our bank. The API for <code class="code">Customer</code> could look like this. 
+            Imagine that we want to build a REST API for our bank. The API for <code class="code">Customer</code> could look like this.
         </p>
         <pre class="programlisting">GET    /customer              Get all Customers
 GET    /customer/{id}         Get a Customer by id
@@ -511,7 +534,7 @@ DELETE /customer/{id}         Delete a Customer</pre>
         <p>
             To implement each of the above listed APIs, we need to use Reladomo to create, fetch and modify objects in the database.
         </p>
-        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N402C6"></a>4.1.&nbsp;Object Creation (C)</h2></div></div></div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N402F0"></a>4.1.&nbsp;Object Creation (C)</h2></div></div></div>
             
             <p>
                 Creating objects is straightfoward in Reladomo. For each <code class="code">MithraObject</code>, Reladomo generates a no-arg constructor.
@@ -535,10 +558,10 @@ mickey.setLastName(<strong class="hl-string"><span style="color: green">"Mouse"<
     <strong class="hl-keyword"><span style="color: #000080">this</span></strong>.setLastName(lastName);
 }</pre>
             <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td valign="top" align="left">
-                The generated classes are meant to be modified. However, the default no-arg constructor has to be preserved as it is used internally by Reladomo.
+                The generated classes are meant to be modified. However, the default no-arg constructor has to be preserved because it is used internally by Reladomo.
                 When adding a custom constructor make sure to call the no-arg constructor.
             </td></tr></table></div>
-            <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N402EE"></a>4.1.1.&nbsp;Cascaded Insert</h3></div></div></div>
+            <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40318"></a>4.1.1.&nbsp;Cascaded Insert</h3></div></div></div>
                 
                 <p>
                     Consider the case where we want to create (insert) a <code class="code">Customer</code> and his/her <code class="code">CustomerAccount</code>
@@ -583,7 +606,7 @@ mickey.cascadeInsert();</pre>
     <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
 });</pre>
         </div>
-        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40318"></a>4.2.&nbsp;Object Read (R)</h2></div></div></div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40342"></a>4.2.&nbsp;Object Read (R)</h2></div></div></div>
             
             <p>
                 Objects are read using generated classes called <code class="code">Finder</code>s. There are two parts to a finder. The first is the <code class="code">Operation</code>. An operation corresponds to an expression in a SQL <code class="code">where</code> clause.
@@ -617,7 +640,7 @@ Operation idOperation = idAttribute.in(IntSets.immutable.of(<span style="color:b
                 
                 <p>When a <code class="code">Finder</code> is invoked, Reladomo normally constructs a SQL query and executes it against the database. However, this is not always the case. If the object has been cached in memory, Reladomo will return the cached object instead of hitting the database.</p>
             </td></tr></table></div>
-            <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4035C"></a>4.2.1.&nbsp;Cursors</h3></div></div></div>
+            <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40386"></a>4.2.1.&nbsp;Cursors</h3></div></div></div>
                 
                 <p>When a finder that returns a list is invoked, the entire list is forced into memory. This is not ideal if the list is huge. In such cases, it is better to iterate over the list with a cursor.
                  The snippet below iterates over the first hundred Customers. The cursor is terminated when the <code class="code">DoWhileProcedure</code> lambda returns false.
@@ -630,7 +653,7 @@ customers.forEachWithCursor(o -&gt; {
     <strong class="hl-keyword"><span style="color: #000080">return</span></strong> ids.size() &lt; <span style="color:blue" class="hl-number">100</span>;
 });</pre>
             </div>
-            <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4036C"></a>4.2.2.&nbsp;Deep Fetch</h3></div></div></div>
+            <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40396"></a>4.2.2.&nbsp;Deep Fetch</h3></div></div></div>
                 
                 <p>
                     Consider the case of fetching related objects. Let's say we have a customer and are interested in all the accounts owned by this customer. A naive approach to implementing this looks as follows.
@@ -680,7 +703,7 @@ MutableList&lt;Object&gt; mickeysAccounts = Lists.mutable.empty();
                 </p>
             </div>
         </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N403A3"></a>4.3.&nbsp;Object Modification (U)</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N403CD"></a>4.3.&nbsp;Object Modification (U)</h2></div></div></div>
         
         <p>Objects retrieved via finders are "live" objects. Any changes made to these objects via the generated setters are reflected in the database immediately.</p>
         <p>
@@ -689,8 +712,8 @@ MutableList&lt;Object&gt; mickeysAccounts = Lists.mutable.empty();
         <pre class="programlisting">Customer mickey = CustomerFinder.findOne(CustomerFinder.firstName().eq(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>));
 mickey.setFirstName(<strong class="hl-string"><span style="color: green">"SuperMickey"</span></strong>);</pre>
         <p>
-            In some cases this is not desirable. For example, you might want a set of updates to an object to be executed atomically. Or set a of updates to multiple objects be executed atomically.
-            In these cases, the solution is to wrap the updates in a transaction.
+            In some cases this is not desirable. For example, you might want a set of updates to
+            one or more objects to be executed atomically. In such cases, the solution is to wrap the updates in a transaction.
         </p>
         <pre class="programlisting">MithraManagerProvider.getMithraManager().executeTransactionalCommand((tx) -&gt; {
     Customer mickey = CustomerFinder.findOne(CustomerFinder.firstName().eq(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>));
@@ -698,15 +721,15 @@ mickey.setFirstName(<strong class="hl-string"><span style="color: green">"SuperM
     mickey.setLastName(<strong class="hl-string"><span style="color: green">"Mouse"</span></strong>);
     <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
 });</pre>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N403B9"></a>4.3.1.&nbsp;Detached Objects</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N403E3"></a>4.3.1.&nbsp;Detached Objects</h3></div></div></div>
             
             <p>
-                As described previously, an objected fetched via a Finder is a "live" object ; changes to which are immediately flushed to the database.
+                As described previously, an object fetched via a Finder is a "live" object ; changes to it are immediately flushed to the database.
                 To disable these flushes, simply detach the object from the database.
             </p>
             <p>
                 Imagine you are building a UI that allows users to change multiple attributes of an account.
-                In this case, you do not want each change to be flushed to the database, since the user could decide
+                In this case, you do not want each change to be flushed to the database, because the user could decide
                 not apply his changes. Detached objects are handy in use cases like this, where there is a good chance
                 that changes made to an object might have to be discarded.
             </p>
@@ -739,7 +762,7 @@ mickey.setFirstName(<strong class="hl-string"><span style="color: green">"SuperM
             </p>
         </td></tr></table></div>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N403DE"></a>4.4.&nbsp;Object Deletion (D)</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40408"></a>4.4.&nbsp;Object Deletion (D)</h2></div></div></div>
         
         <p>
             Deleting an object involves invoking the generated delete method.
@@ -748,8 +771,8 @@ CustomerAccount account = CustomerAccountFinder.findOne(idOp);
 account.delete();</pre><p>
         </p>
         <p>
-            Similar to insert a cascading delete operation is available as well.
-            </p><div class="example"><a name="N403EB"></a><p class="title"><b>Example&nbsp;4.1.&nbsp;simple-bank/CustomerResource.java</b></p><div class="example-contents">
+            As with the insert operation, a cascading delete operation is available as well.
+            </p><div class="example"><a name="N40415"></a><p class="title"><b>Example&nbsp;4.1.&nbsp;simple-bank/CustomerResource.java</b></p><div class="example-contents">
                 
             </div></div><p><br class="example-break">
             </p><pre class="programlisting">@DELETE
@@ -762,22 +785,22 @@ public Response deleteCustomer(@PathParam("id") int customerId)
 }</pre><p>
         </p>
         <p>
-            Similar to create and modification, deletes can be wrapped in a transaction as well.
+            And, as with create and modification operations, deletes can be wrapped in a transaction as well.
         </p>
     </div>
 </div>
-    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N403FB"></a>Chapter&nbsp;5.&nbsp;A Complete Reladomo Application</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40407">5.1. Jersey Boilerplate</a></span></dt><dt><span class="sect1"><a href="#N40445">5.2. JSON Serialization</a></span></dt></dl></div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N40425"></a>Chapter&nbsp;5.&nbsp;A Complete Reladomo Application</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40431">5.1. Jersey Boilerplate</a></span></dt><dt><span class="sect1"><a href="#N4046F">5.2. JSON Serialization</a></span></dt></dl></div>
     
     <p>
         This chapter does not introduce any new Reladomo concepts. It uses all the concepts introduced
-        in the previous chapters to build a REST API for the bank domain model introduced in chapter 1.
+        in the previous chapters to build a REST API for the bank domain model introduced in Chapter 1.
     </p>
     <p>
         It is assumed you have a basic familiarity with REST and building REST APIs with Jersey.
     </p>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40407"></a>5.1.&nbsp;Jersey Boilerplate</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40431"></a>5.1.&nbsp;Jersey Boilerplate</h2></div></div></div>
         
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4040C"></a>5.1.1.&nbsp;REST Resource</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40436"></a>5.1.1.&nbsp;REST Resource</h3></div></div></div>
             
             <p>
                 The first step is to build a Jersey resource class that implements the REST API.
@@ -786,7 +809,7 @@ public Response deleteCustomer(@PathParam("id") int customerId)
             <p>
                 The <code class="code">CustomerResource</code> class implements the <code class="code">Jersey</code> resource for <code class="code">Customer.</code>
             </p>
-            <div class="example"><a name="N40420"></a><p class="title"><b>Example&nbsp;5.1.&nbsp;tour-examples/simple-bank/CustomerResource.java</b></p><div class="example-contents">
+            <div class="example"><a name="N4044A"></a><p class="title"><b>Example&nbsp;5.1.&nbsp;tour-examples/simple-bank/CustomerResource.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><em><span style="color: gray" class="hl-annotation">@Path("/api/customer")</span></em>
 <strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> CustomerResource
@@ -817,13 +840,13 @@ public Response deleteCustomer(@PathParam("id") int customerId)
 }</pre>
             </div></div><br class="example-break">
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4042B"></a>5.1.2.&nbsp;REST Server Main Class</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40455"></a>5.1.2.&nbsp;REST Server Main Class</h3></div></div></div>
             
             <p>
                 The <code class="code">SimpleBankServer</code> class initializes Reladomo with the <code class="code">MithraRuntime</code>
                 XML and starts the web server with the Jersey resource class.
             </p>
-            <div class="example"><a name="N40439"></a><p class="title"><b>Example&nbsp;5.2.&nbsp;tour-examples/simple-bank/SimpleBankServer.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40463"></a><p class="title"><b>Example&nbsp;5.2.&nbsp;tour-examples/simple-bank/SimpleBankServer.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> SimpleBankServer
 {
@@ -880,7 +903,7 @@ public Response deleteCustomer(@PathParam("id") int customerId)
             </div></div><br class="example-break">
         </div>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40445"></a>5.2.&nbsp;JSON Serialization</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4046F"></a>5.2.&nbsp;JSON Serialization</h2></div></div></div>
             
             <p>
                 The REST API's endpoints consume JSON input and produce JSON output. In the <code class="code">CustomerResource</code> class,
@@ -892,11 +915,11 @@ public Response deleteCustomer(@PathParam("id") int customerId)
                 method of the <code class="code">SimpleBankServer</code> class.
             </p>
             <p>
-                It should be pointed out thatReladomo has no opinion on how you choose to implement JSON serialization and deserialization.
+                Note that in Reladomo it doesn't matter how you choose to implement JSON serialization and deserialization.
             </p>
     </div>
 </div>
-    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40462"></a>Chapter&nbsp;6.&nbsp;Testing With Reladomo</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4046E">6.1. Test Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N40480">6.2. Test Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N404B5">6.3. Test Data</a></span></dt><dt><span class="sect1"><a href="#N404D2">6.4. Test Resource</a></span></dt><dt><span class="sect1"><a href="#N404EE">6.5. Debugging</a></span></dt><dt><span class="sect1"><a href="#N40519">6.6. References</a></span></dt></dl></div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N4048C"></a>Chapter&nbsp;6.&nbsp;Testing With Reladomo</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40498">6.1. Test Connection Manager</a></span></dt><dt><span class="sect1"><a href="#N404AA">6.2. Test Runtime Configuration</a></span></dt><dt><span class="sect1"><a href="#N404DF">6.3. Test Data</a></span></dt><dt><span class="sect1"><a href="#N404FC">6.4. Test Resource</a></span></dt><dt><span class="sect1"><a href="#N40518">6.5. Debugging</a></span></dt><dt><span class="sect1"><a href="#N40543">6.6. References</a></span></dt></dl></div>
     
     <p>
         One of the features that distinguishes Reladomo from other ORM frameworks is its first class
@@ -910,8 +933,8 @@ public Response deleteCustomer(@PathParam("id") int customerId)
         to point your application against this in-memory database and exercise your
         application's API/interface.
     </p>
-    
-        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4046E"></a>6.1.&nbsp;Test Connection Manager</h2></div></div></div>
+
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40498"></a>6.1.&nbsp;Test Connection Manager</h2></div></div></div>
             
             <p>
                 Chapter 2 introduced the <code class="code">ConnectionManager</code> which is responsible for obtaining
@@ -919,12 +942,12 @@ public Response deleteCustomer(@PathParam("id") int customerId)
                 we cannot simply use the same connection manager as we would in production.
             </p>
             <p>
-                Instead we use the <code class="code">com.gs.fw.common.mithra.test.ConnectionManagerForTests</code> that
-                ships with the Reladomo test jars. This class is a convenience class with factory methods for
-                creating a connection manager. You don't have to do much other than use this class.
+                Instead we use <code class="code">com.gs.fw.common.mithra.test.ConnectionManagerForTests</code>, which is included
+                in the Reladomo test jars. This class is a convenience class with factory methods for
+                creating a connection manager. You don't have to do much other than to simply use this class.
             </p>
         </div>
-        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40480"></a>6.2.&nbsp;Test Runtime Configuration</h2></div></div></div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N404AA"></a>6.2.&nbsp;Test Runtime Configuration</h2></div></div></div>
             
             <p>
                 Chapter 2 introduced the <code class="code">MithraRuntime</code> XML file. This file ties together the
@@ -958,7 +981,7 @@ public Response deleteCustomer(@PathParam("id") int customerId)
             <p>
                 The snippet below shows the <code class="code">SimpleBankTestRuntimeConfiguration</code> XML in its entirety.
             </p>
-            <div class="example"><a name="N404AA"></a><p class="title"><b>Example&nbsp;6.1.&nbsp;tour-examples/simple-bank/SimpleBankTestRuntimeConfiguration.xml</b></p><div class="example-contents">
+            <div class="example"><a name="N404D4"></a><p class="title"><b>Example&nbsp;6.1.&nbsp;tour-examples/simple-bank/SimpleBankTestRuntimeConfiguration.xml</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;MithraRuntime</strong>
       <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
@@ -971,7 +994,7 @@ public Response deleteCustomer(@PathParam("id") int customerId)
 <strong style="color: navy" class="hl-tag">&lt;/MithraRuntime&gt;</strong></pre>
             </div></div><br class="example-break">
         </div>
-        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N404B5"></a>6.3.&nbsp;Test Data</h2></div></div></div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N404DF"></a>6.3.&nbsp;Test Data</h2></div></div></div>
             
             <p>
                 Reladomo will not only start a in-memory H2 database, but also populate it with data.
@@ -988,7 +1011,7 @@ public Response deleteCustomer(@PathParam("id") int customerId)
                 The snippet below shows the <code class="code">SimpleBankTestData.txt</code> file that will be used
                 to test the REST API we built in chapter 4.
             </p>
-            <div class="example"><a name="N404C7"></a><p class="title"><b>Example&nbsp;6.2.&nbsp;tour-examples/simple-bank/SimpleBankTestData.txt</b></p><div class="example-contents">
+            <div class="example"><a name="N404F1"></a><p class="title"><b>Example&nbsp;6.2.&nbsp;tour-examples/simple-bank/SimpleBankTestData.txt</b></p><div class="example-contents">
                 
                 <pre class="programlisting">class simplebank.domain.Customer
 customerId, firstName, lastName, country
@@ -1003,14 +1026,14 @@ accountId, customerId, accountName, accountType, balance
 102, 3, "fun stuff", "checking", 3000</pre>
             </div></div><br class="example-break">
         </div>
-        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N404D2"></a>6.4.&nbsp;Test Resource</h2></div></div></div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N404FC"></a>6.4.&nbsp;Test Resource</h2></div></div></div>
             
             <p>
                 The <code class="code">MithraTestResource</code> wires everything together. It is used  to load
                 the <code class="code">MithraClassList</code>, and initialize the test database with test data.
                 The following is a snippet from <code class="code">SimpleBankAPITest</code>, showing a complete test.
             </p>
-            <div class="example"><a name="N404E3"></a><p class="title"><b>Example&nbsp;6.3.&nbsp;tour-examples/simple-bank/SimpleBankAPITest.java</b></p><div class="example-contents">
+            <div class="example"><a name="N4050D"></a><p class="title"><b>Example&nbsp;6.3.&nbsp;tour-examples/simple-bank/SimpleBankAPITest.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> SimpleBankAPITest
 {
@@ -1060,16 +1083,16 @@ accountId, customerId, accountName, accountType, balance
 }</pre>
             </div></div><br class="example-break">
         </div>
-        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N404EE"></a>6.5.&nbsp;Debugging</h2></div></div></div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40518"></a>6.5.&nbsp;Debugging</h2></div></div></div>
             
             <p>
-                When using an ORM, it is useful to inspect the SQL that is being executed.
+                When using an ORM, it is useful to inspect the SQL statements that are being executed.
                 In Reladomo, SQL logging is enabled by setting the log level of the SQL loggers to DEBUG.
             </p>
             <p>
                 The following snippet shows a Logback configuration file that enables SQL logging.
                 The same can be implemented with other logging frameworks such as Log4j.
-                </p><div class="example"><a name="N404F8"></a><p class="title"><b>Example&nbsp;6.4.&nbsp;simple-bank/logback.xml</b></p><div class="example-contents">
+                </p><div class="example"><a name="N40522"></a><p class="title"><b>Example&nbsp;6.4.&nbsp;simple-bank/logback.xml</b></p><div class="example-contents">
                     
                     <pre class="programlisting"><strong style="color: navy" class="hl-tag">&lt;configuration&gt;</strong>
     <strong style="color: navy" class="hl-tag">&lt;appender</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"stdout"</span> <span style="color: blue" class="hl-attribute">class</span>=<span style="color: green" class="hl-value">"ch.qos.logback.core.ConsoleAppender"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
@@ -1128,7 +1151,7 @@ CustomerAccount - connection:1690573857 find with: select t0.ACCOUNT_ID,t0.CUSTO
 CustomerAccount - retrieved 1 objects, 1.0 ms per
                 </pre><p>
             </p>
-            <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Too much logs!!"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Too much logs!!</th></tr><tr><td valign="top" align="left">
+            <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Too much logs!"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Too much logs!</th></tr><tr><td valign="top" align="left">
                 
                 <p>
                     Depending on your application, SQL logging can be very verbose and spam
@@ -1136,7 +1159,7 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                 </p>
             </td></tr></table></div>
         </div>
-        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40519"></a>6.6.&nbsp;References</h2></div></div></div>
+        <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40543"></a>6.6.&nbsp;References</h2></div></div></div>
             
             <p>
                 </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
@@ -1149,41 +1172,27 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
             </p>
         </div>
 </div>
-    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N40534"></a>Chapter&nbsp;7.&nbsp;Bitemporal Chaining</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4053D">7.1. Motivating Example - The SlowBank</a></span></dt><dt><span class="sect1"><a href="#N4054C">7.2. 
+    </div>
+    <div class="part"><div class="titlepage"><div><div><h1 class="title"><a name="N4055E"></a>Part&nbsp;II.&nbsp;</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#N40562">7. Chaining</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N4056B">7.1. Types of Chaining</a></span></dt><dt><span class="sect1"><a href="#N405B0">7.2. Motivating Example - The SlowBank</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N405C4">8. Audit-Only Chaining</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N405CD">8.1. 
+            Audit-Only Chaining
+        </a></span></dt><dt><span class="sect1"><a href="#N405D6">8.2. Audit-Only Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N406FC">8.3. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40717">9. Audit-Only Chaining API</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40720">9.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40784">9.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N407A7">9.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N4087F">9.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N408B0">9.5. Changing history</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N408C1">10. Bitemporal Chaining</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N408CA">10.1. 
             Bitemporal Chaining
-        </a></span></dt><dt><span class="sect1"><a href="#N40564">7.3. Bitemporal Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N4069F">7.4. References</a></span></dt></dl></div>
+        </a></span></dt><dt><span class="sect1"><a href="#N408E2">10.2. Bitemporal Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N40A1D">10.3. References</a></span></dt></dl></dd><dt><span class="chapter"><a href="#N40A38">11. Bitemporal Chaining API</a></span></dt><dd><dl><dt><span class="sect1"><a href="#N40A41">11.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40AC6">11.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N40AE9">11.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N40BC7">11.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N40BF8">11.5. Next steps</a></span></dt></dl></dd></dl></div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N40562"></a>Chapter&nbsp;7.&nbsp;Chaining</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N4056B">7.1. Types of Chaining</a></span></dt><dt><span class="sect1"><a href="#N405B0">7.2. Motivating Example - The SlowBank</a></span></dt></dl></div>
     
     <p>
-        This chapter introduces the concept of bitemporal chaining for
-        relational databases. Continuing the bank example, it shows
-        how by using bitemporal chaining, it is easy to make corrections to historical data without losing
-        any history.
+        This chapter introduces chaining and it's variants.
+        It also introduces a motivating example that will be used to illustrate the various
+        types of chaining in subsequent chapters.
     </p>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4053D"></a>7.1.&nbsp;Motivating Example - The SlowBank</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4056B"></a>7.1.&nbsp;Types of Chaining</h2></div></div></div>
         
         <p>
-            Consider the case of the "SlowBank".
-            The bank has several ATMs but the ATM's connectivity to the bank's backend systems is flaky.
-            When an ATM is not able to communicate with the bank's backend, ATM transactions are recorded
-            locally. Later someone is sent to fetch these local transactions which are manually applied to the
-            bank's database.
+            Chaining refers to how data is stored in a relational database
+            such that changes to the data can be tracked.
         </p>
         <p>
-            This delay in updating the bank's database means that your bank balance is not always upto date.
-            Sometimes the bank says you have less money than you actually have ; sometimes it says you have more money than you actually have!
-            All of this is very frustrating. But the bank happily adjusts your balance everytime you report a discrepancy.
-        </p>
-        <p>
-            However, the bank has a new problem. They have been manually adjusting the balance so many times, that they are completely unable to reason about your account's history.
-            Lucikly, they have learnt about bitemporal chaining that will help them fix these problems.
-        </p>
-    </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4054C"></a>7.2.&nbsp;
-            Bitemporal Chaining
-        </h2></div></div></div>
-        
-        <p>
-            In bitemporal chaining, all changes to a database are tracked along two dimensions.
+            Changes can be tracked along two time dimensions:
             </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
                     <p>
                         Business Time - This is when the change actually occurred in the world
@@ -1193,58 +1202,117 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                         Processing Time - This is when the change actually was recorded in the database
                     </p>
                 </li></ul></div><p>
-            While these two times are often the same, they can be different.
+            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Note"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td valign="top" align="left">
+                
+                <p>
+                    Business time need not always be the time when the change actually occurred.
+                    It can also be the time we want it to be. For example, a bank might balance
+                    its books every day at 6.30 PM even though some banking activity might happen after
+                    6.30 PM.
+                </p>
+            </td></tr></table></div><p>
+            There are three types of chaining :
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>
+                        Audit-Only - In this type of chaining, changes are recorded with <span class="italics">only the processing-time</span>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        Business-Only - In this type of chaining, changes are recorded with <span class="italics">only the business-time</span>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        Bitemporal - In this type of chaining, changes are recorded with <span class="italics">both the business-time and processing-time</span>
+                    </p>
+                </li></ul></div><p>
         </p>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40564"></a>7.3.&nbsp;Bitemporal Updates To An Account</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N405B0"></a>7.2.&nbsp;Motivating Example - The SlowBank</h2></div></div></div>
         
         <p>
-            In this section we look at a sequence of transactions to an account and demonstrate how bitemporal chaining is used to capture history.
+            Consider the case of the "SlowBank".
+            The bank has several ATMs but the ATM's connectivity to the bank's backend systems is flaky.
+            When an ATM is not able to communicate with the bank's backend, ATM transactions are recorded
+            locally. Later someone is sent to fetch these local transactions which are manually applied to the
+            bank's database.
         </p>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4056C"></a>7.3.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
+        <p>
+            This delay in updating the bank's database means that your bank balance is not always up-to-date.
+            Sometimes the bank says you have less money than you actually have ; sometimes it says you have more money than you actually have!
+            All of this is very frustrating. But the bank happily adjusts your balance everytime you report a discrepancy.
+        </p>
+        <p>
+            However, the bank has a new problem. They now need to be able to reason about how the account's balance changed
+            over time.
+        </p>
+        <p>
+            As we will see in the following chapters, each of the various chaining models allows us
+            to reason about changes to the account in different ways.
+        </p>
+    </div>
+</div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N405C4"></a>Chapter&nbsp;8.&nbsp;Audit-Only Chaining</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N405CD">8.1. 
+            Audit-Only Chaining
+        </a></span></dt><dt><span class="sect1"><a href="#N405D6">8.2. Audit-Only Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N406FC">8.3. References</a></span></dt></dl></div>
+    
+    <p>
+        This chapter introduces the concept of audit-only chaining for relational databases.
+    </p>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N405CD"></a>8.1.&nbsp;
+            Audit-Only Chaining
+        </h2></div></div></div>
+        
+        <p>
+            In audit-only chaining, all changes to a database are tracked along the processing-time dimension.
+            This is the time at which a change is actually recorded in the database, irrespective of the time
+            the change occurred in the world.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N405D6"></a>8.2.&nbsp;Audit-Only Updates To An Account</h2></div></div></div>
+        
+        <p>
+            In this section we look at a sequence of transactions to an account and demonstrate how audit-only chaining is used to capture history.
+        </p>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N405DE"></a>8.2.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
             
             <p>
                 On Jan 1 you open a new bank account with a balance of $100. The bank updates it's database (table) with an entry for your account.
-                Since bitemporal chaining is being used, each row in the table has four timestamp columns:
+                Since audit-only chaining is being used, each row in the table has two timestamp columns:
                 </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
                         <p>
-                            FROM_Z and THRU_Z track the validity of the row along the business time dimension
+                            IN_Z - This is the time when the row was added to the table
                         </p>
                     </li><li class="listitem">
                         <p>
-                            IN_Z and OUT_Z track the validity of the row along the processing time dimension
+                            OUT_Z - Along with IN_Z, this defines the range in which this row is valid
                         </p>
                     </li></ul></div><p>
                 The table looks as follows. (The number to the right of every row provides an easy way to refer to rows in this document.)
-                </p><div class="figure"><a name="bitemporal1.fig"></a><p class="title"><b>Figure&nbsp;7.1.&nbsp;Bank Account On Jan 1</b></p><div class="figure-contents">
+                </p><div class="figure"><a name="auditonly1.fig"></a><p class="title"><b>Figure&nbsp;8.1.&nbsp;Bank Account On Jan 1</b></p><div class="figure-contents">
                     
-                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-1.png" alt="Bank Account On Jan 1"></div>
+                    <div class="mediaobject"><img src="auditonly-intro/auditonly-1.png" alt="Bank Account On Jan 1"></div>
                 </div></div><p><br class="figure-break">
                 Row 1 records the following facts:
                 </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
                         <p>
-                            The account was created on today (Jan 1). So FROM_Z = Jan 1. This example will use dates (formatted as 'Jan 1' for simplicity) instead of timestamps.
+                            The account was created today (Jan 1). So IN_Z = Jan 1. This example will use dates (formatted as 'Jan 1' for simplicity) instead of timestamps.
                         </p>
                     </li><li class="listitem">
                         <p>
-                            The account was added to the database today (Jan 1). So IN_Z = Jan 1
-                        </p>
-                    </li><li class="listitem">
-                        <p>
-                            This is the only row for this account. And we mark these rows as valid by setting the THRU_Z and OUT_Z to Infinity. Infinity is a magic timestamp chosen such that it cannot possibly be a valid date in the system e.g. 9999/1/1.
+                            This is the only row for this account. And we mark this row as valid by setting OUT_Z to Infinity. Infinity is a magic timestamp, in the sense that it cannot possibly be a valid date in the system e.g. 9999/1/1.
                         </p>
                     </li></ul></div><p>
             </p>
             <p>
                 The chart on the right (which is not drawn to scale), is a handy tool to visualize the progression of
                 the chaining. The chart visualizes each row as a rectangle. In this case, there is only one row that extends
-                to infinity along both the time dimensions.
+                to infinity along the processing-time dimension.
             </p>
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N405AD"></a>7.3.2.&nbsp;Jan 17 - Deposit $50</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40619"></a>8.2.2.&nbsp;Jan 17 - Deposit $50</h3></div></div></div>
             
             <p>
-                A few days later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
+                A couple of weeks later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
                 the ATM does not send your deposit to the bank right away. While you walk away thinking your account has $150, your account actually has only $100.
             </p>
             <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Missed Deposit !!"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Missed Deposit !!</th></tr><tr><td valign="top" align="left">
@@ -1253,68 +1321,64 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                     The table remains unchanged as the deposit was never posted to the account.
                 </p>
             </td></tr></table></div>
-            <div class="figure"><a name="bitemporal2.fig"></a><p class="title"><b>Figure&nbsp;7.2.&nbsp;Bank Account On Jan 17</b></p><div class="figure-contents">
+            <div class="figure"><a name="auditonly2.fig"></a><p class="title"><b>Figure&nbsp;8.2.&nbsp;Bank Account On Jan 17</b></p><div class="figure-contents">
                 
-                <div class="mediaobject"><img src="bitemporal-intro/bitemporal-2.png" alt="Bank Account On Jan 17"></div>
+                <div class="mediaobject"><img src="auditonly-intro/auditonly-2.png" alt="Bank Account On Jan 17"></div>
             </div></div><br class="figure-break">
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N405D0"></a>7.3.3.&nbsp;Jan 20 - Deposit $200</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4063C"></a>8.2.3.&nbsp;Jan 20 - Deposit $200</h3></div></div></div>
             
             <p>
                 A few days later, on Jan 20 you deposit $200 at one of the ATMs.
             </p>
             <p>
-                The goal of bitemporal milestoning is to track changes along both dimensions. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either as that loses history.
+                The goal is to track changes along processing-time. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either, as that loses history.
             </p>
             <p>
-                In general, making changes to a bitemporally chained database is a two step process :
+                In general, making changes to a audit-only chained database is a two step process :
                 </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
-                        <p>Invalidate rows whose view of the world is incorrect
+                        <p>Invalidate the row whose view of the world is incorrect
                         </p>
                     </li><li class="listitem">
-                        <p>Add new rows to reflect the new view of the world
+                        <p>Add a new row to reflect the new view of the world
                         </p>
                     </li></ul></div><p>
             </p>
-            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N405ED"></a>7.3.3.1.&nbsp;Invalidating Rows</h4></div></div></div>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N40659"></a>8.2.3.1.&nbsp;Invalidate row</h4></div></div></div>
                 
                 <p>
                     Row 1 currently states that the balance is $0 from Jan 1 to Infinity. This is not true anymore as the bank just accepted a $200 deposit on Jan 20. So we invalidate Row 1 by setting its OUT_Z to today (Jan 20).
                 </p>
-                <div class="figure"><a name="bitemporal31.fig"></a><p class="title"><b>Figure&nbsp;7.3.&nbsp;Bank Account On Jan 20 - After invalidating existing rows</b></p><div class="figure-contents">
+                <div class="figure"><a name="auditonly31.fig"></a><p class="title"><b>Figure&nbsp;8.3.&nbsp;Bank Account On Jan 20 - After invalidating existing rows</b></p><div class="figure-contents">
                     
-                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-31.png" alt="Bank Account On Jan 20 - After invalidating existing rows"></div>
+                    <div class="mediaobject"><img src="auditonly-intro/auditonly-31.png" alt="Bank Account On Jan 20 - After invalidating existing rows"></div>
                 </div></div><br class="figure-break">
             </div>
-            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N40607"></a>7.3.3.2.&nbsp;Adding new rows</h4></div></div></div>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N40673"></a>8.2.3.2.&nbsp;Adding new rows</h4></div></div></div>
                 
                 <p>
                     Our new view of the world is as follows :
                     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
                             <p>
-                                From Jan 1 to Jan 20, balance = $100 (opening balance)
-                            </p>
-                        </li><li class="listitem">
-                            <p>
                                 From Jan 20 to Infinity, balance = $300 (opening balance + $200 deposit)
                             </p>
                         </li></ul></div><p>
-                    So we add Rows 2 and 3 to capture these facts. The IN_Z and OUT_Z of these rows captures the fact that these changes were made today and that these rows represent the latest state of the account (i.e OUT_Z is Infinity)
+                    So we add Row 2 to capture this fact. The IN_Z and OUT_Z of this row captures the fact that this change was made today and that this row represents the latest state of the account (i.e OUT_Z is Infinity)
                 </p>
-                <div class="figure"><a name="bitemporal32.fig"></a><p class="title"><b>Figure&nbsp;7.4.&nbsp;Bank Account On Jan 20 - After adding new rows</b></p><div class="figure-contents">
+                <div class="figure"><a name="auditonly32.fig"></a><p class="title"><b>Figure&nbsp;8.4.&nbsp;Bank Account On Jan 20 - After adding new rows</b></p><div class="figure-contents">
                     
-                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-32.png" alt="Bank Account On Jan 20 - After adding new rows"></div>
+                    <div class="mediaobject"><img src="auditonly-intro/auditonly-32.png" alt="Bank Account On Jan 20 - After adding new rows"></div>
                 </div></div><br class="figure-break">
             </div>
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40631"></a>7.3.4.&nbsp;Jan 25 - Correct the missing $50</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40697"></a>8.2.4.&nbsp;Jan 25 - Correct the missing $50</h3></div></div></div>
             
             <p>
                 On Jan 25 you check your bank account and realize that the $50 deposit on Jan 17 has not been posted to the account.
                 Furious, you call the bank to complain. They are apologetic and are willing to update the account.
             </p>
             <p>
-                Just as before, the bank wants to preserve history in both dimensions. They follow the same approach :
+                Just as before, the bank follows this approach :
                 </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
                         <p>
                             Invalidate rows whose view of the world is incorrect
@@ -1325,56 +1389,52 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                         </p>
                     </li></ul></div><p>
             </p>
-            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N4064B"></a>7.3.4.1.&nbsp;Invalidate rows</h4></div></div></div>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N406B1"></a>8.2.4.1.&nbsp;Invalidate row</h4></div></div></div>
                 
                 <p>
                     Row 1 is already invalid. It does not need to be updated.
                 </p>
                 <p>
-                    Rows 2 and 3 are invalid along the business time dimension. However, we want to preserve the fact that they are invalid. So we invalidate them by setting their OUT_Z to today (Jan 25).
+                    Row 2 is invalid . So we invalidate it by setting its OUT_Z to today (Jan 25).
                 </p>
-                <div class="figure"><a name="bitemporal41.fig"></a><p class="title"><b>Figure&nbsp;7.5.&nbsp;Bank Account On Jan 25 - After invalidating existing rows</b></p><div class="figure-contents">
+                <div class="figure"><a name="auditonly41.fig"></a><p class="title"><b>Figure&nbsp;8.5.&nbsp;Bank Account On Jan 25 - After invalidating existing rows</b></p><div class="figure-contents">
                     
-                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-41.png" alt="Bank Account On Jan 25 - After invalidating existing rows"></div>
+                    <div class="mediaobject"><img src="auditonly-intro/auditonly-41.png" alt="Bank Account On Jan 25 - After invalidating existing rows"></div>
                 </div></div><br class="figure-break">
             </div>
-            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N40668"></a>7.3.4.2.&nbsp;
-                    Add new rows
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N406CE"></a>8.2.4.2.&nbsp;
+                    Add new row
                 </h4></div></div></div>
                 
                 <p>
                     Our new view of the world is as follows :
                     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
                             <p>
-                                From Jan 1 to Jan 17, balance = $100 (opening balance)
-                            </p>
-                        </li><li class="listitem">
-                            <p>
-                                From Jan 17 to Jan 20, balance = $150 (opening balance + deposit of $50 on Jan 17)
-                            </p>
-                        </li><li class="listitem">
-                            <p>
-                                From Jan 20 to Jan Infinity, balance = $1350 (opening balance + deposit of $50 on Jan 17 + deposit of $200 on Jan 20)
+                                From Jan 25 to Infinity, balance = $350 (opening balance + deposit of $200 on Jan 20 + correction deposit of $50 on Jan 25)
                             </p>
                         </li></ul></div><p>
-                    Since we are adding these rows today (Jan 25), the IN_Z of these newly added rows = Jan 25.
+                    Since we are adding this row today (Jan 25), the IN_Z of the newly added row = Jan 25.
                 </p>
-                <div class="figure"><a name="bitemporal42.fig"></a><p class="title"><b>Figure&nbsp;7.6.&nbsp;Bank Account On Jan 25 - After adding new rows</b></p><div class="figure-contents">
+                <div class="figure"><a name="auditonly42.fig"></a><p class="title"><b>Figure&nbsp;8.6.&nbsp;Bank Account On Jan 25 - After adding new row</b></p><div class="figure-contents">
                     
-                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-42.png" alt="Bank Account On Jan 25 - After adding new rows"></div>
+                    <div class="mediaobject"><img src="auditonly-intro/auditonly-42.png" alt="Bank Account On Jan 25 - After adding new row"></div>
                 </div></div><br class="figure-break">
             </div>
             <p>
-                To be more explicit about what we just did, we were able to go back in time and
-                record an update for Jan 17 (business time), along with recording the fact that this update was made today on Jan 25 (processing time).
-                This is the beauty of bitemporal chaining.
+                To be more explicit, the table as it stands now, simply states that the latest balance is $350.
+                While this is true, we have also lost history.
+                In particular, the table does not tell us that the $50 adjustment made on Jan 25 (processing date) was really an adjustment for Jan 17 (business date).
             </p>
             <p>
-                As you can see the visualization now shows a rectangle for each of the rows in the table. It should be clear that since rows are never deleted, we never lose history.
+                This is a fundamental limitation of audit-only chaining. Since it only tracks when changes were made
+                (processing-time), there is no information about when these changes actually occurred in the world.
+            </p>
+            <p>
+                If all you are trying to to is implement an audit trail of changes, audit-only chaining is sufficient.
             </p>
         </div>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4069F"></a>7.4.&nbsp;References</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N406FC"></a>8.3.&nbsp;References</h2></div></div></div>
         
         <p>
             </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
@@ -1387,17 +1447,17 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
         </p>
     </div>
 </div>
-    <div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="N406BA"></a>Chapter&nbsp;8.&nbsp;Bitemporal Chaining API</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N406C3">8.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40748">8.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N4076B">8.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N40849">8.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N4087A">8.5. Next steps</a></span></dt></dl></div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N40717"></a>Chapter&nbsp;9.&nbsp;Audit-Only Chaining API</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40720">9.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40784">9.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N407A7">9.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N4087F">9.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N408B0">9.5. Changing history</a></span></dt></dl></div>
     
     <p>
-        This chapter introduces various Reladomo APIs that are used to update a bitemporally chained table.
+        This chapter introduces various Reladomo APIs that are used to update a audit-only chained table.
         We will use the SlowBank example from the previous chapter and write code for each of the updates.
     </p>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N406C3"></a>8.1.&nbsp;Domain Model</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40720"></a>9.1.&nbsp;Domain Model</h2></div></div></div>
         
         <p>
-            Bitemporal chaining requires four additional timestamp columns. Also, Reladomo needs to be told
-            that the domain objects are bitemporal. All of this means that we need to update the <code class="code">MithraObject</code>
+            Audit-only chaining requires two additional timestamp columns. Also, Reladomo needs to be told
+            that the domain objects are audit-only chained. All of this means that we need to update the <code class="code">MithraObject</code>
             XML definitions.
         </p>
         <p>
@@ -1418,9 +1478,598 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
             </p>
         </td></tr></table></div>
         <p>
+            The snippet below shows the <code class="code">Customer</code> <code class="code">MithraObject</code> with the new attribute
+            to enable audit-only chaining.
+            </p><div class="example"><a name="N40745"></a><p class="title"><b>Example&nbsp;9.1.&nbsp;tour-examples/auditonly-bank/Customer.xml</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><span style="color: maroon" class="hl-directive">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;</span>
+
+<strong style="color: navy" class="hl-tag">&lt;MithraObject</strong> <span style="color: blue" class="hl-attribute">objectType</span>=<span style="color: green" class="hl-value">"transactional"</span>
+        <span style="color: blue" class="hl-attribute">xmlns:xsi</span>=<span style="color: green" class="hl-value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+        <span style="color: blue" class="hl-attribute">xsi:noNamespaceSchemaLocation</span>=<span style="color: green" class="hl-value">"mithraobject.xsd"</span><strong style="color: navy" class="hl-tag">&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;PackageName&gt;</strong>auditonlybank.domain<strong style="color: navy" class="hl-tag">&lt;/PackageName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;ClassName&gt;</strong>Customer<strong style="color: navy" class="hl-tag">&lt;/ClassName&gt;</strong>
+    <strong style="color: navy" class="hl-tag">&lt;DefaultTable&gt;</strong>CUSTOMER<strong style="color: navy" class="hl-tag">&lt;/DefaultTable&gt;</strong>
+
+    <strong style="color: navy" class="hl-tag">&lt;AsOfAttribute</strong> <span style="color: blue" class="hl-attribute">name</span>=<span style="color: green" class="hl-value">"processingDate"</span> <span style="color: blue" class="hl-attribute">fromColumnName</span>=<span style="color: green" class="hl-value">"IN_Z"</span> <span style="color: blue" class="hl-attribute">toColumnName</span>=<span style="color: green" class="hl-value">"OUT_Z"</span>
+                   <span style="color: blue" class="hl-attribute">toIsInclusive</span>=<span style="color: green" class="hl-value">"false"</span>
+                   <span style="color: blue" class="hl-attribute">isProcessingDate</span>=<span style="color: green" class="hl-value">"true"</span>
+                   <span style="color: blue" class="hl-attribute">infinityDate</span>=<span style="color: green" class="hl-value">"[com.gs.fw.common.mithra.util.DefaultInfinityTimestamp.getDefaultInfinity()]"</span>
+                   <span style="color: blue" class="hl-attribute">defaultIfNotSpecified</span>=<span style="color: green" class="hl-value">"[com.gs.fw.common.mithra.util.DefaultInfinityTimestamp.getDefaultInfinity()]"</span><strong style="color: navy" class="hl-tag">
+    /&gt;</strong>
+
+    // elided for brevity
+<strong style="color: navy" class="hl-tag">&lt;/MithraObject&gt;</strong></pre>
+            </div></div><p><br class="example-break">
+        </p>
+        <p>
+            Audit-only chaining is enabled by adding a <code class="code">AsOfAttribute</code> element to the object.
+            The <code class="code">AsOfAttribute</code> declares that
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>
+                        The name of the attribute is <code class="code">processingDate</code> and that Reladomo should call the corresponding columns <code class="code">IN_Z</code> and <code class="code">OUT_Z</code>
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        This attribute is for the processing date (<code class="code">isProcessing=true</code>)
+                    </p>
+                </li></ul></div><p>
+        </p>
+        <p>
+            Reladomo needs to be told what is the value of Infinity. To recap, infinity can
+            be any date that can be reasonably expected to not be part of normal chaining history. The
+            <code class="code">infinityDate</code> attribute points to a simple helper class which returns a <code class="code">java.sql.Timestamp</code> object
+            to be used as Infinity.
+        </p>
+        <p>
+            Other than this attribute, the rest of the <code class="code">MithraObject</code> definition remains the same as before.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40784"></a>9.2.&nbsp;Generated Code</h2></div></div></div>
+        
+        <p>
+            Code generation is the same with non-temporal objects. But because the <code class="code">MithraObjects</code> are audit-only chained,
+            the generated classes have a few additions.
+        </p>
+        <p>
+            First, each generated class's constructor accepts a processing date timestamp.
+        </p>
+        <div class="example"><a name="N40792"></a><p class="title"><b>Example&nbsp;9.2.&nbsp;tour-examples/auditonly-bank/Customer.java</b></p><div class="example-contents">
+            
+            <pre class="programlisting">
+<strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> Customer <strong class="hl-keyword"><span style="color: #000080">extends</span></strong> CustomerAbstract
+{
+    <strong class="hl-keyword"><span style="color: #000080">public</span></strong> Customer(Timestamp processingDate)
+	{
+		<strong class="hl-keyword"><span style="color: #000080">super</span></strong>(processingDate);
+		<em style="color: gray" class="hl-comment">// You must not modify this constructor. Mithra calls this internally.</em>
+		<em style="color: gray" class="hl-comment">// You can call this constructor. You can also add new constructors.</em>
+	}
+
+	<strong class="hl-keyword"><span style="color: #000080">public</span></strong> Customer()
+	{
+		<strong class="hl-keyword"><span style="color: #000080">this</span></strong>(auditonlybank.util.TimestampProvider.getInfinityDate());
+	}
+}</pre>
+        </div></div><br class="example-break">
+        <p>
+            Second, the generated <code class="code">Finder</code> classes expose attribute methods
+            that are used to set the processing date when working with the objects.
+            </p><pre class="programlisting">CustomerFinder.processingDate();</pre><p>
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N407A7"></a>9.3.&nbsp;Putting It All Together</h2></div></div></div>
+        
+        <p>
+            This section will demonstrate chaining in action by implementing each of the events from the previous chapter's motivating example.
+        </p>
+        <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Note"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Note</th></tr><tr><td valign="top" align="left">
+            
+            <p>
+                The following sections map the code in <code class="code">AuditOnlyChainingInAction.java</code> to the motivating example
+                discussed before. But running the code as is will result in different results than
+                what is described in this section.
+            </p>
+            <p>
+                This is because the example uses timestamps in Jan 2017. If you happen to run this example
+                in say March 2017, the IN_Z and OUT_Z values will be that of March 2017 and will differ
+                from what is presented here.
+            </p>
+            <p>
+                If you want to practice querying the table but with the example's test data,
+                you can initialize a <code class="code">MithraTestResource</code> with the data from <code class="code">AuditOnlyChainingInActionTestData.txt</code>.
+            </p>
+        </td></tr></table></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407C7"></a>9.3.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
+            
+            <p>
+                To open an account, we create the <code class="code">Customer</code> and <code class="code">CustomerAccount</code> and insert them.
+                However, because the objects are audit-only chained, the constructor must be supplied with a processing date.
+                In this case, we are using the overloaded constructor which sets the date to Infinity.
+            </p>
+            <div class="example"><a name="N407D5"></a><p class="title"><b>Example&nbsp;9.3.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> createAccountOnJan1(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+{
+    Customer customer = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Customer();
+    customer.setFirstName(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>);
+    customer.setLastName(<strong class="hl-string"><span style="color: green">"mouse"</span></strong>);
+    customer.setCustomerId(<span style="color:blue" class="hl-number">1</span>);
+    customer.setCountry(<strong class="hl-string"><span style="color: green">"usa"</span></strong>);
+
+    CustomerAccount account = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> CustomerAccount();
+    account.setAccountId(accountId);
+    account.setBalance(<span style="color:blue" class="hl-number">100</span>);
+    account.setAccountType(<strong class="hl-string"><span style="color: green">"savings"</span></strong>);
+    account.setAccountName(<strong class="hl-string"><span style="color: green">"retirement"</span></strong>);
+    customer.getAccounts().add(account);
+    customer.cascadeInsert();
+}</pre>
+            </div></div><br class="example-break">
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407E0"></a>9.3.2.&nbsp;Jan 1 - Fetch the account</h3></div></div></div>
+            
+            <p>
+                Here we use the generated <code class="code">Finder</code> but we have to specify an additional operation
+                for the business date.
+            </p>
+            <div class="example"><a name="N407EB"></a><p class="title"><b>Example&nbsp;9.4.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> fetchLatestAccount(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+{
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    CustomerAccount account = CustomerAccountFinder.findOne(idOp);
+    assertEquals(<span style="color:blue" class="hl-number">100</span>, (<strong class="hl-keyword"><span style="color: #000080">int</span></strong>) account.getBalance());
+}</pre>
+            </div></div><br class="example-break">
+            <p>
+                When the code above is run, Reladomo generates the following SQL.
+            </p>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">select</span></strong> t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,t0.IN_Z,t0.OUT_Z
+    <strong class="hl-keyword"><span style="color: #000080">from</span></strong> CUSTOMER_ACCOUNT t0
+    <strong class="hl-keyword"><span style="color: #000080">where</span></strong>  t0.ACCOUNT_ID = <span style="color:blue" class="hl-number">12345</span> <strong class="hl-keyword"><span style="color: #000080">and</span></strong>
+    t0.OUT_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong></pre>
+            <p>In other words, Reladomo is looking for the latest state of the account (i.e OUT_Z=Infinity).</p>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40800"></a>9.3.3.&nbsp;Jan 17 - Deposit $50</h3></div></div></div>
+            
+            <p>
+                In the narrative of the SlowBank, this deposit is lost. So we simulate that by not updating the account on Jan 17.
+            </p>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40809"></a>9.3.4.&nbsp;Jan 20 - Deposit $200</h3></div></div></div>
+            
+            <p>
+                To deposit $200, we have to fetch the account and increment its balance by 200.
+                However, updating a row in chained table can result in the creation of new rows. Therefore the update
+                must be wrapped in a transaction for atomicity.
+            </p>
+            <div class="example"><a name="N40811"></a><p class="title"><b>Example&nbsp;9.5.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalance(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> deposit)
+{
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt;
+    {
+        Operation id = CustomerAccountFinder.accountId().eq(accountId);
+        CustomerAccount account = CustomerAccountFinder.findOne(id);
+        account.setBalance(account.getBalance() + deposit);
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
+    });
+}</pre>
+            </div></div><br class="example-break">
+            <p>
+                Running this method results in the following SQL statements being executed. Reladomo is invalidating the row (update OUT_Z) with business date (Jan 1 to Infinity) and adding new rows for business date (Jan 1 to Jan 20) and (Jan 20 to Infinity).
+            </p>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">update</span></strong> CUSTOMER_ACCOUNT
+            <strong class="hl-keyword"><span style="color: #000080">set</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'2017-03-08 15:51:47.450'</span></strong>
+            <strong class="hl-keyword"><span style="color: #000080">where</span></strong> ACCOUNT_ID = <span style="color:blue" class="hl-number">12345</span> <strong class="hl-keyword"><span style="color: #000080">AND</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>
+
+<strong class="hl-keyword"><span style="color: #000080">insert</span></strong> <strong class="hl-keyword"><span style="color: #000080">into</span></strong> CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE,IN_Z,OUT_Z)
+    <strong class="hl-keyword"><span style="color: #000080">values</span></strong> (<span style="color:blue" class="hl-number">12345</span>,<span style="color:blue" class="hl-number">1</span>,<strong class="hl-string"><span style="color: green">'retirement'</span></strong>,<strong class="hl-string"><span style="color: green">'savings'</span></strong>,<span style="color:blue" class="hl-number">300.0</span>,
+        <strong class="hl-string"><span style="color: green">'2017-03-08 15:51:47.450'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)
+</pre>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40823"></a>9.3.5.&nbsp;Jan 20 - Fetch the account (dump history)</h3></div></div></div>
+            
+            <p>
+                This fetch is identical to the fetch on Jan 1. We simply set the <code class="code">processingDate</code> on the finder
+                to Jan 20. Sometimes it is useful to be able to fetch the entire history of an object. Example use cases
+                include debugging, generating reports etc.
+            </p>
+            <p>
+                History along a time dimension can be fetched by using the <code class="code">equalsEdgePoint()</code> operation.
+            </p>
+            <div class="example"><a name="N40834"></a><p class="title"><b>Example&nbsp;9.6.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> Operation computeHistoryOperation(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+{
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    Operation processingDateOp = CustomerAccountFinder
+            .processingDate()
+            .equalsEdgePoint();
+    <strong class="hl-keyword"><span style="color: #000080">return</span></strong> idOp.and(processingDateOp);
+}</pre>
+            </div></div><br class="example-break">
+            <p>
+                The <code class="code">edgePoint</code> operations instruct Reladomo to generate the following query. As you can see, the where clause
+                does not include any of the temporal columns, resulting in a full dump of the database.
+            </p>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">select</span></strong> t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,t0.IN_Z,t0.OUT_Z
+    <strong class="hl-keyword"><span style="color: #000080">from</span></strong> CUSTOMER_ACCOUNT t0 <strong class="hl-keyword"><span style="color: #000080">where</span></strong>  t0.ACCOUNT_ID = <span style="color:blue" class="hl-number">12345</span>
+            </pre>
+            <p>
+                This <code class="code">Operation</code> can now be used with the <code class="code">Finder</code>. To make this more interestig,
+                let's use Reladomo's <code class="code">DbExtractor</code> which can extract the data from a table and among other things dump it to
+                a file.
+            </p>
+            <div class="example"><a name="N40854"></a><p class="title"><b>Example&nbsp;9.7.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> String dumpCustomerAccount(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
+{
+    Operation historyOperation = computeHistoryOperation(accountId);
+    Path tempFile = Files.createTempFile(System.nanoTime() + <strong class="hl-string"><span style="color: green">""</span></strong>, <strong class="hl-string"><span style="color: green">""</span></strong>);
+    DbExtractor dbExtractor = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> DbExtractor(tempFile.toFile().getAbsolutePath(), false);
+    dbExtractor.addClassToFile(CustomerAccountFinder.getFinderInstance(), historyOperation);
+
+    String data = Files.readAllLines(tempFile).stream().collect(Collectors.joining(<strong class="hl-string"><span style="color: green">"\n"</span></strong>));
+    System.out.println(data);
+    <strong class="hl-keyword"><span style="color: #000080">return</span></strong> data;
+}</pre>
+            </div></div><br class="example-break">
+            <p>
+                The <code class="code">DbExtractor</code>'s output is not only a listing of all the rows in the table.
+                 The output is also formatted for copying and pasting into a Reladomo <code class="code">MithraTestResource</code> file for use in
+                tests. See <code class="code">AuditOnlyChainingInActionTestData.txt</code>.
+            </p>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4086B"></a>9.3.6.&nbsp;Jan 25 - Correct the missing $50</h3></div></div></div>
+            
+            <p>
+                Here we need to adjust the balance for Jan 17.
+                Since we are not tracking business-time, we cannot update the balance for Jan 17.
+                The best we can do is fetch the latest state of the account and adjust for the missing $50.
+                As before Reladomo takes care of invalidating existing rows and adding new rows.
+            </p>
+            <div class="example"><a name="N40873"></a><p class="title"><b>Example&nbsp;9.8.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+                
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalance(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> deposit)
+{
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt;
+    {
+        Operation id = CustomerAccountFinder.accountId().eq(accountId);
+        CustomerAccount account = CustomerAccountFinder.findOne(id);
+        account.setBalance(account.getBalance() + deposit);
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
+    });
+}</pre>
+            </div></div><br class="example-break">
+        </div>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4087F"></a>9.4.&nbsp;Querying a chained table</h2></div></div></div>
+        
+        <p>
+            Consider the visualization from Chapter 7. Each colored rectangle corresponds to a row in the table.
+            </p><div class="figure"><a name="auditonly71.fig"></a><p class="title"><b>Figure&nbsp;9.1.&nbsp;Bank Account On Jan 1</b></p><div class="figure-contents">
+                
+                <div class="mediaobject"><img src="auditonly-intro/auditonly-42.png" alt="Bank Account On Jan 1"></div>
+            </div></div><p><br class="figure-break">
+        </p>
+        <p>
+            Each of these rows can be queried by setting the processing date as required.
+            The following snippet shows querying for the account balance for processing date of Jan 17.
+        </p>
+        <div class="example"><a name="N4089B"></a><p class="title"><b>Example&nbsp;9.9.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+            
+            <pre class="programlisting"><em><span style="color: gray" class="hl-annotation">@Test</span></em>
+<strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> balanceAsOfJan1<span style="color:blue" class="hl-number">7</span>(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+{
+    Timestamp date = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-17"</span></strong>);
+    Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
+    Operation dateOp = CustomerAccountFinder.processingDate().eq(date);
+    CustomerAccount account = CustomerAccountFinder.findOne(idOp.and(dateOp));
+
+    <em style="color: gray" class="hl-comment">/*
+        This balance is incorrect !!
+        Even though we adjusted for the missed deposit on Jan 17, there is no way to query for the balance as of Jan 17
+    */</em>
+    assertEquals(<span style="color:blue" class="hl-number">100</span>, (<strong class="hl-keyword"><span style="color: #000080">int</span></strong>) account.getBalance());
+}</pre>
+        </div></div><br class="example-break">
+        <p>
+            Running the above code results in Reladomo executuing the following query.
+        </p>
+        <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">select</span></strong> t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,t0.IN_Z,t0.OUT_Z
+    <strong class="hl-keyword"><span style="color: #000080">from</span></strong> CUSTOMER_ACCOUNT t0
+    <strong class="hl-keyword"><span style="color: #000080">where</span></strong>  t0.ACCOUNT_ID = <span style="color:blue" class="hl-number">5678</span>
+    <strong class="hl-keyword"><span style="color: #000080">and</span></strong> t0.IN_Z &lt;= <strong class="hl-string"><span style="color: green">'2017-01-17 00:00:00.000'</span></strong> <strong class="hl-keyword"><span style="color: #000080">and</span></strong> t0.OUT_Z &gt; <strong class="hl-string"><span style="color: green">'2017-01-17 00:00:00.000'</span></strong>
+</pre>
+        <p>
+            The drawback of audit-only chaining is that the above query cannot be used to query what balance
+            as of a business date.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N408B0"></a>9.5.&nbsp;Changing history</h2></div></div></div>
+        
+        <p>
+            Say on March 1, we fetch the account with a processing date of Jan 17 and update it's balance.
+            Will this add a new row for Jan 17 ?
+        </p>
+        <p>
+            No. There is no way to change history in audit-only chaining. Reladomo will just add a new row
+            to the new change from March 1 to Infinity.
+        </p>
+        <pre class="programlisting"># Before update on March 1
+
+class auditonlybank.domain.CustomerAccount
+accountId,customerId,accountName,accountType,balance,processingDateFrom,processingDateTo
+5678,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+5678,1,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+5678,1,"retirement","savings",350,"2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"
+
+# After updating on March1, the account that was fetched with a processing date of Jan 17
+# Account balance was increased by $150
+
+class auditonlybank.domain.CustomerAccount
+accountId,customerId,accountName,accountType,balance,processingDateFrom,processingDateTo
+5678,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+5678,1,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+5678,1,"retirement","savings",350,"2017-01-25 00:00:00.000","2017-03-01 00:00:00.000"
+5678,1,"retirement","savings",500,"2017-03-01 00:00:00.000","9999-12-01 23:59:00.000"</pre>
+    </div>
+</div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N408C1"></a>Chapter&nbsp;10.&nbsp;Bitemporal Chaining</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N408CA">10.1. 
+            Bitemporal Chaining
+        </a></span></dt><dt><span class="sect1"><a href="#N408E2">10.2. Bitemporal Updates To An Account</a></span></dt><dt><span class="sect1"><a href="#N40A1D">10.3. References</a></span></dt></dl></div>
+    
+    <p>
+        This chapter introduces the concept of bitemporal chaining for
+        relational databases. Continuing the bank example, it shows
+        how by using bitemporal chaining, it is easy to make corrections to historical data without losing
+        any history.
+    </p>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N408CA"></a>10.1.&nbsp;
+            Bitemporal Chaining
+        </h2></div></div></div>
+        
+        <p>
+            In bitemporal chaining, all changes to a database are tracked along two dimensions.
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>
+                        Business Time - This is when the change actually occurred in the world
+                    </p>
+                </li><li class="listitem">
+                    <p>
+                        Processing Time - This is when the change actually was recorded in the database
+                    </p>
+                </li></ul></div><p>
+            While these two times are often the same, they can be different.
+        </p>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N408E2"></a>10.2.&nbsp;Bitemporal Updates To An Account</h2></div></div></div>
+        
+        <p>
+            In this section we look at a sequence of transactions to an account and demonstrate how bitemporal chaining is used to capture history.
+        </p>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N408EA"></a>10.2.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
+            
+            <p>
+                On Jan 1 you open a new bank account with a balance of $100. The bank updates it's database (table) with an entry for your account.
+                Since bitemporal chaining is being used, each row in the table has four timestamp columns:
+                </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                        <p>
+                            FROM_Z and THRU_Z track the validity of the row along the business-time dimension
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            IN_Z and OUT_Z track the validity of the row along the processing-time dimension
+                        </p>
+                    </li></ul></div><p>
+                The table looks as follows. (The number to the right of every row provides an easy way to refer to rows in this document.)
+                </p><div class="figure"><a name="bitemporal1.fig"></a><p class="title"><b>Figure&nbsp;10.1.&nbsp;Bank Account On Jan 1</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-1.png" alt="Bank Account On Jan 1"></div>
+                </div></div><p><br class="figure-break">
+                Row 1 records the following facts:
+                </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                        <p>
+                            The account was created on today (Jan 1). So FROM_Z = Jan 1. This example will use dates (formatted as 'Jan 1' for simplicity) instead of timestamps.
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            The account was added to the database today (Jan 1). So IN_Z = Jan 1
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            This is the only row for this account. And we mark these rows as valid by setting the THRU_Z and OUT_Z to Infinity. Infinity is a magic timestamp, in the sense that it cannot possibly be a valid date in the system e.g. 9999/1/1.
+                        </p>
+                    </li></ul></div><p>
+            </p>
+            <p>
+                The chart on the right (which is not drawn to scale), is a handy tool to visualize the progression of
+                the chaining. The chart visualizes each row as a rectangle. In this case, there is only one row that extends
+                to infinity along both the time dimensions.
+            </p>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4092B"></a>10.2.2.&nbsp;Jan 17 - Deposit $50</h3></div></div></div>
+            
+            <p>
+                A couple of weeks later on Jan 17 you deposit $50. Because of a flaky connection to the bank,
+                the ATM does not send your deposit to the bank right away. While you walk away thinking your account has $150, your account actually has only $100.
+            </p>
+            <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Missed Deposit !!"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Missed Deposit !!</th></tr><tr><td valign="top" align="left">
+                
+                <p>
+                    The table remains unchanged as the deposit was never posted to the account.
+                </p>
+            </td></tr></table></div>
+            <div class="figure"><a name="bitemporal2.fig"></a><p class="title"><b>Figure&nbsp;10.2.&nbsp;Bank Account On Jan 17</b></p><div class="figure-contents">
+                
+                <div class="mediaobject"><img src="bitemporal-intro/bitemporal-2.png" alt="Bank Account On Jan 17"></div>
+            </div></div><br class="figure-break">
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4094E"></a>10.2.3.&nbsp;Jan 20 - Deposit $200</h3></div></div></div>
+            
+            <p>
+                A few days later, on Jan 20 you deposit $200 at one of the ATMs.
+            </p>
+            <p>
+                The goal of bitemporal milestoning is to track changes along both dimensions. So the bank cannot simply update the balance in Row 1. They cannot delete Row 1 and insert a new row either, because that loses history.
+            </p>
+            <p>
+                In general, making changes to a bitemporally-chained database is a two step process :
+                </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                        <p>Invalidate rows whose view of the world is incorrect
+                        </p>
+                    </li><li class="listitem">
+                        <p>Add new rows to reflect the new view of the world
+                        </p>
+                    </li></ul></div><p>
+            </p>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N4096B"></a>10.2.3.1.&nbsp;Invalidating Rows</h4></div></div></div>
+                
+                <p>
+                    Row 1 currently states that the balance is $100 from Jan 1 to Infinity. This is not true anymore as the bank just accepted a $200 deposit on Jan 20. So we invalidate Row 1 by setting its OUT_Z to today (Jan 20).
+                </p>
+                <div class="figure"><a name="bitemporal31.fig"></a><p class="title"><b>Figure&nbsp;10.3.&nbsp;Bank Account On Jan 20 - After invalidating existing rows</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-31.png" alt="Bank Account On Jan 20 - After invalidating existing rows"></div>
+                </div></div><br class="figure-break">
+            </div>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N40985"></a>10.2.3.2.&nbsp;Adding new rows</h4></div></div></div>
+                
+                <p>
+                    Our new view of the world is as follows :
+                    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                            <p>
+                                From Jan 1 to Jan 20, balance = $100 (opening balance)
+                            </p>
+                        </li><li class="listitem">
+                            <p>
+                                From Jan 20 to Infinity, balance = $300 (opening balance + $200 deposit)
+                            </p>
+                        </li></ul></div><p>
+                    So we add Rows 2 and 3 to capture these facts. The IN_Z and OUT_Z of these rows captures the fact that these changes were made today and that these rows represent the latest state of the account (i.e OUT_Z is Infinity)
+                </p>
+                <div class="figure"><a name="bitemporal32.fig"></a><p class="title"><b>Figure&nbsp;10.4.&nbsp;Bank Account On Jan 20 - After adding new rows</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-32.png" alt="Bank Account On Jan 20 - After adding new rows"></div>
+                </div></div><br class="figure-break">
+            </div>
+        </div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N409AF"></a>10.2.4.&nbsp;Jan 25 - Correct the missing $50</h3></div></div></div>
+            
+            <p>
+                On Jan 25 you check your bank account and realize that the $50 deposit on Jan 17 has not been posted to the account.
+                Furious, you call the bank to complain. They are apologetic and are willing to update the account.
+            </p>
+            <p>
+                Just as before, the bank wants to preserve history in both dimensions. They follow the same approach :
+                </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                        <p>
+                            Invalidate rows whose view of the world is incorrect
+                        </p>
+                    </li><li class="listitem">
+                        <p>
+                            Add new rows to reflect the new view of the world
+                        </p>
+                    </li></ul></div><p>
+            </p>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N409C9"></a>10.2.4.1.&nbsp;Invalidate rows</h4></div></div></div>
+                
+                <p>
+                    Row 1 is already invalid. It does not need to be updated.
+                </p>
+                <p>
+                    Rows 2 and 3 are invalid along the business-time dimension. However, we want to preserve the fact that they are invalid. So we invalidate them by setting their OUT_Z to today (Jan 25).
+                </p>
+                <div class="figure"><a name="bitemporal41.fig"></a><p class="title"><b>Figure&nbsp;10.5.&nbsp;Bank Account On Jan 25 - After invalidating existing rows</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-41.png" alt="Bank Account On Jan 25 - After invalidating existing rows"></div>
+                </div></div><br class="figure-break">
+            </div>
+            <div class="sect3"><div class="titlepage"><div><div><h4 class="title"><a name="N409E6"></a>10.2.4.2.&nbsp;
+                    Add new rows
+                </h4></div></div></div>
+                
+                <p>
+                    Our new view of the world is as follows :
+                    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                            <p>
+                                From Jan 1 to Jan 17, balance = $100 (opening balance)
+                            </p>
+                        </li><li class="listitem">
+                            <p>
+                                From Jan 17 to Jan 20, balance = $150 (opening balance + deposit of $50 on Jan 17)
+                            </p>
+                        </li><li class="listitem">
+                            <p>
+                                From Jan 20 to Jan Infinity, balance = $1350 (opening balance + deposit of $50 on Jan 17 + deposit of $200 on Jan 20)
+                            </p>
+                        </li></ul></div><p>
+                    Because we are adding these rows today (Jan 25), the IN_Z of these newly added rows = Jan 25.
+                </p>
+                <div class="figure"><a name="bitemporal42.fig"></a><p class="title"><b>Figure&nbsp;10.6.&nbsp;Bank Account On Jan 25 - After adding new rows</b></p><div class="figure-contents">
+                    
+                    <div class="mediaobject"><img src="bitemporal-intro/bitemporal-42.png" alt="Bank Account On Jan 25 - After adding new rows"></div>
+                </div></div><br class="figure-break">
+            </div>
+            <p>
+                To be more explicit about what we just did, we were able to go back in time and
+                record an update for Jan 17 (business-time), along with recording the fact that this update was made today on Jan 25 (processing-time).
+                This is the beauty of bitemporal chaining.
+            </p>
+            <p>
+                As you can see the visualization now shows a rectangle for each of the rows in the table. It should be clear that because rows are never deleted, we never lose history.
+            </p>
+        </div>
+    </div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40A1D"></a>10.3.&nbsp;References</h2></div></div></div>
+        
+        <p>
+            </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+                    <p>
+                        <span class="emphasis"><em>
+                            <a class="ulink" href="http://www2.cs.arizona.edu/~rts/tdbbook.pdf" target="_top">Developing Time-Oriented Database Applications in SQL, Richard T. Snodgrass</a>
+                        </em></span>
+                    </p>
+                </li></ul></div><p>
+        </p>
+    </div>
+</div>
+        <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N40A38"></a>Chapter&nbsp;11.&nbsp;Bitemporal Chaining API</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N40A41">11.1. Domain Model</a></span></dt><dt><span class="sect1"><a href="#N40AC6">11.2. Generated Code</a></span></dt><dt><span class="sect1"><a href="#N40AE9">11.3. Putting It All Together</a></span></dt><dt><span class="sect1"><a href="#N40BC7">11.4. Querying a chained table</a></span></dt><dt><span class="sect1"><a href="#N40BF8">11.5. Next steps</a></span></dt></dl></div>
+    
+    <p>
+        This chapter introduces various Reladomo APIs that are used to update a bitemporally-chained table.
+        We will use the SlowBank example from the previous chapter and write code for each of the updates.
+    </p>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40A41"></a>11.1.&nbsp;Domain Model</h2></div></div></div>
+        
+        <p>
+            Bitemporal chaining requires us to add four additional timestamp columns and declare the domain objects to be bitemporal.
+            This means that we need to update the <code class="code">MithraObject</code> XML definitions.
+        </p>
+        <p>
+            When temporal chaining is used, the entire object graph is temporally chained. In this case, it means
+            that both the <code class="code">Customer</code> and <code class="code">CustomerAccount</code> objects are chained. It is very unusual
+            to have only parts of an object graph chained.
+        </p>
+        <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: 
+                Mixing temporal and non temporal objects
+            "><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">
+                Mixing temporal and non temporal objects
+            </th></tr><tr><td valign="top" align="left">
+            
+            <p>
+                In some cases temporal and non temporal objects can be mixed. For example, a temporal object could refer
+                to a non-temporal object. But a non-temporal object cannot refer to a temporal one (because there can be
+                multiple versions of the object).
+            </p>
+        </td></tr></table></div>
+        <p>
             The snippet below shows the <code class="code">Customer</code> <code class="code">MithraObject</code> with the new attributes
             to enable bitemporal chaining.
-            </p><div class="example"><a name="N406E8"></a><p class="title"><b>Example&nbsp;8.1.&nbsp;tour-examples/bitemporal-bank/Customer.xml</b></p><div class="example-contents">
+            </p><div class="example"><a name="N40A66"></a><p class="title"><b>Example&nbsp;11.1.&nbsp;tour-examples/bitemporal-bank/Customer.xml</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><span style="color: maroon" class="hl-directive">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;</span>
 
@@ -1475,25 +2124,25 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                 </li></ul></div><p>
         </p>
         <p>
-            For both these attributes, Reladomo needs to be told what is the value of Infinity. To recap, infinity can
+            For both these attributes, you will need to set the value of Infinity. To recap, infinity can
             be any date that can be reasonably expected to not be part of normal chaining history. The
             <code class="code">infinityDate</code> attribute points to a simple helper class which returns a <code class="code">java.sql.Timestamp</code> object
             to be used as Infinity.
         </p>
         <p>
-            Other than these two attributes, the rest of the <code class="code">MithraObject</code> definition remains the same as before.
+            Other than these two attributes, the rest of the <code class="code">MithraObject</code> definition remains the same as with non-temporal objects.
         </p>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40748"></a>8.2.&nbsp;Generated Code</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40AC6"></a>11.2.&nbsp;Generated Code</h2></div></div></div>
         
         <p>
-            Code generation is the same as before. But since the <code class="code">MithraObjects</code> are bitemporally chained,
+            Code generation is the same with non-temporal-objects. But because the <code class="code">MithraObjects</code> are bitemporally-chained,
             the generated classes have a few additions.
         </p>
         <p>
             First, each generated class's constructor accepts two timestamps.
         </p>
-        <div class="example"><a name="N40756"></a><p class="title"><b>Example&nbsp;8.2.&nbsp;tour-examples/bitemporal-bank/Customer.java</b></p><div class="example-contents">
+        <div class="example"><a name="N40AD4"></a><p class="title"><b>Example&nbsp;11.2.&nbsp;tour-examples/bitemporal-bank/Customer.java</b></p><div class="example-contents">
             
             <pre class="programlisting">
 <strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">class</span></strong> Customer <strong class="hl-keyword"><span style="color: #000080">extends</span></strong> CustomerAbstract
@@ -1513,17 +2162,17 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
         </div></div><br class="example-break">
         <p>
             Second, the generated <code class="code">Finder</code> classes expose attribute methods
-            which are used to set the business and processing date when working with the objects.
+            that are used to set the business and processing date when working with the objects.
             </p><pre class="programlisting">CustomerFinder.businessDate();
 CustomerFinder.processingDate();</pre><p>
         </p>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4076B"></a>8.3.&nbsp;Putting It All Together</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40AE9"></a>11.3.&nbsp;Putting It All Together</h2></div></div></div>
         
         <p>
             This section will demonstrate chaining in action by implementing each of the events from the previous chapter's motivating example.
         </p>
-        <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Gotcha!"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Gotcha!</th></tr><tr><td valign="top" align="left">
+        <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning: Note"><tr><td valign="top" align="center" rowspan="2" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Note</th></tr><tr><td valign="top" align="left">
             
             <p>
                 The following sections map the code in <code class="code">BitemporalChainingInAction.java</code> to the motivating example
@@ -1540,14 +2189,14 @@ CustomerFinder.processingDate();</pre><p>
                 you can initialize a <code class="code">MithraTestResource</code> with the data from <code class="code">BitemporalChainingInActionTestData.txt</code>.
             </p>
         </td></tr></table></div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N4078B"></a>8.3.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40B09"></a>11.3.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
             
             <p>
                 To open an account, we create the <code class="code">Customer</code> and <code class="code">CustomerAccount</code> and insert them.
-                However, since the objects are bitemporal, the constructor needs to be supplied with a business and processing date.
+                However, because the objects are bitemporal, the constructor must be supplied with a business and processing date.
                 In this case, we are using the overloaded constructor which sets both the dates to Jan 1.
             </p>
-            <div class="example"><a name="N40799"></a><p class="title"><b>Example&nbsp;8.3.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B17"></a><p class="title"><b>Example&nbsp;11.3.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> createAccountOnJan1(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
@@ -1572,13 +2221,13 @@ CustomerFinder.processingDate();</pre><p>
 }</pre>
             </div></div><br class="example-break">
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407A4"></a>8.3.2.&nbsp;Jan 1 - Fetch the account</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40B22"></a>11.3.2.&nbsp;Jan 1 - Fetch the account</h3></div></div></div>
             
             <p>
-                Here we use the generated <code class="code">Finder</code> but have to specify an additional operation
+                Here we use the generated <code class="code">Finder</code> but we have to specify an additional operation
                 for the business date.
             </p>
-            <div class="example"><a name="N407AF"></a><p class="title"><b>Example&nbsp;8.4.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B2D"></a><p class="title"><b>Example&nbsp;11.4.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> fetchAccountWithBusinessDateJan1(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
@@ -1590,7 +2239,7 @@ CustomerFinder.processingDate();</pre><p>
 }</pre>
             </div></div><br class="example-break">
             <p>
-                When the above code is run, Reladomo generates the following SQL.
+                When the code above is run, Reladomo generates the following SQL.
             </p>
             <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">select</span></strong> t0.ACCOUNT_ID,t0.CUSTOMER_ID,t0.ACCOUNT_NAME,t0.ACCOUNT_TYPE,t0.BALANCE,
             t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
@@ -1601,20 +2250,20 @@ CustomerFinder.processingDate();</pre><p>
     t0.OUT_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong></pre>
             <p>In other words, Reladomo is looking for the latest state of the account (i.e OUT_Z=Infinity) and where the business date is &gt;= Jan 1.</p>
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407C4"></a>8.3.3.&nbsp;Jan 17 - Deposit $50</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40B42"></a>11.3.3.&nbsp;Jan 17 - Deposit $50</h3></div></div></div>
             
             <p>
-                In the narrative of the SlowBank, this deposit is lost. So we simulate it by not updating the account on Jan 17.
+                In the narrative of the SlowBank, this deposit is lost. So we simulate that by not updating the account on Jan 17.
             </p>
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407CD"></a>8.3.4.&nbsp;Jan 20 - Deposit $200</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40B4B"></a>11.3.4.&nbsp;Jan 20 - Deposit $200</h3></div></div></div>
             
             <p>
                 To deposit $200, we have to fetch the account and increment its balance by 200.
                 However, updating a row in bitemporal table can result in the creation of new rows. Therefore the update
-                has to be wrapped in a transaction for atomicity.
+                must be wrapped in a transaction for atomicity.
             </p>
-            <div class="example"><a name="N407D5"></a><p class="title"><b>Example&nbsp;8.5.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B53"></a><p class="title"><b>Example&nbsp;11.5.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> deposit200onJan2<span style="color:blue" class="hl-number">0</span>(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
@@ -1647,18 +2296,18 @@ CustomerFinder.processingDate();</pre><p>
         <strong class="hl-string"><span style="color: green">'2017-01-01 00:00:00.000'</span></strong>,<strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>,
         <strong class="hl-string"><span style="color: green">'2017-02-27 15:16:53.550'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)</pre>
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407E7"></a>8.3.5.&nbsp;Jan 20 - Fetch the account (dump history)</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40B65"></a>11.3.5.&nbsp;Jan 20 - Fetch the account (dump history)</h3></div></div></div>
             
             <p>
-                This fetch is no different than the fetch on Jan 1. Simply set the <code class="code">businessDate</code> on the finder
-                to be Jan 20. Sometimes it is useful to be able to fetch the entire history of an object. Example use cases
+                This fetch is identical to the fetch on Jan 1. We simply set the <code class="code">businessDate</code> on the finder
+                to Jan 20. Sometimes it is useful to be able to fetch the entire history of an object. Example use cases
                 include debugging, generating reports etc.
             </p>
             <p>
-                History along a time dimension can be fetched by using the <code class="code">equalsEdgePoint()</code> operation. e.g <code class="code">businessDate().equalsEdgePoint()</code>.
+                History along a time dimension can be fetched by using the <code class="code">equalsEdgePoint()</code> operation. for example, <code class="code">businessDate().equalsEdgePoint()</code>.
                 In this case we will use the <code class="code">equalsEdgePoint</code> operation on both dimensions to get the full history.
             </p>
-            <div class="example"><a name="N407FE"></a><p class="title"><b>Example&nbsp;8.6.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B7C"></a><p class="title"><b>Example&nbsp;11.6.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> Operation computeHistoryOperation(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
@@ -1684,7 +2333,7 @@ t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
                 let's use Reladomo's <code class="code">DbExtractor</code> which can extract the data from a table and among other things dump it to
                 a file.
             </p>
-            <div class="example"><a name="N4081E"></a><p class="title"><b>Example&nbsp;8.7.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B9C"></a><p class="title"><b>Example&nbsp;11.7.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> String dumpCustomerAccount(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
 {
@@ -1700,17 +2349,17 @@ t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
             </div></div><br class="example-break">
             <p>
                 The <code class="code">DbExtractor</code>'s output is not only a listing of all the rows in the table.
-                 The output is also formatted to be copy/pasteable into a Reladomo <code class="code">MithraTestResource</code> file for use in
+                 The output is also formatted for copying and pasting into a Reladomo <code class="code">MithraTestResource</code> file for use in
                 tests. See <code class="code">BitemporalChainingInActionTestData.txt</code>.
             </p>
         </div>
-        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40835"></a>8.3.6.&nbsp;Jan 25 - Correct the missing $50</h3></div></div></div>
+        <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40BB3"></a>11.3.6.&nbsp;Jan 25 - Correct the missing $50</h3></div></div></div>
             
             <p>
                 Here we need to adjust the balance for Jan 17. All we have to do is fetch the account with a business date
                 of Jan 17 and update the balance. As before Reladomo takes care of invalidating existing rows and adding new rows.
             </p>
-            <div class="example"><a name="N4083D"></a><p class="title"><b>Example&nbsp;8.8.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40BBB"></a><p class="title"><b>Example&nbsp;11.8.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalanceForJan17OnJan2<span style="color:blue" class="hl-number">5</span>(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
@@ -1726,20 +2375,20 @@ t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
             </div></div><br class="example-break">
         </div>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40849"></a>8.4.&nbsp;Querying a chained table</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40BC7"></a>11.4.&nbsp;Querying a chained table</h2></div></div></div>
         
         <p>
-            Consider the visualization from chapter 6. Each colored rectangle corresponds to row in the table.
-            </p><div class="figure"><a name="bitemporal7.fig"></a><p class="title"><b>Figure&nbsp;8.1.&nbsp;Bank Account On Jan 1</b></p><div class="figure-contents">
+            Consider the visualization from Chapter 6. Each colored rectangle corresponds to a row in the table.
+            </p><div class="figure"><a name="bitemporal7.fig"></a><p class="title"><b>Figure&nbsp;11.1.&nbsp;Bank Account On Jan 1</b></p><div class="figure-contents">
                 
-                <div class="mediaobject"><img src="bitemporal-intro/bitemporal-42.png" alt="Bank Account On Jan 1"></div>
+                <div class="mediaobject"><img src="bitemporal-intro/bitemporal42.png" alt="Bank Account On Jan 1"></div>
             </div></div><p><br class="figure-break">
         </p>
         <p>
             Each of these rows can be queried by setting the business date and processing date as required.
             The following snippet shows querying for the account balance for business date Jan 12 but on processing date Jan 23.
         </p>
-        <div class="example"><a name="N40865"></a><p class="title"><b>Example&nbsp;8.9.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+        <div class="example"><a name="N40BE3"></a><p class="title"><b>Example&nbsp;11.9.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
             
             <pre class="programlisting"><em><span style="color: gray" class="hl-annotation">@Test</span></em>
 <strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> balanceAsOfJan1<span style="color:blue" class="hl-number">2</span>_OnJan2<span style="color:blue" class="hl-number">3</span>()
@@ -1766,12 +2415,12 @@ t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
 <strong class="hl-keyword"><span style="color: #000080">and</span></strong> t0.IN_Z &lt;= <strong class="hl-string"><span style="color: green">'2017-01-23 00:00:00.000'</span></strong> <strong class="hl-keyword"><span style="color: #000080">and</span></strong> t0.OUT_Z &gt; <strong class="hl-string"><span style="color: green">'2017-01-23 00:00:00.000'</span></strong>
         </pre>
         <p>
-            The beauty of bitemporal chaining is that the above query can be run at any point in time as long
-            as the rows exist in the database. For example, five years from now, you could run the above query
+            The beauty of bitemporal chaining is that this query can be run at any point in time as long
+            as the rows exist in the database. For example, five years from now, you could run this query
             to determine what we thought the balance was for business date Jan 12 but five years ago (Jan 23 2017).
         </p>
     </div>
-    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N4087A"></a>8.5.&nbsp;Next steps</h2></div></div></div>
+    <div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="N40BF8"></a>11.5.&nbsp;Next steps</h2></div></div></div>
         
         <p>
             This section has barely scratched the surface of the what is possible with bitemporal chaining and
@@ -1780,7 +2429,7 @@ t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
                     <p>What happens if <code class="code">futureExpiringRowsExist</code>is set to false in <code class="code">MithraObject</code> XML ?</p>
                 </li><li class="listitem">
                     <p>
-                        What if you have to update a non numeric column ? i.e we cannot use <code class="code">incrementBalance</code>
+                        What if you have to update a non-numeric column ? i.e we cannot use <code class="code">incrementBalance</code>
                     </p>
                 </li><li class="listitem">
                     <p>
@@ -1799,4 +2448,5 @@ t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
         </p>
     </div>
 </div>
+    </div>
 </div></body></html>
