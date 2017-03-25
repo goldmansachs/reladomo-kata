@@ -21,6 +21,7 @@ import auditonlybank.domain.CustomerAccount;
 import auditonlybank.domain.CustomerAccountFinder;
 import auditonlybank.util.DateUtils;
 import com.gs.fw.common.mithra.MithraManagerProvider;
+import com.gs.fw.common.mithra.MithraTransaction;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.test.ConnectionManagerForTests;
 import com.gs.fw.common.mithra.test.MithraTestResource;
@@ -57,31 +58,47 @@ public class AuditOnlyChainingInAction
     public void run() throws Exception
     {
         int accountId = 12345;
-        createAccountOnJan1(accountId);
+
+        createAccount("2017-01-01", accountId);
+
         fetchLatestAccount(accountId);
-        updateBalance(accountId, 200);
+
+        updateBalance("2017-01-20", accountId, 200);
+
         dumpCustomerAccount(accountId);
-        updateBalance(accountId, 50);
+
+        updateBalance("2017-01-25", accountId, 50);
+
         dumpCustomerAccount(accountId);
     }
 
-    private void createAccountOnJan1(int accountId)
+    private void createAccount(String date, int accountId)
     {
-        Customer customer = new Customer();
-        customer.setFirstName("mickey");
-        customer.setLastName("mouse");
-        customer.setCustomerId(1);
-        customer.setCountry("usa");
+        MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
 
-        CustomerAccount account = new CustomerAccount();
-        account.setAccountId(accountId);
-        account.setBalance(100);
-        account.setAccountType("savings");
-        account.setAccountName("retirement");
-        customer.getAccounts().add(account);
-        customer.cascadeInsert();
+            // Simulate the db change happening on a specific date - Do not do this in production
+            doNotDoThisInProduction(date, tx);
+
+            Customer customer = new Customer();
+            customer.setFirstName("mickey");
+            customer.setLastName("mouse");
+            customer.setCustomerId(1);
+            customer.setCountry("usa");
+
+            CustomerAccount account = new CustomerAccount();
+            account.setAccountId(accountId);
+            account.setBalance(100);
+            account.setAccountType("savings");
+            account.setAccountName("retirement");
+            customer.getAccounts().add(account);
+            customer.cascadeInsert();
+            return null;
+        });
     }
 
+    /*
+        This fetch is being done in a transaction so as to bypass the cache.
+     */
     private void fetchLatestAccount(int accountId)
     {
         Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
@@ -113,12 +130,13 @@ public class AuditOnlyChainingInAction
         return idOp.and(processingDateOp);
     }
 
-    private void updateBalance(int accountId, int deposit)
+    private void updateBalance(String date, int accountId, int deposit)
     {
         MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
-            Timestamp mar = DateUtils.parse("2017-03-01");
-            tx.setProcessingStartTime(mar.getTime());
+            // We set the processing time to simulate the update opening on a specific date - Do not do this in production
+            doNotDoThisInProduction(date, tx);
+
             Operation id = CustomerAccountFinder.accountId().eq(accountId);
             CustomerAccount account = CustomerAccountFinder.findOne(id);
             account.setBalance(account.getBalance() + deposit);
@@ -126,6 +144,10 @@ public class AuditOnlyChainingInAction
         });
     }
 
+    /*
+        This test relies on an account that has been loaded
+        into memory via the test data file. See the test setup for details.
+     */
     @Test
     public void run2() throws Exception
     {
@@ -175,5 +197,23 @@ public class AuditOnlyChainingInAction
             Even though we adjusted for the missed deposit on Jan 17, there is no way to query for the balance as of Jan 17
         */
         assertEquals(100, (int) account.getBalance());
+    }
+
+    /*
+        This method explicitly sets the transaction's processing time to the supplied value.
+        You should rarely have to do this in production.
+
+        It is being done here just to simulate a database operation happening on a specific date,
+        so that the output of thus program matches the narrative in the Reladomo tour docs.
+
+        Without this, the processing time gets set to the time of running this program.
+
+        Calling this method in production code violates the auditability of the data, which is the only reason the processingDate exists in the first place.
+     */
+    private void doNotDoThisInProduction(String date, MithraTransaction tx)
+    {
+        Timestamp mar = DateUtils.parse(date);
+        tx.setProcessingStartTime(mar.getTime());
+
     }
 }

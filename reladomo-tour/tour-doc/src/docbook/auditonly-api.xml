@@ -138,19 +138,34 @@ public class Customer extends CustomerAbstract
             <title>Note</title>
             <para>
                 The following sections map the code in <code>AuditOnlyChainingInAction.java</code> to the motivating example
-                discussed before. But running the code as is will result in different results than
-                what is described in this section.
+                discussed before.
             </para>
             <para>
-                This is because the example uses timestamps in Jan 2017. If you happen to run this example
-                in say March 2017, the IN_Z and OUT_Z values will be that of March 2017 and will differ
-                from what is presented here.
-            </para>
-            <para>
-                If you want to practice querying the table but with the example's test data,
-                you can initialize a <code>MithraTestResource</code> with the data from <code>AuditOnlyChainingInActionTestData.txt</code>.
+                To ensure that the behavior of the program matches the example discussed here, the program
+                explicitly sets the processing time as needed. You should not have to do this in production
+                code. Processing time by default is set to when the database operation is performed.
             </para>
         </warning>
+        <example>
+            <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
+            <programlisting><![CDATA[@Test
+public void run() throws Exception
+{
+    int accountId = 12345;
+
+    createAccount("2017-01-01", accountId);
+
+    fetchLatestAccount(accountId);
+
+    updateBalance("2017-01-20", accountId, 200);
+
+    dumpCustomerAccount(accountId);
+
+    updateBalance("2017-01-25", accountId, 50);
+
+    dumpCustomerAccount(accountId);
+}]]></programlisting>
+        </example>
         <sect2>
             <title>Jan 1 - Open an account with $100</title>
             <para>
@@ -160,21 +175,28 @@ public class Customer extends CustomerAbstract
             </para>
             <example>
                 <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
-                <programlisting language="java"><![CDATA[private void createAccountOnJan1(int accountId)
+                <programlisting language="java"><![CDATA[private void createAccount(String date, int accountId)
 {
-    Customer customer = new Customer();
-    customer.setFirstName("mickey");
-    customer.setLastName("mouse");
-    customer.setCustomerId(1);
-    customer.setCountry("usa");
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
 
-    CustomerAccount account = new CustomerAccount();
-    account.setAccountId(accountId);
-    account.setBalance(100);
-    account.setAccountType("savings");
-    account.setAccountName("retirement");
-    customer.getAccounts().add(account);
-    customer.cascadeInsert();
+        // Simulate the db change happening on a specific date - Do not do this in production
+        setProcessingTime(date, tx);
+
+        Customer customer = new Customer();
+        customer.setFirstName("mickey");
+        customer.setLastName("mouse");
+        customer.setCustomerId(1);
+        customer.setCountry("usa");
+
+        CustomerAccount account = new CustomerAccount();
+        account.setAccountId(accountId);
+        account.setBalance(100);
+        account.setAccountType("savings");
+        account.setAccountName("retirement");
+        customer.getAccounts().add(account);
+        customer.cascadeInsert();
+        return null;
+    });
 }]]></programlisting>
             </example>
         </sect2>
@@ -217,10 +239,13 @@ public class Customer extends CustomerAbstract
             </para>
             <example>
                 <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
-                <programlisting language="java"><![CDATA[private void updateBalance(int accountId, int deposit)
+                <programlisting language="java"><![CDATA[private void updateBalance(String date, int accountId, int deposit)
 {
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
     {
+        // Simulate the db change happening on a specific date - Do not do this in production
+        setProcessingTime(date, tx);
+
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(id);
         account.setBalance(account.getBalance() + deposit);
@@ -232,12 +257,12 @@ public class Customer extends CustomerAbstract
                 Running this method results in the following SQL statements being executed. Reladomo is invalidating the row (update OUT_Z) with business date (Jan 1 to Infinity) and adding new rows for business date (Jan 1 to Jan 20) and (Jan 20 to Infinity).
             </para>
             <programlisting language="sql"><![CDATA[update CUSTOMER_ACCOUNT
-            set OUT_Z = '2017-03-08 15:51:47.450'
+            set OUT_Z = '2017-01-20 00:00:00.000'
             where ACCOUNT_ID = 12345 AND OUT_Z = '9999-12-01 23:59:00.000'
 
 insert into CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE,IN_Z,OUT_Z)
     values (12345,1,'retirement','savings',300.0,
-        '2017-03-08 15:51:47.450','9999-12-01 23:59:00.000')
+        '2017-01-20 00:00:00.000','9999-12-01 23:59:00.000')
 ]]></programlisting>
         </sect2>
         <sect2>
@@ -303,10 +328,13 @@ insert into CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BA
             </para>
             <example>
                 <title>tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</title>
-                <programlisting language="java"><![CDATA[private void updateBalance(int accountId, int deposit)
+                <programlisting language="java"><![CDATA[private void updateBalance(String date, int accountId, int deposit)
 {
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
     {
+        // Simulate the db change happening on a specific date - Do not do this in production
+        setProcessingTime(date, tx);
+
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(id);
         account.setBalance(account.getBalance() + deposit);
@@ -377,18 +405,18 @@ private void balanceAsOfJan17(int accountId)
 
 class auditonlybank.domain.CustomerAccount
 accountId,customerId,accountName,accountType,balance,processingDateFrom,processingDateTo
-5678,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
-5678,1,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
-5678,1,"retirement","savings",350,"2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"
+5678,2,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+5678,2,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+5678,2,"retirement","savings",350,"2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"
 
 # After updating on March1, the account that was fetched with a processing date of Jan 17
 # Account balance was increased by $150
 
 class auditonlybank.domain.CustomerAccount
 accountId,customerId,accountName,accountType,balance,processingDateFrom,processingDateTo
-5678,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
-5678,1,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
-5678,1,"retirement","savings",350,"2017-01-25 00:00:00.000","2017-03-01 00:00:00.000"
-5678,1,"retirement","savings",500,"2017-03-01 00:00:00.000","9999-12-01 23:59:00.000"]]></programlisting>
+5678,2,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+5678,2,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+5678,2,"retirement","savings",350,"2017-01-25 00:00:00.000","2017-03-01 00:00:00.000"
+5678,2,"retirement","savings",500,"2017-03-01 00:00:00.000","9999-12-01 23:59:00.000"]]></programlisting>
     </sect1>
 </chapter>
