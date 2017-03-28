@@ -180,7 +180,7 @@ public void run() throws Exception
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
 
         // Simulate the db change happening on a specific date - Do not do this in production
-        setProcessingTime(date, tx);
+        doNotDoThisInProduction(date, tx);
 
         Customer customer = new Customer();
         customer.setFirstName("mickey");
@@ -244,7 +244,7 @@ public void run() throws Exception
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
     {
         // Simulate the db change happening on a specific date - Do not do this in production
-        setProcessingTime(date, tx);
+        doNotDoThisInProduction(date, tx);
 
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(id);
@@ -333,7 +333,7 @@ insert into CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BA
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
     {
         // Simulate the db change happening on a specific date - Do not do this in production
-        setProcessingTime(date, tx);
+        doNotDoThisInProduction(date, tx);
 
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(id);

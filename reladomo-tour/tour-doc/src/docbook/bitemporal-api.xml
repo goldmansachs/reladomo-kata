@@ -206,7 +206,7 @@ public void run() throws Exception
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
     {
         // Simulate the db change happening on a specific date - Do not do this in production
-        setProcessingTime(date, tx);
+        doNotDoThisInProduction(date, tx);
 
         Customer customer = new Customer(jan1);
         customer.setFirstName("mickey");
@@ -277,7 +277,7 @@ public void run() throws Exception
         Timestamp timestamp = DateUtils.parse(date);
 
         // Simulate the db change happening on a specific date - Do not do this in production
-        setProcessingTime(date, tx);
+        doNotDoThisInProduction(date, tx);
 
         Operation ts = CustomerAccountFinder.businessDate().eq(timestamp);
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
@@ -375,7 +375,7 @@ where t0.ACCOUNT_ID = 100]]>
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
 
         // Simulate the db change happening on a specific date - Do not do this in production
-        setProcessingTime(processingDate, tx);
+        doNotDoThisInProduction(processingDate, tx);
 
         Timestamp businessDateTs = DateUtils.parse(businessDate);
         Operation ts = CustomerAccountFinder.businessDate().eq(businessDateTs);
