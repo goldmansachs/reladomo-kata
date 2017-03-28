@@ -4,6 +4,6 @@ customerId,firstName,lastName,country,processingDateFrom,processingDateTo
 
 class auditonlybank.domain.CustomerAccount
 accountId,customerId,accountName,accountType,balance,processingDateFrom,processingDateTo
-5678,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
-5678,1,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
-5678,1,"retirement","savings",350,"2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"
+5678,2,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+5678,2,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+5678,2,"retirement","savings",350,"2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"

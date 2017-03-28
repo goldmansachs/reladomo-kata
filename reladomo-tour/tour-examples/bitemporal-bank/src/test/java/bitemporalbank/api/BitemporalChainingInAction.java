@@ -22,6 +22,7 @@ import bitemporalbank.domain.CustomerAccountFinder;
 import bitemporalbank.domain.CustomerFinder;
 import bitemporalbank.util.DateUtils;
 import com.gs.fw.common.mithra.MithraManagerProvider;
+import com.gs.fw.common.mithra.MithraTransaction;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.test.ConnectionManagerForTests;
 import com.gs.fw.common.mithra.test.MithraTestResource;
@@ -58,21 +59,31 @@ public class BitemporalChainingInAction
     public void run() throws Exception
     {
         int accountId = 12345;
-        createAccountOnJan1(accountId);
-        fetchAccountWithBusinessDateJan1(accountId);
+
+        createAccount("2017-01-01", accountId);
+
+        fetchAccountWithBusinessDate("2017-01-01", accountId);
+
+        updateBalance("2017-01-20", accountId, 200);
+
         dumpCustomerAccount(accountId);
-        updateBalanceForJan17OnJan25(accountId);
+
+        updateBalance("2017-01-17", "2017-01-25", accountId, 50);
+
         dumpCustomerAccount(accountId);
+
         balanceAsOfJan12_OnJan23(accountId);
+
         dumpCustomer(1);
     }
 
-    private void createAccountOnJan1(int accountId)
+    private void createAccount(String date, int accountId)
     {
-        Timestamp jan1 = DateUtils.parse("2017-01-01");
+        Timestamp jan1 = DateUtils.parse(date);
         MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
-            tx.setProcessingStartTime(jan1.getTime());
+            // We set the processing time to simulate the update opening on a specific date - Do not do this in production
+            doNotDoThisInProduction(date, tx);
 
             Customer customer = new Customer(jan1);
             customer.setFirstName("mickey");
@@ -91,43 +102,44 @@ public class BitemporalChainingInAction
         });
     }
 
-    private void fetchAccountWithBusinessDateJan1(int accountId)
+    private void fetchAccountWithBusinessDate(String date, int accountId)
     {
-        Timestamp jan1 = DateUtils.parse("2017-01-01");
+        Timestamp jan1 = DateUtils.parse(date);
         Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
         Operation jan1Op = CustomerAccountFinder.businessDate().eq(jan1);
         CustomerAccount account = CustomerAccountFinder.findOne(idOp.and(jan1Op));
         assertEquals(100, (int) account.getBalance());
     }
 
-    private void deposit200onJan20(int accountId)
+    private void updateBalance(String date, int accountId, int balance)
     {
         MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
 
-            Timestamp jan20TS = DateUtils.parse("2017-01-20");
+            Timestamp timestamp = DateUtils.parse(date);
 
-            tx.setProcessingStartTime(jan20TS.getTime());
+            // Simulate the db change happening on a specific date - Do not do this in production
+            doNotDoThisInProduction(date, tx);
 
-            Operation ts = CustomerAccountFinder.businessDate().eq(jan20TS);
+            Operation ts = CustomerAccountFinder.businessDate().eq(timestamp);
             Operation id = CustomerAccountFinder.accountId().eq(accountId);
             CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
-            account.incrementBalance(200);
+            account.incrementBalance(balance);
             return null;
         });
     }
 
-    private void updateBalanceForJan17OnJan25(int accountId)
+    private void updateBalance(String businessDate, String processingDate, int accountId, int balance)
     {
         MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
 
-            Timestamp jan25TS = DateUtils.parse("2017-01-25");
-            tx.setProcessingStartTime(jan25TS.getTime());
+            // Simulate the db change happening on a specific date - Do not do this in production
+            doNotDoThisInProduction(processingDate, tx);
 
-            Timestamp jan17TS = DateUtils.parse("2017-01-17");
-            Operation ts = CustomerAccountFinder.businessDate().eq(jan17TS);
+            Timestamp businessDateTs = DateUtils.parse(businessDate);
+            Operation ts = CustomerAccountFinder.businessDate().eq(businessDateTs);
             Operation id = CustomerAccountFinder.accountId().eq(accountId);
             CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
-            account.incrementBalance(50);
+            account.incrementBalance(balance);
             return null;
         });
     }
@@ -187,4 +199,28 @@ public class BitemporalChainingInAction
         CustomerAccount account = CustomerAccountFinder.findOne(id.and(businessDate).and(processingDate));
         assertEquals(100, (int) account.getBalance());
     }
+
+    /*
+    This method explicitly sets the transaction's processing time to the supplied value.
+    You should rarely have to do this in production.
+
+    It is being done here just to simulate a database operation happening on a specific date,
+    so that the output of thus program matches the narrative in the Reladomo tour docs.
+
+    Without this, the processing time gets set to the time of running this program.
+
+    Calling this method in production code violates the auditability of the data, which is the only reason the processingDate exists in the first place.
+ */
+    private void doNotDoThisInProduction(String date, MithraTransaction tx)
+    {
+        Timestamp ts = DateUtils.parse(date);
+        doNotDoThisInProduction(ts, tx);
+    }
+
+    private void doNotDoThisInProduction(Timestamp ts, MithraTransaction tx)
+    {
+        // We set the processing time to simulate the database change happening on a specific date - Do not do this in production
+        tx.setProcessingStartTime(ts.getTime());
+    }
+
 }

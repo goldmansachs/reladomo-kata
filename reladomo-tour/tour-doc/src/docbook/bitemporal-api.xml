@@ -159,19 +159,38 @@ CustomerFinder.processingDate();]]></programlisting>
             <title>Note</title>
             <para>
                 The following sections map the code in <code>BitemporalChainingInAction.java</code> to the motivating example
-                discussed before. But running the code as is will result in different results than
-                what is described in this section.
+                discussed before.
             </para>
             <para>
-                This is because the example uses timestamps in Jan 2017. If you happen to run this example
-                in say March 2017, the IN_Z and OUT_Z values will be that of March 2017 and will differ
-                from what is presented here.
-            </para>
-            <para>
-                If you want to practice querying the table but with the example's test data,
-                you can initialize a <code>MithraTestResource</code> with the data from <code>BitemporalChainingInActionTestData.txt</code>.
+                To ensure that the behavior of the program matches the example discussed here, the program
+                explicitly sets the processing time as needed. You should not have to do this in production
+                code. Processing time by default is set to when the database operation is performed.
             </para>
         </warning>
+        <example>
+        <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
+        <programlisting><![CDATA[@Test
+public void run() throws Exception
+{
+    int accountId = 12345;
+
+    createAccount("2017-01-01", accountId);
+
+    fetchAccountWithBusinessDate("2017-01-01", accountId);
+
+    updateBalance("2017-01-20", accountId, 200);
+
+    dumpCustomerAccount(accountId);
+
+    updateBalance("2017-01-17", "2017-01-25", accountId, 50);
+
+    dumpCustomerAccount(accountId);
+
+    balanceAsOfJan12_OnJan23(accountId);
+
+    dumpCustomer(1);
+}]]></programlisting>
+    </example>
         <sect2>
             <title>Jan 1 - Open an account with $100</title>
             <para>
@@ -181,11 +200,14 @@ CustomerFinder.processingDate();]]></programlisting>
             </para>
             <example>
                 <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
-                <programlisting language="java"><![CDATA[private void createAccountOnJan1(int accountId)
+                <programlisting language="java"><![CDATA[private void createAccount(String date, int accountId)
 {
-    Timestamp jan1 = DateUtils.parse("2017-01-01");
+    Timestamp jan1 = DateUtils.parse(date);
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
     {
+        // Simulate the db change happening on a specific date - Do not do this in production
+        setProcessingTime(date, tx);
+
         Customer customer = new Customer(jan1);
         customer.setFirstName("mickey");
         customer.setLastName("mouse");
@@ -212,9 +234,9 @@ CustomerFinder.processingDate();]]></programlisting>
             </para>
             <example>
                 <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
-                <programlisting language="java"><![CDATA[private void fetchAccountWithBusinessDateJan1(int accountId)
+                <programlisting language="java"><![CDATA[private void fetchAccountWithBusinessDate(String date, int accountId)
 {
-    Timestamp jan1 = DateUtils.parse("2017-01-01");
+    Timestamp jan1 = DateUtils.parse(date);
     Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
     Operation jan1Op = CustomerAccountFinder.businessDate().eq(jan1);
     CustomerAccount account = CustomerAccountFinder.findOne(idOp.and(jan1Op));
@@ -248,15 +270,19 @@ CustomerFinder.processingDate();]]></programlisting>
             </para>
             <example>
                 <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
-                <programlisting language="java"><![CDATA[private void deposit200onJan20(int accountId)
+                <programlisting language="java"><![CDATA[private void updateBalance(String date, int accountId, int balance)
 {
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
 
-        Timestamp jan20TS = DateUtils.parse("2017-01-20");
-        Operation ts = CustomerAccountFinder.businessDate().eq(jan20TS);
+        Timestamp timestamp = DateUtils.parse(date);
+
+        // Simulate the db change happening on a specific date - Do not do this in production
+        setProcessingTime(date, tx);
+
+        Operation ts = CustomerAccountFinder.businessDate().eq(timestamp);
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
-        account.incrementBalance(200);
+        account.incrementBalance(balance);
         return null;
     });
 }]]></programlisting>
@@ -264,20 +290,20 @@ CustomerFinder.processingDate();]]></programlisting>
             <para>
                 Running this method results in the following SQL statements being executed. Reladomo is invalidating the row (update OUT_Z) with business date (Jan 1 to Infinity) and adding new rows for business date (Jan 1 to Jan 20) and (Jan 20 to Infinity).
             </para>
-            <programlisting language="sql"><![CDATA[update CUSTOMER_ACCOUNT set OUT_Z = '2017-02-27 15:16:53.550'
-where ACCOUNT_ID = 100 AND THRU_Z = '9999-12-01 23:59:00.000' AND OUT_Z = '9999-12-01 23:59:00.000'
+            <programlisting language="sql"><![CDATA[update CUSTOMER_ACCOUNT set OUT_Z = '2017-01-20 00:00:00.000'
+where ACCOUNT_ID = 12345 AND THRU_Z = '9999-12-01 23:59:00.000' AND OUT_Z = '9999-12-01 23:59:00.000'
 
 insert into CUSTOMER_ACCOUNT (...) values (?,?,?,?,?,?,?,?,?) for 2 objects
 
 insert into CUSTOMER_ACCOUNT (...)
     values (12345,1,'retirement','savings',300.0,
         '2017-01-20 00:00:00.000','9999-12-01 23:59:00.000',
-        '2017-02-27 15:16:53.550','9999-12-01 23:59:00.000')
+        '2017-01-20 00:00:00.000','9999-12-01 23:59:00.000')
 
 insert into CUSTOMER_ACCOUNT (...)
     values (12345,1,'retirement','savings',100.0,
         '2017-01-01 00:00:00.000','2017-01-20 00:00:00.000',
-        '2017-02-27 15:16:53.550','9999-12-01 23:59:00.000')]]></programlisting>
+        '2017-01-20 00:00:00.000','9999-12-01 23:59:00.000')]]></programlisting>
         </sect2>
         <sect2>
             <title>Jan 20 - Fetch the account (dump history)</title>
@@ -344,14 +370,18 @@ where t0.ACCOUNT_ID = 100]]>
             </para>
             <example>
                 <title>tour-examples/bitemporal-bank/BitemporalChainingInAction.java</title>
-                <programlisting language="java"><![CDATA[private void updateBalanceForJan17OnJan25(int accountId)
+                <programlisting language="java"><![CDATA[private void updateBalance(String businessDate, String processingDate, int accountId, int balance)
 {
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -> {
-        Timestamp jan17TS = DateUtils.parse("2017-01-17");
-        Operation ts = CustomerAccountFinder.businessDate().eq(jan17TS);
+
+        // Simulate the db change happening on a specific date - Do not do this in production
+        setProcessingTime(processingDate, tx);
+
+        Timestamp businessDateTs = DateUtils.parse(businessDate);
+        Operation ts = CustomerAccountFinder.businessDate().eq(businessDateTs);
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
-        account.incrementBalance(50);
+        account.incrementBalance(balance);
         return null;
     });
 }]]></programlisting>
@@ -366,7 +396,7 @@ where t0.ACCOUNT_ID = 100]]>
                 <title>Bank Account On Jan 1</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="bitemporal-intro/bitemporal42.png" scale="80" />
+                        <imagedata fileref="bitemporal-intro/bitemporal-42.png" scale="80" />
                     </imageobject>
                 </mediaobject>
             </figure>
