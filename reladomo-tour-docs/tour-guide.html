@@ -1568,19 +1568,34 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
             
             <p>
                 The following sections map the code in <code class="code">AuditOnlyChainingInAction.java</code> to the motivating example
-                discussed before. But running the code as is will result in different results than
-                what is described in this section.
+                discussed before.
             </p>
             <p>
-                This is because the example uses timestamps in Jan 2017. If you happen to run this example
-                in say March 2017, the IN_Z and OUT_Z values will be that of March 2017 and will differ
-                from what is presented here.
-            </p>
-            <p>
-                If you want to practice querying the table but with the example's test data,
-                you can initialize a <code class="code">MithraTestResource</code> with the data from <code class="code">AuditOnlyChainingInActionTestData.txt</code>.
+                To ensure that the behavior of the program matches the example discussed here, the program
+                explicitly sets the processing time as needed. You should not have to do this in production
+                code. Processing time by default is set to when the database operation is performed.
             </p>
         </td></tr></table></div>
+        <div class="example"><a name="N407BE"></a><p class="title"><b>Example&nbsp;9.3.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+            
+            <pre class="programlisting">@Test
+public void run() throws Exception
+{
+    int accountId = 12345;
+
+    createAccount("2017-01-01", accountId);
+
+    fetchLatestAccount(accountId);
+
+    updateBalance("2017-01-20", accountId, 200);
+
+    dumpCustomerAccount(accountId);
+
+    updateBalance("2017-01-25", accountId, 50);
+
+    dumpCustomerAccount(accountId);
+}</pre>
+        </div></div><br class="example-break">
         <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N407C7"></a>9.3.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
             
             <p>
@@ -1588,23 +1603,30 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                 However, because the objects are audit-only chained, the constructor must be supplied with a processing date.
                 In this case, we are using the overloaded constructor which sets the date to Infinity.
             </p>
-            <div class="example"><a name="N407D5"></a><p class="title"><b>Example&nbsp;9.3.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N407D5"></a><p class="title"><b>Example&nbsp;9.4.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
                 
-                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> createAccountOnJan1(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> createAccount(String date, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
-    Customer customer = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Customer();
-    customer.setFirstName(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>);
-    customer.setLastName(<strong class="hl-string"><span style="color: green">"mouse"</span></strong>);
-    customer.setCustomerId(<span style="color:blue" class="hl-number">1</span>);
-    customer.setCountry(<strong class="hl-string"><span style="color: green">"usa"</span></strong>);
+    MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt; {
 
-    CustomerAccount account = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> CustomerAccount();
-    account.setAccountId(accountId);
-    account.setBalance(<span style="color:blue" class="hl-number">100</span>);
-    account.setAccountType(<strong class="hl-string"><span style="color: green">"savings"</span></strong>);
-    account.setAccountName(<strong class="hl-string"><span style="color: green">"retirement"</span></strong>);
-    customer.getAccounts().add(account);
-    customer.cascadeInsert();
+        <em style="color: gray" class="hl-comment">// Simulate the db change happening on a specific date - Do not do this in production</em>
+        doNotDoThisInProduction(date, tx);
+
+        Customer customer = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Customer();
+        customer.setFirstName(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>);
+        customer.setLastName(<strong class="hl-string"><span style="color: green">"mouse"</span></strong>);
+        customer.setCustomerId(<span style="color:blue" class="hl-number">1</span>);
+        customer.setCountry(<strong class="hl-string"><span style="color: green">"usa"</span></strong>);
+
+        CustomerAccount account = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> CustomerAccount();
+        account.setAccountId(accountId);
+        account.setBalance(<span style="color:blue" class="hl-number">100</span>);
+        account.setAccountType(<strong class="hl-string"><span style="color: green">"savings"</span></strong>);
+        account.setAccountName(<strong class="hl-string"><span style="color: green">"retirement"</span></strong>);
+        customer.getAccounts().add(account);
+        customer.cascadeInsert();
+        <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
+    });
 }</pre>
             </div></div><br class="example-break">
         </div>
@@ -1614,7 +1636,7 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                 Here we use the generated <code class="code">Finder</code> but we have to specify an additional operation
                 for the business date.
             </p>
-            <div class="example"><a name="N407EB"></a><p class="title"><b>Example&nbsp;9.4.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N407EB"></a><p class="title"><b>Example&nbsp;9.5.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> fetchLatestAccount(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
@@ -1645,12 +1667,15 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                 However, updating a row in chained table can result in the creation of new rows. Therefore the update
                 must be wrapped in a transaction for atomicity.
             </p>
-            <div class="example"><a name="N40811"></a><p class="title"><b>Example&nbsp;9.5.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40811"></a><p class="title"><b>Example&nbsp;9.6.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
                 
-                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalance(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> deposit)
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalance(String date, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> deposit)
 {
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt;
     {
+        <em style="color: gray" class="hl-comment">// Simulate the db change happening on a specific date - Do not do this in production</em>
+        doNotDoThisInProduction(date, tx);
+
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(id);
         account.setBalance(account.getBalance() + deposit);
@@ -1662,12 +1687,12 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                 Running this method results in the following SQL statements being executed. Reladomo is invalidating the row (update OUT_Z) with business date (Jan 1 to Infinity) and adding new rows for business date (Jan 1 to Jan 20) and (Jan 20 to Infinity).
             </p>
             <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">update</span></strong> CUSTOMER_ACCOUNT
-            <strong class="hl-keyword"><span style="color: #000080">set</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'2017-03-08 15:51:47.450'</span></strong>
+            <strong class="hl-keyword"><span style="color: #000080">set</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>
             <strong class="hl-keyword"><span style="color: #000080">where</span></strong> ACCOUNT_ID = <span style="color:blue" class="hl-number">12345</span> <strong class="hl-keyword"><span style="color: #000080">AND</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>
 
 <strong class="hl-keyword"><span style="color: #000080">insert</span></strong> <strong class="hl-keyword"><span style="color: #000080">into</span></strong> CUSTOMER_ACCOUNT(ACCOUNT_ID,CUSTOMER_ID,ACCOUNT_NAME,ACCOUNT_TYPE,BALANCE,IN_Z,OUT_Z)
     <strong class="hl-keyword"><span style="color: #000080">values</span></strong> (<span style="color:blue" class="hl-number">12345</span>,<span style="color:blue" class="hl-number">1</span>,<strong class="hl-string"><span style="color: green">'retirement'</span></strong>,<strong class="hl-string"><span style="color: green">'savings'</span></strong>,<span style="color:blue" class="hl-number">300.0</span>,
-        <strong class="hl-string"><span style="color: green">'2017-03-08 15:51:47.450'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)
+        <strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)
 </pre>
         </div>
         <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40823"></a>9.3.5.&nbsp;Jan 20 - Fetch the account (dump history)</h3></div></div></div>
@@ -1680,7 +1705,7 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
             <p>
                 History along a time dimension can be fetched by using the <code class="code">equalsEdgePoint()</code> operation.
             </p>
-            <div class="example"><a name="N40834"></a><p class="title"><b>Example&nbsp;9.6.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40834"></a><p class="title"><b>Example&nbsp;9.7.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> Operation computeHistoryOperation(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
@@ -1703,7 +1728,7 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                 let's use Reladomo's <code class="code">DbExtractor</code> which can extract the data from a table and among other things dump it to
                 a file.
             </p>
-            <div class="example"><a name="N40854"></a><p class="title"><b>Example&nbsp;9.7.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40854"></a><p class="title"><b>Example&nbsp;9.8.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> String dumpCustomerAccount(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
 {
@@ -1731,12 +1756,15 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
                 The best we can do is fetch the latest state of the account and adjust for the missing $50.
                 As before Reladomo takes care of invalidating existing rows and adding new rows.
             </p>
-            <div class="example"><a name="N40873"></a><p class="title"><b>Example&nbsp;9.8.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40873"></a><p class="title"><b>Example&nbsp;9.9.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
                 
-                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalance(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> deposit)
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalance(String date, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> deposit)
 {
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt;
     {
+        <em style="color: gray" class="hl-comment">// Simulate the db change happening on a specific date - Do not do this in production</em>
+        doNotDoThisInProduction(date, tx);
+
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(id);
         account.setBalance(account.getBalance() + deposit);
@@ -1759,7 +1787,7 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
             Each of these rows can be queried by setting the processing date as required.
             The following snippet shows querying for the account balance for processing date of Jan 17.
         </p>
-        <div class="example"><a name="N4089B"></a><p class="title"><b>Example&nbsp;9.9.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
+        <div class="example"><a name="N4089B"></a><p class="title"><b>Example&nbsp;9.10.&nbsp;tour-examples/auditonly-bank/AuditOnlyChainingInAction.java</b></p><div class="example-contents">
             
             <pre class="programlisting"><em><span style="color: gray" class="hl-annotation">@Test</span></em>
 <strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> balanceAsOfJan1<span style="color:blue" class="hl-number">7</span>(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
@@ -1803,19 +1831,19 @@ CustomerAccount - retrieved 1 objects, 1.0 ms per
 
 class auditonlybank.domain.CustomerAccount
 accountId,customerId,accountName,accountType,balance,processingDateFrom,processingDateTo
-5678,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
-5678,1,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
-5678,1,"retirement","savings",350,"2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"
+5678,2,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+5678,2,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+5678,2,"retirement","savings",350,"2017-01-25 00:00:00.000","9999-12-01 23:59:00.000"
 
 # After updating on March1, the account that was fetched with a processing date of Jan 17
 # Account balance was increased by $150
 
 class auditonlybank.domain.CustomerAccount
 accountId,customerId,accountName,accountType,balance,processingDateFrom,processingDateTo
-5678,1,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
-5678,1,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
-5678,1,"retirement","savings",350,"2017-01-25 00:00:00.000","2017-03-01 00:00:00.000"
-5678,1,"retirement","savings",500,"2017-03-01 00:00:00.000","9999-12-01 23:59:00.000"</pre>
+5678,2,"retirement","savings",100,"2017-01-01 00:00:00.000","2017-01-20 00:00:00.000"
+5678,2,"retirement","savings",300,"2017-01-20 00:00:00.000","2017-01-25 00:00:00.000"
+5678,2,"retirement","savings",350,"2017-01-25 00:00:00.000","2017-03-01 00:00:00.000"
+5678,2,"retirement","savings",500,"2017-03-01 00:00:00.000","9999-12-01 23:59:00.000"</pre>
     </div>
 </div>
         <div class="chapter"><div class="titlepage"><div><div><h2 class="title"><a name="N408C1"></a>Chapter&nbsp;10.&nbsp;Bitemporal Chaining</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#N408CA">10.1. 
@@ -2176,19 +2204,38 @@ CustomerFinder.processingDate();</pre><p>
             
             <p>
                 The following sections map the code in <code class="code">BitemporalChainingInAction.java</code> to the motivating example
-                discussed before. But running the code as is will result in different results than
-                what is described in this section.
+                discussed before.
             </p>
             <p>
-                This is because the example uses timestamps in Jan 2017. If you happen to run this example
-                in say March 2017, the IN_Z and OUT_Z values will be that of March 2017 and will differ
-                from what is presented here.
-            </p>
-            <p>
-                If you want to practice querying the table but with the example's test data,
-                you can initialize a <code class="code">MithraTestResource</code> with the data from <code class="code">BitemporalChainingInActionTestData.txt</code>.
+                To ensure that the behavior of the program matches the example discussed here, the program
+                explicitly sets the processing time as needed. You should not have to do this in production
+                code. Processing time by default is set to when the database operation is performed.
             </p>
         </td></tr></table></div>
+        <div class="example"><a name="N40B00"></a><p class="title"><b>Example&nbsp;11.3.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+        
+        <pre class="programlisting">@Test
+public void run() throws Exception
+{
+    int accountId = 12345;
+
+    createAccount("2017-01-01", accountId);
+
+    fetchAccountWithBusinessDate("2017-01-01", accountId);
+
+    updateBalance("2017-01-20", accountId, 200);
+
+    dumpCustomerAccount(accountId);
+
+    updateBalance("2017-01-17", "2017-01-25", accountId, 50);
+
+    dumpCustomerAccount(accountId);
+
+    balanceAsOfJan12_OnJan23(accountId);
+
+    dumpCustomer(1);
+}</pre>
+    </div></div><br class="example-break">
         <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40B09"></a>11.3.1.&nbsp;Jan 1 - Open an account with $100</h3></div></div></div>
             
             <p>
@@ -2196,13 +2243,16 @@ CustomerFinder.processingDate();</pre><p>
                 However, because the objects are bitemporal, the constructor must be supplied with a business and processing date.
                 In this case, we are using the overloaded constructor which sets both the dates to Jan 1.
             </p>
-            <div class="example"><a name="N40B17"></a><p class="title"><b>Example&nbsp;11.3.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B17"></a><p class="title"><b>Example&nbsp;11.4.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
-                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> createAccountOnJan1(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> createAccount(String date, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
-    Timestamp jan1 = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-01"</span></strong>);
+    Timestamp jan1 = DateUtils.parse(date);
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt;
     {
+        <em style="color: gray" class="hl-comment">// Simulate the db change happening on a specific date - Do not do this in production</em>
+        doNotDoThisInProduction(date, tx);
+
         Customer customer = <strong class="hl-keyword"><span style="color: #000080">new</span></strong> Customer(jan1);
         customer.setFirstName(<strong class="hl-string"><span style="color: green">"mickey"</span></strong>);
         customer.setLastName(<strong class="hl-string"><span style="color: green">"mouse"</span></strong>);
@@ -2227,11 +2277,11 @@ CustomerFinder.processingDate();</pre><p>
                 Here we use the generated <code class="code">Finder</code> but we have to specify an additional operation
                 for the business date.
             </p>
-            <div class="example"><a name="N40B2D"></a><p class="title"><b>Example&nbsp;11.4.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B2D"></a><p class="title"><b>Example&nbsp;11.5.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
-                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> fetchAccountWithBusinessDateJan1(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> fetchAccountWithBusinessDate(String date, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
-    Timestamp jan1 = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-01"</span></strong>);
+    Timestamp jan1 = DateUtils.parse(date);
     Operation idOp = CustomerAccountFinder.accountId().eq(accountId);
     Operation jan1Op = CustomerAccountFinder.businessDate().eq(jan1);
     CustomerAccount account = CustomerAccountFinder.findOne(idOp.and(jan1Op));
@@ -2263,17 +2313,21 @@ CustomerFinder.processingDate();</pre><p>
                 However, updating a row in bitemporal table can result in the creation of new rows. Therefore the update
                 must be wrapped in a transaction for atomicity.
             </p>
-            <div class="example"><a name="N40B53"></a><p class="title"><b>Example&nbsp;11.5.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B53"></a><p class="title"><b>Example&nbsp;11.6.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
-                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> deposit200onJan2<span style="color:blue" class="hl-number">0</span>(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalance(String date, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> balance)
 {
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt; {
 
-        Timestamp jan20TS = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-20"</span></strong>);
-        Operation ts = CustomerAccountFinder.businessDate().eq(jan20TS);
+        Timestamp timestamp = DateUtils.parse(date);
+
+        <em style="color: gray" class="hl-comment">// Simulate the db change happening on a specific date - Do not do this in production</em>
+        doNotDoThisInProduction(date, tx);
+
+        Operation ts = CustomerAccountFinder.businessDate().eq(timestamp);
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
-        account.incrementBalance(<span style="color:blue" class="hl-number">200</span>);
+        account.incrementBalance(balance);
         <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
     });
 }</pre>
@@ -2281,20 +2335,20 @@ CustomerFinder.processingDate();</pre><p>
             <p>
                 Running this method results in the following SQL statements being executed. Reladomo is invalidating the row (update OUT_Z) with business date (Jan 1 to Infinity) and adding new rows for business date (Jan 1 to Jan 20) and (Jan 20 to Infinity).
             </p>
-            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">update</span></strong> CUSTOMER_ACCOUNT <strong class="hl-keyword"><span style="color: #000080">set</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'2017-02-27 15:16:53.550'</span></strong>
-<strong class="hl-keyword"><span style="color: #000080">where</span></strong> ACCOUNT_ID = <span style="color:blue" class="hl-number">100</span> <strong class="hl-keyword"><span style="color: #000080">AND</span></strong> THRU_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong> <strong class="hl-keyword"><span style="color: #000080">AND</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>
+            <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">update</span></strong> CUSTOMER_ACCOUNT <strong class="hl-keyword"><span style="color: #000080">set</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>
+<strong class="hl-keyword"><span style="color: #000080">where</span></strong> ACCOUNT_ID = <span style="color:blue" class="hl-number">12345</span> <strong class="hl-keyword"><span style="color: #000080">AND</span></strong> THRU_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong> <strong class="hl-keyword"><span style="color: #000080">AND</span></strong> OUT_Z = <strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>
 
 <strong class="hl-keyword"><span style="color: #000080">insert</span></strong> <strong class="hl-keyword"><span style="color: #000080">into</span></strong> CUSTOMER_ACCOUNT (...) <strong class="hl-keyword"><span style="color: #000080">values</span></strong> (?,?,?,?,?,?,?,?,?) <strong class="hl-keyword"><span style="color: #000080">for</span></strong> <span style="color:blue" class="hl-number">2</span> objects
 
 <strong class="hl-keyword"><span style="color: #000080">insert</span></strong> <strong class="hl-keyword"><span style="color: #000080">into</span></strong> CUSTOMER_ACCOUNT (...)
     <strong class="hl-keyword"><span style="color: #000080">values</span></strong> (<span style="color:blue" class="hl-number">12345</span>,<span style="color:blue" class="hl-number">1</span>,<strong class="hl-string"><span style="color: green">'retirement'</span></strong>,<strong class="hl-string"><span style="color: green">'savings'</span></strong>,<span style="color:blue" class="hl-number">300.0</span>,
         <strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>,
-        <strong class="hl-string"><span style="color: green">'2017-02-27 15:16:53.550'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)
+        <strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)
 
 <strong class="hl-keyword"><span style="color: #000080">insert</span></strong> <strong class="hl-keyword"><span style="color: #000080">into</span></strong> CUSTOMER_ACCOUNT (...)
     <strong class="hl-keyword"><span style="color: #000080">values</span></strong> (<span style="color:blue" class="hl-number">12345</span>,<span style="color:blue" class="hl-number">1</span>,<strong class="hl-string"><span style="color: green">'retirement'</span></strong>,<strong class="hl-string"><span style="color: green">'savings'</span></strong>,<span style="color:blue" class="hl-number">100.0</span>,
         <strong class="hl-string"><span style="color: green">'2017-01-01 00:00:00.000'</span></strong>,<strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>,
-        <strong class="hl-string"><span style="color: green">'2017-02-27 15:16:53.550'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)</pre>
+        <strong class="hl-string"><span style="color: green">'2017-01-20 00:00:00.000'</span></strong>,<strong class="hl-string"><span style="color: green">'9999-12-01 23:59:00.000'</span></strong>)</pre>
         </div>
         <div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="N40B65"></a>11.3.5.&nbsp;Jan 20 - Fetch the account (dump history)</h3></div></div></div>
             
@@ -2307,7 +2361,7 @@ CustomerFinder.processingDate();</pre><p>
                 History along a time dimension can be fetched by using the <code class="code">equalsEdgePoint()</code> operation. for example, <code class="code">businessDate().equalsEdgePoint()</code>.
                 In this case we will use the <code class="code">equalsEdgePoint</code> operation on both dimensions to get the full history.
             </p>
-            <div class="example"><a name="N40B7C"></a><p class="title"><b>Example&nbsp;11.6.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B7C"></a><p class="title"><b>Example&nbsp;11.7.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> Operation computeHistoryOperation(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
 {
@@ -2333,7 +2387,7 @@ t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
                 let's use Reladomo's <code class="code">DbExtractor</code> which can extract the data from a table and among other things dump it to
                 a file.
             </p>
-            <div class="example"><a name="N40B9C"></a><p class="title"><b>Example&nbsp;11.7.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40B9C"></a><p class="title"><b>Example&nbsp;11.8.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
                 <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> String dumpCustomerAccount(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId) <strong class="hl-keyword"><span style="color: #000080">throws</span></strong> Exception
 {
@@ -2359,16 +2413,20 @@ t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
                 Here we need to adjust the balance for Jan 17. All we have to do is fetch the account with a business date
                 of Jan 17 and update the balance. As before Reladomo takes care of invalidating existing rows and adding new rows.
             </p>
-            <div class="example"><a name="N40BBB"></a><p class="title"><b>Example&nbsp;11.8.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+            <div class="example"><a name="N40BBB"></a><p class="title"><b>Example&nbsp;11.9.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
                 
-                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalanceForJan17OnJan2<span style="color:blue" class="hl-number">5</span>(<strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId)
+                <pre class="programlisting"><strong class="hl-keyword"><span style="color: #000080">private</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> updateBalance(String businessDate, String processingDate, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> accountId, <strong class="hl-keyword"><span style="color: #000080">int</span></strong> balance)
 {
     MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx -&gt; {
-        Timestamp jan17TS = DateUtils.parse(<strong class="hl-string"><span style="color: green">"2017-01-17"</span></strong>);
-        Operation ts = CustomerAccountFinder.businessDate().eq(jan17TS);
+
+        <em style="color: gray" class="hl-comment">// Simulate the db change happening on a specific date - Do not do this in production</em>
+        doNotDoThisInProduction(processingDate, tx);
+
+        Timestamp businessDateTs = DateUtils.parse(businessDate);
+        Operation ts = CustomerAccountFinder.businessDate().eq(businessDateTs);
         Operation id = CustomerAccountFinder.accountId().eq(accountId);
         CustomerAccount account = CustomerAccountFinder.findOne(ts.and(id));
-        account.incrementBalance(<span style="color:blue" class="hl-number">50</span>);
+        account.incrementBalance(balance);
         <strong class="hl-keyword"><span style="color: #000080">return</span></strong> null;
     });
 }</pre>
@@ -2381,14 +2439,14 @@ t0.BALANCE,t0.FROM_Z,t0.THRU_Z,t0.IN_Z,t0.OUT_Z
             Consider the visualization from Chapter 6. Each colored rectangle corresponds to a row in the table.
             </p><div class="figure"><a name="bitemporal7.fig"></a><p class="title"><b>Figure&nbsp;11.1.&nbsp;Bank Account On Jan 1</b></p><div class="figure-contents">
                 
-                <div class="mediaobject"><img src="bitemporal-intro/bitemporal42.png" alt="Bank Account On Jan 1"></div>
+                <div class="mediaobject"><img src="bitemporal-intro/bitemporal-42.png" alt="Bank Account On Jan 1"></div>
             </div></div><p><br class="figure-break">
         </p>
         <p>
             Each of these rows can be queried by setting the business date and processing date as required.
             The following snippet shows querying for the account balance for business date Jan 12 but on processing date Jan 23.
         </p>
-        <div class="example"><a name="N40BE3"></a><p class="title"><b>Example&nbsp;11.9.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
+        <div class="example"><a name="N40BE3"></a><p class="title"><b>Example&nbsp;11.10.&nbsp;tour-examples/bitemporal-bank/BitemporalChainingInAction.java</b></p><div class="example-contents">
             
             <pre class="programlisting"><em><span style="color: gray" class="hl-annotation">@Test</span></em>
 <strong class="hl-keyword"><span style="color: #000080">public</span></strong> <strong class="hl-keyword"><span style="color: #000080">void</span></strong> balanceAsOfJan1<span style="color:blue" class="hl-number">2</span>_OnJan2<span style="color:blue" class="hl-number">3</span>()
