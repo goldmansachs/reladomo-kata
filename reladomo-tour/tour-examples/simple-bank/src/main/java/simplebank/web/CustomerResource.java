@@ -18,6 +18,9 @@ package simplebank.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gs.fw.common.mithra.MithraManager;
+import com.gs.fw.common.mithra.util.serializer.SerializationConfig;
+import com.gs.fw.common.mithra.util.serializer.Serialized;
+import com.gs.fw.common.mithra.util.serializer.SerializedList;
 import simplebank.domain.Customer;
 import simplebank.domain.CustomerFinder;
 import simplebank.domain.CustomerList;
@@ -29,6 +32,15 @@ import javax.ws.rs.core.Response;
 @Path("/api/customer")
 public class CustomerResource
 {
+    private final SerializationConfig serializationConfig;
+
+    public CustomerResource()
+    {
+        this.serializationConfig = SerializationConfig
+                .shallowWithDefaultAttributes(CustomerFinder.getFinderInstance());
+        serializationConfig.withDeepDependents();
+    }
+
     @POST
     public Response createCustomer(
             @FormParam("customerId") int customerId,
@@ -46,24 +58,27 @@ public class CustomerResource
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Customer getCustomerById(@PathParam("id") int customerId) throws JsonProcessingException
+    public Serialized<Customer> getCustomerById(@PathParam("id") int customerId) throws JsonProcessingException
     {
-        return CustomerFinder.findByPrimaryKey(customerId);
+        Customer customer = CustomerFinder.findByPrimaryKey(customerId);
+        return new Serialized<>(customer, serializationConfig);
     }
 
     @GET
     @Path("/findByLastName")
     @Produces(MediaType.APPLICATION_JSON)
-    public CustomerList getCustomersByLastName(@QueryParam("lastName") String lastName)
+    public SerializedList<Customer, CustomerList> getCustomersByLastName(@QueryParam("lastName") String lastName)
     {
-        return CustomerFinder.findMany(CustomerFinder.lastName().eq(lastName));
+        CustomerList customers = CustomerFinder.findMany(CustomerFinder.lastName().eq(lastName));
+        return new SerializedList<>(customers, serializationConfig);
     }
 
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateCustomer(@PathParam("id") int customerId, Customer customerPojo)
+    public Response updateCustomer(@PathParam("id") int customerId, Serialized<Customer> serialized)
     {
+        Customer customerPojo = serialized.getWrapped();
         MithraManager.getInstance().executeTransactionalCommand((tx) -> {
             //locate the customer
             Customer customer = CustomerFinder.findOne(CustomerFinder.customerId().eq(customerId));
@@ -72,7 +87,6 @@ public class CustomerResource
             customer.setLastName(customerPojo.getLastName());
             //delete existing accounts and replace with new accounts
             customer.getAccounts().deleteAll();
-            ;
             customer.getAccounts().addAll(customerPojo.getAccounts());
             return null;
         });

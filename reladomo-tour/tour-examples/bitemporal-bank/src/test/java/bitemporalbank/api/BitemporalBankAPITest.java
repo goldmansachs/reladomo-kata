@@ -23,6 +23,7 @@ import bitemporalbank.serialization.BitemporalBankJacksonObjectMapperProvider;
 import bitemporalbank.web.BitemporalBankServer;
 import com.gs.fw.common.mithra.test.ConnectionManagerForTests;
 import com.gs.fw.common.mithra.test.MithraTestResource;
+import com.gs.fw.common.mithra.util.serializer.Serialized;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +31,7 @@ import org.junit.Test;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -63,10 +65,18 @@ public class BitemporalBankAPITest
     public void testGetCustomer()
     {
         WebTarget target = webTarget("/api/customer/1");
-        Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
+        Response response = target
+                .queryParam("businessDate", "2017-01-20")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        Customer mickey = response.readEntity(Customer.class);
+
+        Serialized<Customer> mickeySerialized = response.readEntity(new GenericType<Serialized<Customer>>()
+        {
+        });
+
+        Customer mickey = mickeySerialized.getWrapped();
         assertEquals(1, mickey.getCustomerId());
         assertEquals("mickey", mickey.getFirstName());
         assertEquals("mouse", mickey.getLastName());
@@ -74,10 +84,10 @@ public class BitemporalBankAPITest
         CustomerAccountList mickeysAccounts = mickey.getAccounts();
         assertEquals(1, mickeysAccounts.size());
         CustomerAccount clubhouseAccount = mickeysAccounts.get(0);
-        assertEquals(100, clubhouseAccount.getAccountId());
-        assertEquals("mickey mouse club", clubhouseAccount.getAccountName());
+        assertEquals(12345, clubhouseAccount.getAccountId());
+        assertEquals("retirement", clubhouseAccount.getAccountName());
         assertEquals("savings", clubhouseAccount.getAccountType());
-        assertEquals(5000, clubhouseAccount.getBalance(), 0);
+        assertEquals(350, clubhouseAccount.getBalance(), 0);
     }
 
     private WebTarget webTarget(String path)

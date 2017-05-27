@@ -17,34 +17,18 @@ under the License.
 package simplebank.serialization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import simplebank.domain.Customer;
-import simplebank.domain.CustomerAccount;
+import com.gs.reladomo.serial.jackson.JacksonReladomoModule;
 
 import javax.ws.rs.ext.ContextResolver;
 
 public class SimpleBankJacksonObjectMapperProvider implements ContextResolver<ObjectMapper>
 {
-
     final ObjectMapper defaultObjectMapper;
 
     public SimpleBankJacksonObjectMapperProvider()
     {
-        defaultObjectMapper = createDefaultMapper();
-    }
-
-    private static ObjectMapper createDefaultMapper()
-    {
-        ObjectMapper mapper = new ObjectMapper();
-
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(Customer.class, new CustomerSerde.Serializer());
-        module.addDeserializer(Customer.class, new CustomerSerde.Deserializer());
-        module.addSerializer(CustomerAccount.class, new CustomerAccountSerde.Serializer());
-        module.addDeserializer(CustomerAccount.class, new CustomerAccountSerde.Deserializer());
-        mapper.registerModule(module);
-
-        return mapper;
+        defaultObjectMapper = new ObjectMapper();
+        defaultObjectMapper.registerModule(new JacksonReladomoModule());
     }
 
     @Override
@@ -52,5 +36,4 @@ public class SimpleBankJacksonObjectMapperProvider implements ContextResolver<Ob
     {
         return defaultObjectMapper;
     }
-
 }

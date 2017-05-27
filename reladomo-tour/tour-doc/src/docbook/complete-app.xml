@@ -58,9 +58,10 @@ public class CustomerResource
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Customer getCustomerById(@PathParam("id") int customerId) throws JsonProcessingException
+    public Serialized<Customer> getCustomerById(@PathParam("id") int customerId) throws JsonProcessingException
     {
-        return CustomerFinder.findByPrimaryKey(customerId);
+        Customer customer = CustomerFinder.findByPrimaryKey(customerId);
+        return new Serialized<>(customer, serializationConfig);
     }
 
     // elided for brevity
@@ -133,16 +134,9 @@ public class CustomerResource
     <sect1>
             <title>JSON Serialization</title>
             <para>
-                The REST API's endpoints consume JSON input and produce JSON output. In the <code>CustomerResource</code> class,
-                we have used the Reladomo generated classes like <code>Customer</code> as the data transfer POJOs.
-            </para>
-            <para>
-                But the generated classes are not pure POJOs (in the Java sense). Therefore we need to add some
-                extra plumbing to help with the JSON serialization and deserialization. This can be seen in the <code>initResources</code>
+                The REST API's endpoints consume JSON input and produce JSON output. Reladomo generated classes are not pure POJOs (int the Java sense).
+                Reladomo versions 16.2.0 and higher ship with Jackson and Gson modules that help with serialization and deserialization. This can be seen in the <code>initResources</code>
                 method of the <code>SimpleBankServer</code> class.
-            </para>
-            <para>
-                Note that in Reladomo it doesn't matter how you choose to implement JSON serialization and deserialization.
             </para>
     </sect1>
 </chapter>
