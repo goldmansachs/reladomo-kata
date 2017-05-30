@@ -43,8 +43,11 @@
         <maven.compiler.verbose>true</maven.compiler.verbose>
         <maven.compiler.meminitial>2048m</maven.compiler.meminitial>
         <maven.compiler.maxmem>2048m</maven.compiler.maxmem>
-        <reladomo.version>16.1.0</reladomo.version>
+        <reladomo.version>16.2.0</reladomo.version>
         <gs-collections.version>7.0.3</gs-collections.version>
+        <jersey.media.version>2.26-b04</jersey.media.version>
+        <jersey.grizzly.version>2.24.1</jersey.grizzly.version>
+        <h2.version>1.4.193</h2.version>
         <logback.version>1.0.13</logback.version>
 
     </properties>
@@ -56,6 +59,13 @@
                 <artifactId>reladomo</artifactId>
                 <version>${reladomo.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.goldmansachs.reladomo</groupId>
+                <artifactId>reladomo-serial</artifactId>
+                <version>${reladomo.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>junit</groupId>
@@ -93,6 +103,26 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${jersey.media.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-grizzly2-http</artifactId>
+                <version>${jersey.grizzly.version}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

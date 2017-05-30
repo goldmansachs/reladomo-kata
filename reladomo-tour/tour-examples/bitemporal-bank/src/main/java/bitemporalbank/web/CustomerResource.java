@@ -20,6 +20,8 @@ import bitemporalbank.domain.Customer;
 import bitemporalbank.domain.CustomerFinder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gs.fw.common.mithra.finder.Operation;
+import com.gs.fw.common.mithra.util.serializer.SerializationConfig;
+import com.gs.fw.common.mithra.util.serializer.Serialized;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -32,7 +34,16 @@ import java.sql.Timestamp;
 @Path("/api/customer")
 public class CustomerResource
 {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("a");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("YYYY-MM-DD");
+
+    private final SerializationConfig serializationConfig;
+
+    public CustomerResource()
+    {
+        this.serializationConfig = SerializationConfig
+                .shallowWithDefaultAttributes(CustomerFinder.getFinderInstance());
+        serializationConfig.withDeepDependents();
+    }
 
     @POST
     public Response createCustomer(
@@ -54,12 +65,13 @@ public class CustomerResource
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Customer getCustomerById(@PathParam("id") int customerId, @QueryParam("businessDate") String businessDate) throws JsonProcessingException
+    public Serialized<Customer> getCustomerById(@PathParam("id") int customerId, @QueryParam("businessDate") String businessDate) throws JsonProcessingException
     {
         Timestamp businessDateTS = parse(businessDate);
         Operation op1 = CustomerFinder.businessDate().eq(businessDateTS);
         Operation op2 = CustomerFinder.customerId().eq(customerId);
-        return CustomerFinder.findOne(op1.and(op2));
+        Customer customer = CustomerFinder.findOne(op1.and(op2));
+        return new Serialized<>(customer, serializationConfig);
     }
 
     private Timestamp parse(String dateTimeString)

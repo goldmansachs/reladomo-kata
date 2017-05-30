@@ -16,35 +16,19 @@ under the License.
 
 package bitemporalbank.serialization;
 
-import bitemporalbank.domain.Customer;
-import bitemporalbank.domain.CustomerAccount;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.gs.reladomo.serial.jackson.JacksonReladomoModule;
 
 import javax.ws.rs.ext.ContextResolver;
 
 public class BitemporalBankJacksonObjectMapperProvider implements ContextResolver<ObjectMapper>
 {
-
     final ObjectMapper defaultObjectMapper;
 
     public BitemporalBankJacksonObjectMapperProvider()
     {
-        defaultObjectMapper = createDefaultMapper();
-    }
-
-    private static ObjectMapper createDefaultMapper()
-    {
-        ObjectMapper mapper = new ObjectMapper();
-
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(Customer.class, new CustomerSerde.Serializer());
-        module.addDeserializer(Customer.class, new CustomerSerde.Deserializer());
-        module.addSerializer(CustomerAccount.class, new CustomerAccountSerde.Serializer());
-        module.addDeserializer(CustomerAccount.class, new CustomerAccountSerde.Deserializer());
-        mapper.registerModule(module);
-
-        return mapper;
+        defaultObjectMapper = new ObjectMapper();
+        defaultObjectMapper.registerModule(new JacksonReladomoModule());
     }
 
     @Override
