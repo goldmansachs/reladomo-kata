@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Goldman Sachs.
+ Copyright 2018 Goldman Sachs.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -16,11 +16,11 @@
 
 package kata.test;
 
-import com.gs.collections.api.block.function.primitive.DoubleFunction;
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.set.mutable.UnifiedSet;
-import com.gs.collections.impl.test.Verify;
+import org.eclipse.collections.api.block.function.primitive.DoubleFunction;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.set.mutable.UnifiedSet;
+import org.eclipse.collections.impl.test.Verify;
 import kata.domain.AccountBalance;
 import kata.domain.AccountBalanceList;
 import kata.domain.Customer;
@@ -116,7 +116,7 @@ public class ExercisesBiTemporal
         Assert.fail("Implement this functionality to make the test pass");
         AccountBalanceList balances = null;
         // Using some GS Collections:
-        return balances.asGscList().sumOfDouble(new DoubleFunction<AccountBalance>()
+        return balances.asEcList().sumOfDouble(new DoubleFunction<AccountBalance>()
         {
             @Override
             public double doubleValueOf(AccountBalance accountBalance)
@@ -355,12 +355,12 @@ public class ExercisesBiTemporal
         Timestamp mid2008 = Timestamp.valueOf("2008-06-01 00:00:00.0");
         final CustomerList inDebt2008 = getCustomersWithNegativeNetBalanceUsingAggregate(mid2008);
         Verify.assertListsEqual(FastList.newListWith("Diana Prince"),
-                inDebt2008.asGscList().collect(CustomerFinder.name()));
+                inDebt2008.asEcList().collect(CustomerFinder.name()));
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
         final CustomerList inDebtNow = getCustomersWithNegativeNetBalanceUsingAggregate(now);
         Verify.assertSetsEqual(UnifiedSet.newSetWith("Diana Prince", "Claire Bennet", "Yusuke Sato"),
-                inDebtNow.asGscList().collect(CustomerFinder.name()).toSet());
+                inDebtNow.asEcList().collect(CustomerFinder.name()).toSet());
     }
 
 //---------------------------------------------------------------------------------

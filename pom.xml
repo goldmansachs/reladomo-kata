@@ -43,8 +43,8 @@
         <maven.compiler.verbose>true</maven.compiler.verbose>
         <maven.compiler.meminitial>2048m</maven.compiler.meminitial>
         <maven.compiler.maxmem>2048m</maven.compiler.maxmem>
-        <reladomo.version>16.1.0</reladomo.version>
-        <gs-collections.version>7.0.3</gs-collections.version>
+        <reladomo.version>17.0.0</reladomo.version>
+        <eclipse-collections.version>9.1.0</eclipse-collections.version>
         <logback.version>1.0.13</logback.version>
 
     </properties>
@@ -64,21 +64,21 @@
             </dependency>
 
             <dependency>
-                <groupId>com.goldmansachs</groupId>
-                <artifactId>gs-collections-api</artifactId>
-                <version>${gs-collections.version}</version>
+                <groupId>org.eclipse.collections</groupId>
+                <artifactId>eclipse-collections-api</artifactId>
+                <version>${eclipse-collections.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.goldmansachs</groupId>
-                <artifactId>gs-collections</artifactId>
-                <version>${gs-collections.version}</version>
+                <groupId>org.eclipse.collections</groupId>
+                <artifactId>eclipse-collections</artifactId>
+                <version>${eclipse-collections.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.goldmansachs</groupId>
-                <artifactId>gs-collections-testutils</artifactId>
-                <version>${gs-collections.version}</version>
+                <groupId>org.eclipse.collections</groupId>
+                <artifactId>eclipse-collections-testutils</artifactId>
+                <version>${eclipse-collections.version}</version>
                 <scope>test</scope>
             </dependency>
 

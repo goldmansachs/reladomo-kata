@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Goldman Sachs.
+ Copyright 2018 Goldman Sachs.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -16,15 +16,15 @@
 
 package kata.test;
 
-import com.gs.collections.api.map.MutableMap;
-import com.gs.collections.impl.factory.Maps;
-import com.gs.collections.impl.test.Verify;
-import com.gs.collections.impl.utility.Iterate;
 import com.gs.fw.common.mithra.AggregateList;
 import com.gs.fw.common.mithra.finder.Operation;
 import kata.domain.Pet;
 import kata.domain.PetFinder;
 import kata.util.TimestampProvider;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.impl.factory.Maps;
+import org.eclipse.collections.impl.test.Verify;
+import org.eclipse.collections.impl.utility.Iterate;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -100,7 +100,7 @@ public class Exercise3Test extends AbstractMithraTest
         Assert.assertNull(PetFinder.findOne(SPEEDY_SELECT));
 
         Pet lastSpeedy = PetFinder.findMany(SPEEDY_SELECT.and(PetFinder.processingDate().equalsEdgePoint()))
-                .asGscList().maxBy(Pet::getProcessingDate);
+                .asEcList().maxBy(Pet::getProcessingDate);
         Assert.assertEquals(TimestampProvider.getCurrentDate(), TimestampProvider.getDate(lastSpeedy.getProcessingDateTo()));
     }
 }
