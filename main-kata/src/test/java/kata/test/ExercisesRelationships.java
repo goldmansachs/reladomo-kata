@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Goldman Sachs.
+ Copyright 2018 Goldman Sachs.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -16,14 +16,14 @@
 
 package kata.test;
 
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.api.set.primitive.IntSet;
-import com.gs.collections.api.tuple.Pair;
-import com.gs.collections.impl.factory.primitive.IntSets;
-import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.set.mutable.UnifiedSet;
-import com.gs.collections.impl.test.Verify;
-import com.gs.collections.impl.tuple.Tuples;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.set.primitive.IntSet;
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.factory.primitive.IntSets;
+import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.set.mutable.UnifiedSet;
+import org.eclipse.collections.impl.test.Verify;
+import org.eclipse.collections.impl.tuple.Tuples;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import kata.domain.Customer;
 import kata.domain.CustomerAccountFinder;
@@ -87,7 +87,7 @@ public class ExercisesRelationships
     {
         CustomerList customers = this.getCustomersThatHaveAccountType("Savings");
         Verify.assertSetsEqual(UnifiedSet.newSetWith("Yusuke Sato", "John Smith"),
-                customers.asGscList().collect(CustomerFinder.name()).toSet());
+                customers.asEcList().collect(CustomerFinder.name()).toSet());
 
         Assert.assertNotNull(CustomerAccountFinder.getRelatedFinderByName("customer"));
     }
@@ -202,6 +202,6 @@ public class ExercisesRelationships
         CustomerList customers = getCustomersWithoutAccounts();
 
         Verify.assertSetsEqual(UnifiedSet.newSetWith("Lisbeth Salander", "Mikael Blomkvist"),
-                customers.asGscList().collect(CustomerFinder.name()).toSet());
+                customers.asEcList().collect(CustomerFinder.name()).toSet());
     }
 }

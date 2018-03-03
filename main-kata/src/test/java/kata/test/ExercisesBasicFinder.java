@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Goldman Sachs.
+ Copyright 2018 Goldman Sachs.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -16,9 +16,9 @@
 
 package kata.test;
 
-import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.set.mutable.UnifiedSet;
-import com.gs.collections.impl.test.Verify;
+import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.set.mutable.UnifiedSet;
+import org.eclipse.collections.impl.test.Verify;
 import com.gs.fw.common.mithra.test.MithraRuntimeConfigVerifier;
 import kata.domain.Person;
 import kata.domain.PersonFinder;
@@ -88,7 +88,7 @@ public class ExercisesBasicFinder
     {
         PersonList age24 = this.getPeopleAged(24);
         Verify.assertSetsEqual(UnifiedSet.newSetWith("Ada Lovelace", "Hiro Tanaka"),
-                age24.asGscList().collect(PersonFinder.name()).toSet());
+                age24.asEcList().collect(PersonFinder.name()).toSet());
     }
 
 //-------------- Question 4 ------------------------------------------------------
@@ -105,7 +105,7 @@ public class ExercisesBasicFinder
     {
         PersonList age24 = this.getPeopleOlderThan(42);
         Verify.assertSetsEqual(UnifiedSet.newSetWith("Kent Beck", "Bob Martin", "Yuki Suzuki"),
-                age24.asGscList().collect(PersonFinder.name()).toSet());
+                age24.asEcList().collect(PersonFinder.name()).toSet());
     }
 
 //-------------- Question 5 ------------------------------------------------------
@@ -140,7 +140,7 @@ public class ExercisesBasicFinder
     {
         PersonList peopleIn30s = this.getPeopleInTheirThirties();
         Verify.assertListsEqual(FastList.newListWith("John Smith", "Yuri Clark", "Clark Kent"),
-                peopleIn30s.asGscList().collect(PersonFinder.name()));
+                peopleIn30s.asEcList().collect(PersonFinder.name()));
     }
 
 //-------------- Question 7 ------------------------------------------------------
@@ -158,7 +158,7 @@ public class ExercisesBasicFinder
         PersonList people = this.getPeopleFromCountryOrAged("UK", 24);
         Verify.assertSize(3, people);
         Verify.assertListsEqual(FastList.newListWith("Hiro Tanaka", "Ada Lovelace", "Douglas Adams"),
-                people.asGscList().collect(PersonFinder.name()));
+                people.asEcList().collect(PersonFinder.name()));
     }
 
 //-------------- Question 8 ------------------------------------------------------
@@ -177,11 +177,11 @@ public class ExercisesBasicFinder
     {
         PersonList peopleLower = this.getPeopleNameStartsWithCaseInsensitive("de");
         Verify.assertListsEqual(FastList.newListWith("de Rothschild", "Devon Koch"),
-                peopleLower.asGscList().collect(PersonFinder.name()));
+                peopleLower.asEcList().collect(PersonFinder.name()));
 
         PersonList peopleUpper = this.getPeopleNameStartsWithCaseInsensitive("DE");
         Verify.assertListsEqual(FastList.newListWith("de Rothschild", "Devon Koch"),
-                peopleUpper.asGscList().collect(PersonFinder.name()));
+                peopleUpper.asEcList().collect(PersonFinder.name()));
     }
 
 //-------------- Question 9 ------------------------------------------------------
@@ -200,7 +200,7 @@ public class ExercisesBasicFinder
     {
         PersonList likeLa = this.getNamedLike("lA");
         Verify.assertListsEqual(FastList.newListWith("Yuri Clark", "Clark Kent", "Ada Lovelace", "Douglas Adams"),
-                likeLa.asGscList().collect(PersonFinder.name()));
+                likeLa.asEcList().collect(PersonFinder.name()));
     }
 
 //-------------- Question 10 ------------------------------------------------------
@@ -218,7 +218,7 @@ public class ExercisesBasicFinder
     {
         PersonList likeLa = this.getNameMatchingSpec("*a?a*");
         Verify.assertListsEqual(FastList.newListWith("Hiro Tanaka", "Ada Lovelace", "Douglas Adams"),
-                likeLa.asGscList().collect(PersonFinder.name()));
+                likeLa.asEcList().collect(PersonFinder.name()));
     }
 
 //-------------- Question 11 ------------------------------------------------------
@@ -237,7 +237,7 @@ public class ExercisesBasicFinder
     {
         PersonList ageEqualsId = this.getWhereAgeEqualsId();
         Verify.assertListsEqual(FastList.newListWith("Chuckie Egg", "Donkey Kong"),
-                ageEqualsId.asGscList().collect(PersonFinder.name()));
+                ageEqualsId.asEcList().collect(PersonFinder.name()));
     }
 
 //-------------- Question 12 ------------------------------------------------------
@@ -256,7 +256,7 @@ public class ExercisesBasicFinder
     {
         PersonList lessThan18 = this.getAgeLessIdLessThan18();
         Verify.assertListsEqual(FastList.newListWith("Yusuke Sato", "Ada Lovelace", "Chuckie Egg", "Donkey Kong", "Baby Finster", "Jango Fett"),
-                lessThan18.asGscList().collect(PersonFinder.name()));
+                lessThan18.asEcList().collect(PersonFinder.name()));
     }
 
 //-------------- Auxiliary test for runtimeConfiguration correctness --------------

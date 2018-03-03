@@ -16,10 +16,10 @@
 
 package kata.test;
 
-import com.gs.collections.api.block.function.Function;
 import com.gs.fw.common.mithra.test.ConnectionManagerForTests;
 import com.gs.fw.common.mithra.test.MithraTestResource;
 import kata.domain.Pet;
+import org.eclipse.collections.api.block.function.Function;
 import org.junit.After;
 import org.junit.Before;
 
@@ -38,7 +38,7 @@ public class AbstractMithraTest
     public void setUp() throws Exception
     {
         this.mithraTestResource = new MithraTestResource(this.getMithraConfigXmlFilename());
-        final ConnectionManagerForTests connectionManager = ConnectionManagerForTests.getInstanceForDbName("mithra_db");
+        ConnectionManagerForTests connectionManager = ConnectionManagerForTests.getInstanceForDbName("mithra_db");
         this.mithraTestResource.createSingleDatabase(connectionManager);
         this.mithraTestResource.addTestDataToDatabase("testdata/data_AllTypes.txt", connectionManager);
         this.mithraTestResource.setUp();
