@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Goldman Sachs.
+ Copyright 2018 Goldman Sachs.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -16,10 +16,10 @@
 
 package kata.test;
 
-import com.gs.collections.api.block.function.Function;
 import com.gs.fw.common.mithra.test.ConnectionManagerForTests;
 import com.gs.fw.common.mithra.test.MithraTestResource;
 import kata.domain.Pet;
+import org.eclipse.collections.api.block.function.Function;
 import org.junit.After;
 import org.junit.Before;
 
@@ -38,7 +38,7 @@ public class AbstractMithraTest
     public void setUp() throws Exception
     {
         this.mithraTestResource = new MithraTestResource(this.getMithraConfigXmlFilename());
-        final ConnectionManagerForTests connectionManager = ConnectionManagerForTests.getInstanceForDbName("mithra_db");
+        ConnectionManagerForTests connectionManager = ConnectionManagerForTests.getInstanceForDbName("mithra_db");
         this.mithraTestResource.createSingleDatabase(connectionManager);
         this.mithraTestResource.addTestDataToDatabase("testdata/data_AllTypes.txt", connectionManager);
         this.mithraTestResource.setUp();

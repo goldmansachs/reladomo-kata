@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2017 Goldman Sachs.
+  Copyright 2018 Goldman Sachs.
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -109,7 +109,7 @@
                                 <taskdef name="gen-reladomo" classpath="plugin_classpath"
                                          classname="com.gs.fw.common.mithra.generator.MithraGenerator"/>
                                 <gen-reladomo xml="${project.basedir}/src/main/reladomoxml/MithraTestAppClassList.xml"
-                                              generateGscListMethod="true"
+                                              generateEcListMethod="true"
                                               generatedDir="${project.build.directory}/generated-sources/reladomo"
                                               nonGeneratedDir="${project.basedir}/src/main/java"
                                 />
@@ -190,7 +190,8 @@
                                 <replace dir="${project.build.directory}/docbook-lib/docbook/slides/xhtml" value="">
                                     <include name="plain-titlepage.xsl"/>
                                     <replacetoken>
-                                        xsl:use-attribute-sets=&quot;slides.titlepage.recto.style&quot;</replacetoken>
+                                        xsl:use-attribute-sets=&quot;slides.titlepage.recto.style&quot;
+                                    </replacetoken>
                                 </replace>
                                 <java classname="org.apache.xalan.xslt.Process"
                                       fork="yes"
@@ -225,9 +226,11 @@
                                     <include name="ReladomoKata.xhtml"/>
                                     <replacetoken>&lt;link type=&quot;text/css&quot; href=&quot;files/slidy/styles/w3c-blue.css&quot; rel=&quot;stylesheet&quot;/&gt;</replacetoken>
                                 </replace>
-                                <replace dir="${project.build.directory}/presentation" value="&lt;div class=&quot;slide cover title&quot;&gt;&lt;h1 class=&quot;title&quot;&gt;Reladomo Kata&lt;/h1&gt;&lt;/div&gt;">
+                                <replace dir="${project.build.directory}/presentation"
+                                         value="&lt;div class=&quot;slide cover title&quot;&gt;&lt;h1 class=&quot;title&quot;&gt;Reladomo Kata&lt;/h1&gt;&lt;/div&gt;">
                                     <include name="ReladomoKata.xhtml"/>
-                                    <replacetoken>&lt;div xmlns:dbs=&quot;http://docbook.org/ns/docbook-slides&quot; class=&quot;slide cover title&quot;/&gt;</replacetoken>
+                                    <replacetoken>&lt;div xmlns:dbs=&quot;http://docbook.org/ns/docbook-slides&quot; class=&quot;slide cover title&quot;/&gt;
+                                    </replacetoken>
                                 </replace>
                                 <replace dir="${project.build.directory}/presentation" value="">
                                     <include name="ReladomoKata.xhtml"/>
@@ -284,18 +287,18 @@
         </dependency>
 
         <dependency>
-            <groupId>com.goldmansachs</groupId>
-            <artifactId>gs-collections-api</artifactId>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.goldmansachs</groupId>
-            <artifactId>gs-collections</artifactId>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.goldmansachs</groupId>
-            <artifactId>gs-collections-testutils</artifactId>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections-testutils</artifactId>
         </dependency>
 
         <dependency>

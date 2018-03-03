@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Goldman Sachs.
+ Copyright 2018 Goldman Sachs.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -16,16 +16,6 @@
 
 package kata.test;
 
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.api.map.MutableMap;
-import com.gs.collections.api.set.primitive.MutableIntSet;
-import com.gs.collections.impl.factory.Lists;
-import com.gs.collections.impl.factory.Maps;
-import com.gs.collections.impl.factory.primitive.IntSets;
-import com.gs.collections.impl.set.mutable.primitive.IntHashSet;
-import com.gs.collections.impl.test.Verify;
-import com.gs.collections.impl.tuple.Tuples;
-import com.gs.collections.impl.utility.Iterate;
 import com.gs.fw.common.mithra.AggregateList;
 import com.gs.fw.common.mithra.mtloader.AbortException;
 import com.gs.fw.common.mithra.mtloader.DbLoadThread;
@@ -37,6 +27,16 @@ import kata.domain.Pet;
 import kata.domain.PetFinder;
 import kata.domain.PetList;
 import kata.util.TimestampProvider;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.set.primitive.MutableIntSet;
+import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.factory.Maps;
+import org.eclipse.collections.impl.factory.primitive.IntSets;
+import org.eclipse.collections.impl.set.mutable.primitive.IntHashSet;
+import org.eclipse.collections.impl.test.Verify;
+import org.eclipse.collections.impl.tuple.Tuples;
+import org.eclipse.collections.impl.utility.Iterate;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -93,7 +93,7 @@ public class Exercise4Test extends AbstractMithraTest
     public void getAverageAgeOfAllPets()
     {
         AggregateList aggregateList = null;
-        Assert.assertEquals(IntHashSet.newSetWith(12), aggregateList.getAttributeAsGscIntSet("averagePetAge"));
+        Assert.assertEquals(IntHashSet.newSetWith(12), aggregateList.getAttributeAsEcIntSet("averagePetAge"));
     }
 
     /**
