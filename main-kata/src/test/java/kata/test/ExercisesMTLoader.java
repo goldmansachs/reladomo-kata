@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Goldman Sachs.
+ Copyright 2018 Goldman Sachs.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -16,10 +16,10 @@
 
 package kata.test;
 
-import com.gs.collections.api.block.function.Function;
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.test.Verify;
+import org.eclipse.collections.api.block.function.Function;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.test.Verify;
 import com.gs.fw.common.mithra.MithraTransactionalObject;
 import com.gs.fw.common.mithra.mtloader.InputLoader;
 import com.gs.fw.common.mithra.util.SingleQueueExecutor;

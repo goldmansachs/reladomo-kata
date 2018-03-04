@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Goldman Sachs.
+ Copyright 2018 Goldman Sachs.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -16,17 +16,17 @@
 
 package kata.test;
 
-import com.gs.collections.api.block.function.Function;
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.api.map.MutableMap;
-import com.gs.collections.api.set.MutableSet;
-import com.gs.collections.api.tuple.Pair;
-import com.gs.collections.api.tuple.Twin;
-import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.map.mutable.UnifiedMap;
-import com.gs.collections.impl.set.mutable.UnifiedSet;
-import com.gs.collections.impl.test.Verify;
-import com.gs.collections.impl.tuple.Tuples;
+import org.eclipse.collections.api.block.function.Function;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.api.tuple.Twin;
+import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.map.mutable.UnifiedMap;
+import org.eclipse.collections.impl.set.mutable.UnifiedSet;
+import org.eclipse.collections.impl.test.Verify;
+import org.eclipse.collections.impl.tuple.Tuples;
 import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.attribute.Attribute;
 import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
@@ -98,7 +98,7 @@ public class ExercisesAdvancedFinder
         CustomerAccountList accounts = this.getAccountsBasedOnTuples(accountNameAndTypes);
 
         Verify.assertListsEqual(FastList.newListWith(300, 500, 600),
-                accounts.asGscList().collect(CustomerAccountFinder.accountId()));
+                accounts.asEcList().collect(CustomerAccountFinder.accountId()));
     }
 
 //-------------- Question 3 ------------------------------------------------------
@@ -334,7 +334,7 @@ public class ExercisesAdvancedFinder
     {
         final PersonList people = this.getPeopleIn(UnifiedSet.newSetWith(3, 9, 15, 99));
         Verify.assertSetsEqual(UnifiedSet.newSetWith("Yuki Suzuki", "Douglas Adams", "Jango Fett"),
-                people.asGscList().collect(PersonFinder.name()).toSet());
+                people.asEcList().collect(PersonFinder.name()).toSet());
     }
 
 //-------------- Question 13 ------------------------------------------------------

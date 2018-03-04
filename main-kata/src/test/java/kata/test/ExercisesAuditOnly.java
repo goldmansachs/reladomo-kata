@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Goldman Sachs.
+ Copyright 2018 Goldman Sachs.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -16,9 +16,9 @@
 
 package kata.test;
 
-import com.gs.collections.impl.block.factory.Predicates;
-import com.gs.collections.impl.set.mutable.UnifiedSet;
-import com.gs.collections.impl.test.Verify;
+import org.eclipse.collections.impl.block.factory.Predicates;
+import org.eclipse.collections.impl.set.mutable.UnifiedSet;
+import org.eclipse.collections.impl.test.Verify;
 import kata.domain.Task;
 import kata.domain.TaskFinder;
 import kata.domain.TaskList;
@@ -64,9 +64,9 @@ public class ExercisesAuditOnly
         TaskList tasks = this.getActiveTasks();
 
         Verify.assertSetsEqual(UnifiedSet.newSetWith("Colonize Moon", "Dam River"),
-                tasks.asGscList().collect(TaskFinder.name()).toSet());
+                tasks.asEcList().collect(TaskFinder.name()).toSet());
         Verify.assertSetsEqual(UnifiedSet.newSetWith("In Design", "Restarted"),
-                tasks.asGscList().collect(TaskFinder.status()).toSet());
+                tasks.asEcList().collect(TaskFinder.status()).toSet());
     }
 
 //------------------------ Question 2 --------------------------------------------------------
@@ -86,9 +86,9 @@ public class ExercisesAuditOnly
         TaskList tasks = this.getTasksAsOf(processingDate);
 
         Verify.assertSetsEqual(UnifiedSet.newSetWith("Build Bridge", "Dam River"),
-                tasks.asGscList().collect(TaskFinder.name()).toSet());
+                tasks.asEcList().collect(TaskFinder.name()).toSet());
         Verify.assertSetsEqual(UnifiedSet.newSetWith("Restarted", "Damming"),
-                tasks.asGscList().collect(TaskFinder.status()).toSet());
+                tasks.asEcList().collect(TaskFinder.status()).toSet());
     }
 
 //------------------------ Question 3 --------------------------------------------------------
@@ -111,7 +111,7 @@ public class ExercisesAuditOnly
                 Timestamp.valueOf("1965-01-01 06:00:00.0"),
                 Timestamp.valueOf("1967-01-01 11:30:22.0"),
                 Timestamp.valueOf("1990-01-01 06:00:00.0")),
-                tasks.asGscList().collect(TaskFinder.processingDateFrom()).toSet());
+                tasks.asEcList().collect(TaskFinder.processingDateFrom()).toSet());
     }
 
 //------------------------ Question 4 --------------------------------------------------------
