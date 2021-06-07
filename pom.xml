@@ -45,7 +45,7 @@
         <maven.compiler.maxmem>2048m</maven.compiler.maxmem>
         <reladomo.version>17.0.0</reladomo.version>
         <eclipse-collections.version>9.1.0</eclipse-collections.version>
-        <logback.version>1.0.13</logback.version>
+        <logback.version>1.2.0</logback.version>
 
     </properties>
 
