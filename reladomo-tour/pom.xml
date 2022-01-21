@@ -47,7 +47,7 @@
         <gs-collections.version>7.0.3</gs-collections.version>
         <jersey.media.version>2.26-b04</jersey.media.version>
         <jersey.grizzly.version>2.24.1</jersey.grizzly.version>
-        <h2.version>1.4.193</h2.version>
+        <h2.version>2.1.210</h2.version>
         <logback.version>1.0.13</logback.version>
 
     </properties>
