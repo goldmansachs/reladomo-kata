@@ -1,0 +1,15 @@
+name: Auto publish PR
+on:
+ pull_request:
+   types: [closed]
+   
+jobs:
+  call-remote-workflow:
+    if: github.event.pull_request.merged == true
+    uses: goldmansachs/gsoss-workflows/.github/workflows/publish-pr.yml@main
+    secrets: inherit
+    with:
+      prnum: ${{ github.event.pull_request.number }}
+      targetbr: ${{ github.event.pull_request.base.ref }}
+      srcrepo: ${{ github.event.pull_request.head.repo.name }}
+      mode: "real"

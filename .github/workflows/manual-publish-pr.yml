@@ -1,0 +1,31 @@
+name: Manually publish PR
+on:
+ workflow_dispatch:
+    inputs:
+      prnum:
+        description: 'Private PR number.'
+        required: true
+        type: string
+      targetbr:
+        description: 'Target branch of private PR'
+        required: true
+        type: string
+      srcrepo:
+        description: 'Private reponame (starts with gsoss2-) from which to publish PR. Ex: gsoss2-reladomo'
+        required: true
+        type: string
+      mode:
+        description: 'Preview or real mode. Default is preview'
+        required: false
+        default: "preview"
+        type: string
+
+jobs:
+  call-remote-workflow:
+    uses: goldmansachs/gsoss-workflows/.github/workflows/publish-pr.yml@main
+    secrets: inherit
+    with:
+      prnum: ${{ inputs.prnum }}
+      targetbr: ${{ inputs.targetbr }}
+      srcrepo: ${{ inputs.srcrepo }}
+      mode: ${{ inputs.mode }}

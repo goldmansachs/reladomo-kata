@@ -1,0 +1,26 @@
+env:
+  GITHUB_TOKEN: ${{ secrets.GSOSS_TOKEN }}
+  
+name: Manually sync default branch
+run-name: ${{ github.actor }} triggered sync private fork with public fork
+on:
+ workflow_dispatch:
+  inputs:
+      syncsrc:
+        description: 'Public sync-branch name (optional) - if this input is empty then it will pick default branch of public-fork as DEFAULT for sync operation'
+        required: false
+        type: string
+
+jobs:
+  manual_branch_sync:
+    name: Manual branch sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v3.5.2
+      - run: |
+          echo "Running manual branch sync"
+          mkdir -p scripts
+          curl https://${{ secrets.GSOSS_TOKEN }}@raw.githubusercontent.com/goldmansachs/gsoss-workflows/main/scripts/sync-private-fork -o scripts/sync-private-fork
+          chmod +x ./scripts/sync-private-fork
+          ./scripts/sync-private-fork "${{ github.repository }}" "gs-prady:${{ secrets.GSOSS_TOKEN }}" "${{ inputs.syncsrc }}"
