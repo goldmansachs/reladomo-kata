@@ -2,10 +2,6 @@ name: Create a GS code review
 on:
  workflow_dispatch:
     inputs:
-      featurebr:
-        description: 'The feature branch for which you want to create a review.'
-        required: true
-        type: string
       ipreviewers:
         description: 'One ore more comma separated list of Github login names of users who need to approve the PR. Atleast one of these reviewers should be a GS IP reviewer - see gs-ipa-reviewers team in Github'
         required: true
@@ -20,7 +16,7 @@ jobs:
     uses: goldmansachs/gsoss-workflows/.github/workflows/create-pr.yml@main
     secrets: inherit
     with:
-      featurebr: ${{ inputs.featurebr }}
+      featurebr: ${{ github.ref_name }}
       srcrepo: ${{ github.repository }}
       prauthor: ${{ github.actor }}
       parentofbase: ${{ inputs.parentofbase }}
