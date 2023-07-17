@@ -94,4 +94,6 @@ Navigate to main-kata/target/presentation/reladomokata and open the ReladomoKata
 
 [license-apache]:LICENSE.txt
 [license-apache img]:https://img.shields.io/badge/License-Apache%202-blue.svg
+
+Feature: f6
 Feature: f7
