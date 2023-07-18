@@ -97,3 +97,4 @@ Navigate to main-kata/target/presentation/reladomokata and open the ReladomoKata
 
 Feature: f6
 Feature: f7
+Feature: f11
